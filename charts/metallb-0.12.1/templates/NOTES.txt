@@ -1,0 +1,20 @@
+MetalLB is now running in the cluster.
+{{- if ( or .Values.configFilepath .Values.configInline ) }}
+LoadBalancer Services in your cluster are now available on the IPs you
+defined in MetalLB's configuration:
+
+
+{{ if .Values.configInline }}
+config:
+{{ toYaml .Values.configInline | indent 2 }}
+{{ else }}
+config:
+{{ toYaml .Values.configFilepath | indent 2 }}
+{{ end }}
+
+To see IP assignments, try `kubectl get services`.
+{{- else }}
+WARNING: you specified a ConfigMap that isn't managed by
+Helm. LoadBalancer services will not function until you add that
+ConfigMap to your cluster yourself.
+{{- end }}

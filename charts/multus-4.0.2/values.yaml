@@ -1,0 +1,4 @@
+global:
+  registry: olcne
+
+multus-cni: v4.0.2-1

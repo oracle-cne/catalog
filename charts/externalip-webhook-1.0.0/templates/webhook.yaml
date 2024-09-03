@@ -1,0 +1,27 @@
+apiVersion: admissionregistration.k8s.io/{{ .AdmissionRegistrationApiVersion }}
+kind: ValidatingWebhookConfiguration
+metadata:
+  creationTimestamp: null
+  name: {{ include "externalip-webhook.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+webhooks:
+- clientConfig:
+    caBundle: '{{ .Values.caCert }}'
+    service:
+      name: {{ include "externalip-webhook.fullname" . }}
+      namespace: {{ .Release.Namespace }}
+      path: /validate-service
+  failurePolicy: Ignore
+  name: validate-externalip.webhook.svc
+  rules:
+  - apiGroups:
+    - ""
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - services
+  {{ .SideEffects }}
+  {{ .AdmissionReviewVersions }}

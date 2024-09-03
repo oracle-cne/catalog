@@ -1,0 +1,10 @@
+apiVersion: v2
+appVersion: 7.5.15
+description: The leading tool for querying and visualizing time series and metrics.
+kubeVersion: ^1.8.0-0
+maintainers:
+- email: murali.annamneni@oracle.com
+  name: Murali Annamneni
+name: grafana
+type: application
+version: 7.5.15

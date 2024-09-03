@@ -1,0 +1,7 @@
+apiVersion: v2
+name: ocne-catalog
+description: The Oracle Cloud Native Environment Application Catalog
+icon: icons/oracle.png
+type: application
+version: 2.0.0
+appVersion: "2.0.0"

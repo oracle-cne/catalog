@@ -1,0 +1,14 @@
+@Library('olcne-pipeline')
+import com.oracle.olcne.pipeline.BranchPattern
+
+String version = "2.0.0"
+String imageTag = "v" + version
+String container_registry_namespace = "olcne"
+String registry = "container-registry.oracle.com/" + container_registry_namespace
+
+olcnePipeline(
+    branchPattern: new BranchPattern(master: '(master|release/.*)', feature: '(?!^master$)(?!^release/.*$)(^.*$)'),
+    containers: [(registry + '/ocne-catalog:' + imageTag) : container_registry_namespace + '/ocne-catalog:' + imageTag],
+    architectures: ['x86_64', 'aarch64'],
+    platforms: ['ol8']
+)

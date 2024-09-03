@@ -1,0 +1,26 @@
+global:
+  oci:
+    registry: "ghcr.io/oracle"
+  csi:
+    registry: "registry.k8s.io/sig-storage"
+  compact: false
+  namespace: kube-system
+
+oci:
+  useinstanceprincipals: false
+  privatekey: ""
+
+volumeProvisionerConfig: oci-volume-provisioner
+cloudControllerManagerConfig: oci-cloud-controller-manager
+
+cloud-provider-oci: "v1.27.2"
+
+csi-provisioner: "v3.5.0"
+
+csi-attacher: "v4.2.0"
+
+csi-resizer: "v1.7.0"
+
+csi-node-driver-registrar: "v2.5.1"
+
+csi-snapshotter: "v6.2.0"

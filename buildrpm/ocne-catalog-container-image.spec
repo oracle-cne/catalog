@@ -1,0 +1,42 @@
+%global debug_package %{nil}
+%global _buildhost          build-ol%{?oraclelinux}-%{?_arch}.oracle.com
+%global registry container-registry.oracle.com/olcne
+%global _name ocne-catalog
+%global rpm_name %{_name}-%{version}-%{release}.%{_build_arch}
+%global docker_tag %{registry}/%{_name}:v%{version}
+
+Name:		%{_name}-container-image
+Version:	2.0.0
+Release:	1%{?dist}
+Summary:	An on-disk Helm chart repository
+
+Group:		Development/Tools
+License:	UPL 1.0
+Source0:	%{name}-%{version}.tar.bz2
+
+%description
+An on-disk Helm chart repository
+
+%prep
+%setup -q
+
+%build
+yum clean all
+yumdownloader --destdir=${PWD}/rpms %{rpm_name}
+
+%__rm .dockerignore
+docker build --pull --build-arg https_proxy=${https_proxy} \
+	-t %{docker_tag} -f ./olm/builds/Dockerfile .
+docker save -o %{_name}.tar %{docker_tag}
+
+%install
+%__install -D -m 644 %{_name}.tar %{buildroot}/usr/local/share/olcne/%{_name}.tar
+
+%files
+/usr/local/share/olcne/%{_name}.tar
+
+%clean
+
+%changelog
+* Fri Aug 30 2024 Daniel Krasinski <daniel.krasinski@oracle.com> 2.0.0-1
+- Applications for Oracle Cloud Native Environment

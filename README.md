@@ -1,28 +1,35 @@
-*This repository acts as a template for all of Oracle’s GitHub repositories. It contains information about the guidelines for those repositories. All files and sections contained in this template are mandatory, and a GitHub app ensures alignment with these guidelines. To get started with a new repository, replace the italic paragraphs with the respective text for your project.*
+# Oracle Cloud Native Environment Application Catalog
 
-# Project name
-
-*Describe your project's features, functionality and target audience*
+The Oracle Cloud Native Environment Application Catalog is Helm repository
+that contains a set of curated cloud native applications.
 
 ## Installation
 
-*Provide detailed step-by-step installation instructions. You can name this section **How to Run** or **Getting Started** instead of **Installation** if that's more acceptable for your project*
+The catalog is installed automatically by the Oracle Cloud Native Environment
+CLI.  It is also possible to install the catalog from the catalog itself, by
+installing the `ocne-catalog` chart.
 
 ## Documentation
 
-*Developer-oriented documentation can be published on GitHub, but all product documentation must be published on <https://docs.oracle.com>*
+### Building
 
-## Examples
+```
+make
+```
 
-*Describe any included examples or provide a link to a demo/tutorial*
+This will build all charts in the `./charts` directory and package them into
+a Helm repository in `./repo`.
 
-## Help
+### Adding a Chart
 
-*Inform users on where to get help or how to receive official support from Oracle (if applicable)*
+To add a chart, simply add it to the `./charts` directory in a subdirectory
+named for the chart and chart version.  For example, the chart `mycoolapp` at
+version `2.3.4` would be put inside `./charts/mycoolapp-2.3.4`.  All charts
+must be created such that the chart version and application version are
+identical and are not prefixed with a 'v'.
 
 ## Contributing
 
-*If your project has specific contribution requirements, update the CONTRIBUTING.md file to ensure those requirements are clearly explained*
 
 This project welcomes contributions from the community. Before submitting a pull request, please [review our contribution guide](./CONTRIBUTING.md)
 
@@ -32,13 +39,7 @@ Please consult the [security guide](./SECURITY.md) for our responsible security 
 
 ## License
 
-*The correct copyright notice format for both documentation and software is*
-    "Copyright (c) [year,] year Oracle and/or its affiliates."
-*You must include the year the content was first released (on any platform) and the most recent year in which it was revised*
-
 Copyright (c) 2023 Oracle and/or its affiliates.
-
-*Replace this statement if your project is not licensed under the UPL*
 
 Released under the Universal Permissive License v1.0 as shown at
 <https://oss.oracle.com/licenses/upl/>.
