@@ -7,7 +7,7 @@
 
 Name:		%{_name}-container-image
 Version:	2.0.0
-Release:	1%{?dist}
+Release:	3%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -38,5 +38,11 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
+* Tue Sep 10 2024 Zaid Abdulrehman <zaid.a.abdulrehman@oracle.com> 2.0.0-3
+- Change UI and catalog to use fully qualified images
+
+* Fri Sep 06 2024 Daniel Krasinski <daniel.krasinski@oracle.com> 2.0.0-2
+- Correct a few applications that did not properly annotate their container images
+
 * Fri Aug 30 2024 Daniel Krasinski <daniel.krasinski@oracle.com> 2.0.0-1
 - Applications for Oracle Cloud Native Environment

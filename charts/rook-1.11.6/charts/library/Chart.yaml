@@ -3,6 +3,7 @@ name: library
 description: A simple library chart to share content between Rook's charts
 version: 0.0.1
 type: library
+icon: icons/rook-logo.svg
 
 # Developer notes:
 # - all templates must start with an underscore, or Helm won't detect them

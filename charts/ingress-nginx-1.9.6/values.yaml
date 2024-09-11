@@ -676,18 +676,21 @@ controller:
   # will be executed as initContainers, to move its config files within the
   # mounted volume.
 
+  # Oracle Cloud Native Environment does not support OpenTelemetry.  This option
+  # is available so that it can be configured using third party container
+  # images.
   opentelemetry:
     enabled: false
     name: opentelemetry
     image:
-      registry: olcne
-      image: opentelemetry
+      registry:
+      image:
       ## for backwards compatibility consider setting the full image url via the repository value below
       ## use *either* current default registry/image or repository format or installing chart by providing the values.yaml will fail
       ## repository:
-      tag: "v20230721-3e2062ee5"
-      digest: sha256:13bee3f5223883d3ca62fee7309ad02d22ec00ff0d7033e3e9aca7a9f60fd472
-      distroless: true
+      tag:
+      digest:
+      distroless:
     containerSecurityContext:
       runAsNonRoot: true
       # -- The image's default user, inherited from its base image `cgr.dev/chainguard/static`.

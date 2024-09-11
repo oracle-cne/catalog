@@ -18,7 +18,7 @@ apiVersion: v2
 appVersion: 2.0.0
 description: Headlamp is an easy-to-use and extensible Kubernetes web UI.
 home: https://headlamp.dev/
-icon: icons/headlamp.svg
+icon: icons/oracle.png
 keywords:
 - kubernetes
 - plugins

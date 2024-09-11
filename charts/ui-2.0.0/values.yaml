@@ -7,7 +7,7 @@ replicaCount: 1
 
 image:
   # -- Container image registry
-  registry: ""
+  registry: "container-registry.oracle.com"
   # -- Container image name
   repository: olcne/ui
   # -- Image pull policy. One of Always, Never, IfNotPresent
@@ -25,9 +25,9 @@ fullnameOverride: ""
 # -- An optional list of init containers to be run before the main containers.
 initContainers:
   - name: "ui-plugins"
-    image: olcne/ui-plugins:v2.0.0
+    image: container-registry.oracle.com/olcne/ui-plugins:v2.0.0
     imagePullPolicy: IfNotPresent
-    command: ["/bin/sh", "-c", "mkdir -p /build/plugins && cp -r /ui-plugins/* /build/plugins/"]
+    command: ["/bin/sh", "-c", "mkdir -p /build/plugins && cp -r /headlamp-plugins/* /build/plugins/"]
     volumeMounts:
       - name: "ui-plugins"
         mountPath: "/build/plugins"

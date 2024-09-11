@@ -3,6 +3,7 @@ name: kubevirt
 description: |
   KubeVirt enables the management of traditional virtual machines as
   pods in a Kubernetes cluster.
+icon: icons/KubeVirt_icon.png
 
 # A chart can be either an 'application' or a 'library' chart.
 #

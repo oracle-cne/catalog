@@ -60,10 +60,14 @@ prometheus:
   namespace: ""
 
   # the image to be used for the kuberbacproxy container
-  rbacProxy:
-    repository: olcne/kube-rbac-proxy
-    tag: v0.12.0
-    pullPolicy:
+  #
+  # RBAC Proxy is not supported by Oracle Cloud Native Environment but
+  # the configuration option is retained so that it can be deployed using
+  # third party container images
+  #rbacProxy:
+  #  repository:
+  #  tag:
+  #  pullPolicy:
 
   # Prometheus Operator PodMonitors
   podMonitor:
@@ -324,14 +328,18 @@ speaker:
     periodSeconds: 5
   # frr contains configuration specific to the MetalLB FRR container,
   # for speaker running alongside FRR.
+  #
+  # FRR is not supported by Oracle Cloud Native Environment, but this
+  # configuration option is present so that may be deployed using
+  # third party container images.
   frr:
     enabled: false
-    image:
-      repository: olcne/frr
-      tag: 8.4.2
-      pullPolicy:
-    metricsPort: 7473
-    resources: {}
+  #  image:
+  #    repository:
+  #    tag:
+  #    pullPolicy:
+  #  metricsPort: 7473
+  #  resources: {}
 
     # if set, enables a rbac proxy sidecar container on the speaker to
     # expose the frr metrics via tls.
