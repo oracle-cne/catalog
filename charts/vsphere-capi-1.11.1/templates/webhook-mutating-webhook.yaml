@@ -1,0 +1,95 @@
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  annotations:
+    cert-manager.io/inject-ca-from: capv-system/capv-serving-cert
+  labels:
+    cluster.x-k8s.io/provider: infrastructure-vsphere
+    clusterctl.cluster.x-k8s.io: ""
+  name: capv-mutating-webhook-configuration
+webhooks:
+  - admissionReviewVersions:
+      - v1beta1
+    clientConfig:
+      service:
+        name: capv-webhook-service
+        namespace: capv-system
+        path: /mutate-infrastructure-cluster-x-k8s-io-v1beta1-vspheredeploymentzone
+    failurePolicy: Fail
+    matchPolicy: Equivalent
+    name: default.vspheredeploymentzone.infrastructure.cluster.x-k8s.io
+    rules:
+      - apiGroups:
+          - infrastructure.cluster.x-k8s.io
+        apiVersions:
+          - v1beta1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - vspheredeploymentzones
+    sideEffects: None
+  - admissionReviewVersions:
+      - v1beta1
+    clientConfig:
+      service:
+        name: capv-webhook-service
+        namespace: capv-system
+        path: /mutate-infrastructure-cluster-x-k8s-io-v1beta1-vspherefailuredomain
+    failurePolicy: Fail
+    matchPolicy: Equivalent
+    name: default.vspherefailuredomain.infrastructure.cluster.x-k8s.io
+    rules:
+      - apiGroups:
+          - infrastructure.cluster.x-k8s.io
+        apiVersions:
+          - v1beta1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - vspherefailuredomains
+    sideEffects: None
+  - admissionReviewVersions:
+      - v1beta1
+    clientConfig:
+      service:
+        name: capv-webhook-service
+        namespace: capv-system
+        path: /mutate-infrastructure-cluster-x-k8s-io-v1beta1-vspheremachine
+    failurePolicy: Fail
+    matchPolicy: Equivalent
+    name: default.vspheremachine.infrastructure.cluster.x-k8s.io
+    rules:
+      - apiGroups:
+          - infrastructure.cluster.x-k8s.io
+        apiVersions:
+          - v1beta1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - vspheremachines
+    sideEffects: None
+  - admissionReviewVersions:
+      - v1beta1
+    clientConfig:
+      service:
+        name: capv-webhook-service
+        namespace: capv-system
+        path: /mutate-infrastructure-cluster-x-k8s-io-v1beta1-vspherevm
+    failurePolicy: Fail
+    matchPolicy: Equivalent
+    name: default.vspherevm.infrastructure.cluster.x-k8s.io
+    rules:
+      - apiGroups:
+          - infrastructure.cluster.x-k8s.io
+        apiVersions:
+          - v1beta1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - vspherevms
+    sideEffects: None
