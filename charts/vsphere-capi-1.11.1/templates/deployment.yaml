@@ -2,13 +2,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: {{ include "vsphere-capi.fullname" . }}-controller-manager
+  namespace: {{ .Release.Namespace }}
   labels:
     cluster.x-k8s.io/provider: infrastructure-vsphere
     clusterctl.cluster.x-k8s.io: ""
     control-plane: controller-manager
   {{- include "vsphere-capi.labels" . | nindent 4 }}
-  name: {{ include "vsphere-capi.fullname" . }}-controller-manager
-  namespace: {{ .Release.Namespace }}
 spec:
   replicas: {{ .Values.controllerManager.replicas }}
   selector:

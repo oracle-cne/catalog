@@ -1,3 +1,7 @@
+authConfig:
+  username:
+  password:
+
 controllerManager:
   manager:
     env:
