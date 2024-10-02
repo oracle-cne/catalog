@@ -47,8 +47,8 @@ alertmanager:
   ## alertmanager container image
   ##
   image:
-    repository: container-registry.oracle.com/olcne/alertmanager
-    tag: v0.23.0
+    repository: olcne/alertmanager
+    tag: v0.24.0
     pullPolicy: IfNotPresent
 
   ## alertmanager priorityClassName
@@ -367,8 +367,8 @@ configmapReload:
     ## configmap-reload container image
     ##
     image:
-      repository: container-registry.oracle.com/olcne/configmap-reload
-      tag: v0.5.0
+      repository: olcne/configmap-reload
+      tag: v0.5.0-3
       pullPolicy: IfNotPresent
 
     ## Additional configmap-reload container arguments
@@ -405,8 +405,8 @@ configmapReload:
     ## configmap-reload container image
     ##
     image:
-      repository: container-registry.oracle.com/olcne/configmap-reload
-      tag: v0.5.0
+      repository: olcne/configmap-reload
+      tag: v0.5.0-3
       pullPolicy: IfNotPresent
 
     ## Additional configmap-reload container arguments
@@ -466,8 +466,8 @@ nodeExporter:
   ## node-exporter container image
   ##
   image:
-    repository: container-registry.oracle.com/olcne/node-exporter
-    tag: v1.3.0
+    repository: olcne/node-exporter
+    tag: v1.6.0
     pullPolicy: IfNotPresent
 
   ## Specify if a Pod Security Policy for node-exporter must be created
@@ -641,8 +641,8 @@ server:
   ## Prometheus server container image
   ##
   image:
-    repository: container-registry.oracle.com/olcne/prometheus
-    tag: v2.31.1
+    repository: olcne/prometheus
+    tag: v2.31.1-3
     pullPolicy: IfNotPresent
 
   ## prometheus server priorityClassName
@@ -1073,6 +1073,9 @@ server:
   ##
   retention: "15d"
 
+# The Prometheus Push Gateway is not supported by Oracle Cloud Native
+# Environment.  It is left here so that it can be configured to use
+# third party container images.
 pushgateway:
   ## If false, pushgateway will not be installed
   ##
@@ -1090,8 +1093,8 @@ pushgateway:
   ## pushgateway container image
   ##
   image:
-    repository: container-registry.oracle.com/olcne/pushgateway
-    tag: v1.4.2
+    repository:
+    tag:
     pullPolicy: IfNotPresent
 
   ## pushgateway priorityClassName

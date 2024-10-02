@@ -236,13 +236,17 @@ speaker:
     timeoutSeconds: 1
   # frr contains configuration specific to the MetalLB FRR container,
   # for speaker running alongside FRR.
+  #
+  # FRR is not supported by Oracle Cloud Native Environment.  The configuration
+  # option is available so that it can be deployed using third party
+  # container images.
   frr:
     enabled: false
     # FRR_LOGGING_LEVEL used to set logging level for all running frr processes.
     # Possible settings are :-
     #  informational, warning, errors and debugging.
-    logLevel: informational
-    image:
-      repository: olcne/frr
-      tag: stable_7.5
-      pullPolicy: IfNotPresent
+    #logLevel: informational
+    #image:
+    #  repository:
+    #  tag:
+    #  pullPolicy:

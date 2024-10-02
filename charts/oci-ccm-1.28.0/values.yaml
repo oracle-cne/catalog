@@ -2,7 +2,7 @@ global:
   oci:
     registry: "ghcr.io/oracle"
   csi:
-    registry: "registry.k8s.io/sig-storage"
+    registry: "olcne"
   compact: false
   namespace: kube-system
 
@@ -15,12 +15,12 @@ cloudControllerManagerConfig: oci-cloud-controller-manager
 
 cloud-provider-oci: "v1.28.0"
 
-csi-provisioner: "v3.6.0"
+csi-provisioner: "v3.5.0"
 
-csi-attacher: "v4.4.0"
+csi-attacher: "v4.3.0"
 
-csi-resizer: "v1.9.0"
+csi-resizer: "v1.8.0"
 
-csi-node-driver-registrar: "v2.5.1"
+csi-node-driver-registrar: "v2.8.0"
 
-csi-snapshotter: "v6.2.0"
+csi-snapshotter: "v6.2.2"

@@ -1,4 +1,5 @@
-{{- if .Values.Kubernetes -}}
+# extra-image: {{ .Values.fluentbit.image.repository }}:{{.Values.fluentbit.image.tag }}
+{{ if .Values.Kubernetes -}}
 {{- if .Values.fluentbit.enable -}}
 apiVersion: fluentbit.fluent.io/v1alpha2
 kind: FluentBit

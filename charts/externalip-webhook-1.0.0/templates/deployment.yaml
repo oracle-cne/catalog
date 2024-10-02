@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "externalip-webhook.fullname" . }}
+  name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "externalip-webhook.labels" . | nindent 4 }}
@@ -41,10 +41,6 @@ spec:
             - name: webhook-server
               containerPort: {{ .Values.service.targetPort }}
               protocol: TCP
-          livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
-          readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
@@ -58,7 +54,7 @@ spec:
         - name: cert
           secret:
             defaultMode: 420
-            secretName: {{ include "externalip-webhook.fullname" . }}
+            secretName: {{ .Release.Name }}
       {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
       {{- end }}

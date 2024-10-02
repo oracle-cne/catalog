@@ -5,6 +5,7 @@
 replicaCount: 1
 
 image:
+  registry: "container-registry.oracle.com"
   repository: "olcne/ocne-catalog"
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
