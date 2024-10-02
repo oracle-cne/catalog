@@ -40,7 +40,7 @@ autoscaling:
 
 image:
   repository: olcne/grafana
-  tag: v7.5.15-3
+  tag: v7.5.17
   sha: ""
   pullPolicy: IfNotPresent
 
