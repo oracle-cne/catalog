@@ -1,0 +1,23 @@
+controllerManager:
+  manager:
+    env:
+      diagnosticsAddress: 8443
+      insecureDiagnostics: false
+      nodeAntiAffinity: false
+      namespacedScopedZones: false
+    image:
+      repository: olcne/cluster-api-vsphere-controller
+      tag: v1.11.1
+    imagePullPolicy: IfNotPresent
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      privileged: false
+      runAsGroup: 65532
+      runAsUser: 65532
+  replicas: 1
+
+nameOverride:
+fullnameOverride: vspherecapi

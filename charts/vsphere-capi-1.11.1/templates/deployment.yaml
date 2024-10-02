@@ -6,10 +6,10 @@ metadata:
     cluster.x-k8s.io/provider: infrastructure-vsphere
     clusterctl.cluster.x-k8s.io: ""
     control-plane: controller-manager
-  name: capv-controller-manager
+  name: {{ include "vsphere-capi.fullname" . }}-controller-manager
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.controllerManager.replicas }}
   selector:
     matchLabels:
       cluster.x-k8s.io/provider: infrastructure-vsphere
@@ -24,10 +24,10 @@ spec:
       containers:
         - args:
             - --leader-elect
-            - --diagnostics-address=${CAPI_DIAGNOSTICS_ADDRESS:=:8443}
-            - --insecure-diagnostics=${CAPI_INSECURE_DIAGNOSTICS:=false}
+            - --diagnostics-address={{ .Values.controllerManager.manager.env.diagnosticsAddress }}
+            - --insecure-diagnostics={{ .Values.controllerManager.manager.env.insecureDiagnostics }}
             - --v=4
-            - --feature-gates=NodeAntiAffinity=${EXP_NODE_ANTI_AFFINITY:=false},NamespaceScopedZones=${EXP_NAMESPACE_SCOPED_ZONES:=false}
+            - --feature-gates=NodeAntiAffinity={{ .Values.controllerManager.manager.env.nodeAntiAffinity }},NamespaceScopedZones={{ .Values.controllerManager.manager.env.namespacedScopedZones }}
           env:
             - name: POD_NAMESPACE
               valueFrom:
@@ -41,8 +41,8 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.uid
-          image: registry.k8s.io/cluster-api-vsphere/cluster-api-vsphere-controller:v1.11.1
-          imagePullPolicy: IfNotPresent
+          image: {{ .Values.controllerManager.manager.image.repository}}:{{ .Values.controllerManager.manager.image.tag }}
+          imagePullPolicy: {{ .Values.controllerManager.manager.imagePullPolicy }}
           livenessProbe:
             httpGet:
               path: /healthz
@@ -63,13 +63,8 @@ spec:
               path: /readyz
               port: healthz
           resources: {}
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
-            runAsGroup: 65532
-            runAsUser: 65532
+          securityContext: {{- toYaml .Values.controllerManager.manager.containerSecurityContext
+            | nindent 10 }}
           terminationMessagePolicy: FallbackToLogsOnError
           volumeMounts:
             - mountPath: /tmp/k8s-webhook-server/serving-certs
@@ -82,6 +77,7 @@ spec:
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
+      serviceAccountName: {{ include "vsphere-capi.fullname" . }}-controller-manager
       terminationGracePeriodSeconds: 10
       tolerations:
         - effect: NoSchedule
@@ -92,7 +88,7 @@ spec:
         - name: cert
           secret:
             defaultMode: 420
-            secretName: capv-webhook-service-cert
+            secretName: {{ include "vsphere-capi.fullname" . }}-webhook-service-cert
         - name: manager-bootstrap-credentials
           secret:
-            secretName: capv-manager-bootstrap-credentials
+            secretName: {{ include "vsphere-capi.fullname" . }}-bootstrap-credentials
