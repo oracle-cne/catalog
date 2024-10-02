@@ -2,16 +2,17 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
+  name: {{ include "vsphere-capi.fullname" . }}-serving-cert
+  namespace: {{ .Release.Namespace }}
   labels:
     cluster.x-k8s.io/provider: infrastructure-vsphere
     clusterctl.cluster.x-k8s.io: ""
-  name: capv-serving-cert
-  namespace: capv-system
+  {{- include "vsphere-capi.labels" . | nindent 4 }}
 spec:
   dnsNames:
-    - capv-webhook-service.capv-system.svc
-    - capv-webhook-service.capv-system.svc.cluster.local
+    - '{{ include "vsphere-capi.fullname" . }}-webhook-service.{{ .Release.Namespace }}.svc'
+    - '{{ include "vsphere-capi.fullname" . }}-webhook-service.{{ .Release.Namespace }}.svc.{{ .Values.kubernetesClusterDomain }}'
   issuerRef:
     kind: Issuer
-    name: capv-selfsigned-issuer
-  secretName: capv-webhook-service-cert
+    name: '{{ include "vsphere-capi.fullname" . }}-selfsigned-issuer'
+  secretName: {{ include "vsphere-capi.fullname" . }}-webhook-service-cert

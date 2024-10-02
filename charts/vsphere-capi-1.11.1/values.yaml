@@ -23,5 +23,6 @@ controllerManager:
       runAsUser: 65532
   replicas: 1
 
+kubernetesClusterDomain: cluster.local
 nameOverride:
 fullnameOverride: vspherecapi
