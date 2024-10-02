@@ -2,14 +2,16 @@
 apiVersion: v1
 kind: Service
 metadata:
+  name: {{ include "vsphere-capi.fullname" . }}-webhook-service
+  namespace: {{ .Release.Namespace }}
   labels:
     cluster.x-k8s.io/provider: infrastructure-vsphere
     clusterctl.cluster.x-k8s.io: ""
-  name: capv-webhook-service
-  namespace: capv-system
+  {{- include "vsphere-capi.labels" . | nindent 4 }}
 spec:
   ports:
     - port: 443
       targetPort: webhook-server
   selector:
     cluster.x-k8s.io/provider: infrastructure-vsphere
+  {{- include "vsphere-capi.selectorLabels" . | nindent 4 }}
