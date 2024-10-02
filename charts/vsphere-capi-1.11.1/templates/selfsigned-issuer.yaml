@@ -2,10 +2,11 @@
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
+  name: {{ include "vsphere-capi.fullname" . }}-selfsigned-issuer
+  namespace: {{ .Release.Namespace }}
   labels:
     cluster.x-k8s.io/provider: infrastructure-vsphere
     clusterctl.cluster.x-k8s.io: ""
-  name: capv-selfsigned-issuer
-  namespace: capv-system
+  {{- include "vsphere-capi.labels" . | nindent 4 }}
 spec:
   selfSigned: {}
