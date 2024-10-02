@@ -1,20 +1,20 @@
----
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
+  name: {{ include "vsphere-capi.fullname" . }}-validating-webhook-configuration
   annotations:
     cert-manager.io/inject-ca-from: capv-system/capv-serving-cert
   labels:
     cluster.x-k8s.io/provider: infrastructure-vsphere
     clusterctl.cluster.x-k8s.io: ""
-  name: capv-validating-webhook-configuration
+  {{- include "vsphere-capi.labels" . | nindent 4 }}
 webhooks:
   - admissionReviewVersions:
       - v1beta1
     clientConfig:
       service:
-        name: capv-webhook-service
-        namespace: capv-system
+        name: '{{ include "vsphere-capi.fullname" . }}-webhook-service'
+        namespace: '{{ .Release.Namespace }}'
         path: /validate-infrastructure-cluster-x-k8s-io-v1beta1-vsphereclustertemplate
     failurePolicy: Fail
     matchPolicy: Equivalent
@@ -34,8 +34,8 @@ webhooks:
       - v1beta1
     clientConfig:
       service:
-        name: capv-webhook-service
-        namespace: capv-system
+        name: '{{ include "vsphere-capi.fullname" . }}-webhook-service'
+        namespace: '{{ .Release.Namespace }}'
         path: /validate-infrastructure-cluster-x-k8s-io-v1beta1-vspherefailuredomain
     failurePolicy: Fail
     matchPolicy: Equivalent
@@ -55,8 +55,8 @@ webhooks:
       - v1beta1
     clientConfig:
       service:
-        name: capv-webhook-service
-        namespace: capv-system
+        name: '{{ include "vsphere-capi.fullname" . }}-webhook-service'
+        namespace: '{{ .Release.Namespace }}'
         path: /validate-infrastructure-cluster-x-k8s-io-v1beta1-vspheremachine
     failurePolicy: Fail
     matchPolicy: Equivalent
@@ -76,8 +76,8 @@ webhooks:
       - v1beta1
     clientConfig:
       service:
-        name: capv-webhook-service
-        namespace: capv-system
+        name: '{{ include "vsphere-capi.fullname" . }}-webhook-service'
+        namespace: '{{ .Release.Namespace }}'
         path: /validate-infrastructure-cluster-x-k8s-io-v1beta1-vspheremachinetemplate
     failurePolicy: Fail
     matchPolicy: Equivalent
@@ -97,8 +97,8 @@ webhooks:
       - v1beta1
     clientConfig:
       service:
-        name: capv-webhook-service
-        namespace: capv-system
+        name: '{{ include "vsphere-capi.fullname" . }}-webhook-service'
+        namespace: '{{ .Release.Namespace }}'
         path: /validate-infrastructure-cluster-x-k8s-io-v1beta1-vspherevm
     failurePolicy: Fail
     matchPolicy: Equivalent
