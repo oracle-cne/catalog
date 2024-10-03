@@ -66,7 +66,7 @@ spec:
               port: healthz
           resources: {}
           securityContext: {{- toYaml .Values.controllerManager.manager.containerSecurityContext
-            | nindent 10 }}
+            | nindent 12 }}
           terminationMessagePolicy: FallbackToLogsOnError
           volumeMounts:
             - mountPath: /tmp/k8s-webhook-server/serving-certs
