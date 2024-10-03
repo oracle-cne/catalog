@@ -22,6 +22,8 @@ controllerManager:
       runAsGroup: 65532
       runAsUser: 65532
   replicas: 1
+  serviceAccount:
+    annotations: {}
 webhookService:
   ports:
     - port: 443
