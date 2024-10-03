@@ -3,7 +3,7 @@ kind: ValidatingWebhookConfiguration
 metadata:
   name: {{ include "vsphere-capi.fullname" . }}-validating-webhook-configuration
   annotations:
-    cert-manager.io/inject-ca-from: capv-system/capv-serving-cert
+    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ include "vsphere-capi.fullname" . }}-serving-cert
   labels:
     cluster.x-k8s.io/provider: infrastructure-vsphere
     clusterctl.cluster.x-k8s.io: ""
