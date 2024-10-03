@@ -93,4 +93,4 @@ spec:
             secretName: {{ include "vsphere-capi.fullname" . }}-webhook-service-cert
         - name: manager-bootstrap-credentials
           secret:
-            secretName: {{ include "vsphere-capi.fullname" . }}-bootstrap-credentials
+            secretName: {{ include "vsphere-capi.fullname" . }}-manager-bootstrap-credentials
