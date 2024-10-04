@@ -30,12 +30,30 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 80
+  port: 443
   targetPort: 9443
 
+# If set to true, the PKI secret is created when installing the application.
+# It uses the values of .caCert, .tlsCert, and .tlsKey to populate the secret.
+# Be aware that allowing the chart to create the secret will place the key
+# values in the Helm release secret.
+#
+# If the value is false, the application will use a manually created secret.
+# While it is not necessary to create the secret prior to installing the chart,
+# the webhook pods will not start until the secret is available.
+createSecret: false
+
+# The public certificate for the certififcate authority that signed the
+# certificate configured with .tlsCert and .tlsKey.  It must be base 64 encoded.
+# This value is required even if .createSecret is false.
 caCert: ""
+
+# The public certificate and private key for the webhook service.  It must be
+# base 64 encoded.  These values are optional if .createSecret  is false.
 tlsCert: ""
 tlsKey: ""
+
+# A comma separated list of CIDR blocks to allow.
 allowedCidrs: ""
 
 resources: {}
@@ -49,15 +67,6 @@ resources: {}
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
-
-livenessProbe:
-  httpGet:
-    path: /
-    port: http
-readinessProbe:
-  httpGet:
-    path: /
-    port: http
 
 # Additional volumes on the output Deployment definition.
 volumes: []

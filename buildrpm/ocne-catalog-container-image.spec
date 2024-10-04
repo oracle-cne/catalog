@@ -24,7 +24,6 @@ An on-disk Helm chart repository
 yum clean all
 yumdownloader --destdir=${PWD}/rpms %{rpm_name}
 
-%__rm .dockerignore
 docker build --pull --build-arg https_proxy=${https_proxy} \
 	-t %{docker_tag} -f ./olm/builds/Dockerfile .
 docker save -o %{_name}.tar %{docker_tag}
