@@ -49,5 +49,5 @@ dependencies:
     condition: nodeExporter.enabled
   - name: grafana
     version: "7.5.*"
-    repository: file://../grafana-7.5.15
+    repository: file://../grafana-7.5.17
     condition: grafana.enabled
