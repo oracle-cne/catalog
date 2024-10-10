@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fluentd
+  labels:
+    app: fluentd
+spec:
+  ports:
+    - name: http-metrics
+      port: 24231
+      protocol: TCP
+      targetPort: 24231
+  selector:
+    app: fluentd
