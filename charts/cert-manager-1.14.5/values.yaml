@@ -271,9 +271,6 @@ containerSecurityContext:
     drop:
     - ALL
   readOnlyRootFilesystem: true
-  runAsNonRoot: true
-  runAsGroup: 65534
-  runAsUser: 65534
 
 # Additional volumes to add to the cert-manager controller pod.
 volumes: []
@@ -589,9 +586,6 @@ webhook:
       drop:
       - ALL
     readOnlyRootFilesystem: true
-    runAsNonRoot: true
-    runAsGroup: 65534
-    runAsUser: 65534
 
   podDisruptionBudget:
     # Enable or disable the PodDisruptionBudget resource
@@ -934,9 +928,6 @@ cainjector:
       drop:
       - ALL
     readOnlyRootFilesystem: true
-    runAsNonRoot: true
-    runAsGroup: 65534
-    runAsUser: 65534
 
   podDisruptionBudget:
     # Enable or disable the PodDisruptionBudget resource
@@ -1148,9 +1139,6 @@ startupapicheck:
       drop:
       - ALL
     readOnlyRootFilesystem: true
-    runAsNonRoot: true
-    runAsGroup: 65534
-    runAsUser: 65534
 
   # Timeout for 'kubectl check api' command
   timeout: 1m

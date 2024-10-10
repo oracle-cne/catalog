@@ -120,11 +120,13 @@ securityContext:
 # ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 containerSecurityContext:
   allowPrivilegeEscalation: false
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsGroup: 65534
+  runAsUser: 65534
 
 
 volumes: []
@@ -239,11 +241,13 @@ webhook:
   # ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   containerSecurityContext:
     allowPrivilegeEscalation: false
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsGroup: 65534
+    runAsUser: 65534
 
   # Optional additional annotations to add to the webhook Deployment
   # deploymentAnnotations: {}
@@ -379,11 +383,13 @@ cainjector:
   # ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   containerSecurityContext:
     allowPrivilegeEscalation: false
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsGroup: 65534
+    runAsUser: 65534
 
 
   # Optional additional annotations to add to the cainjector Deployment
@@ -463,11 +469,13 @@ startupapicheck:
   # ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   containerSecurityContext:
     allowPrivilegeEscalation: false
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsGroup: 65534
+    runAsUser: 65534
 
   # Timeout for 'kubectl check api' command
   timeout: 1m
