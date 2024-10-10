@@ -6,8 +6,8 @@
 %global docker_tag %{registry}/%{_name}:v%{version}
 
 Name:		%{_name}-container-image
-Version:	2.0.0
-Release:	3%{?dist}
+Version:	2.0.1
+Release:	1%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
+* Thu Oct 10 2024 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.1-1
+- Add several applications
+
 * Tue Sep 10 2024 Zaid Abdulrehman <zaid.a.abdulrehman@oracle.com> 2.0.0-3
 - Change UI and catalog to use fully qualified images
 

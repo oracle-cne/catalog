@@ -2,8 +2,8 @@
 %global _buildhost          build-ol%{?oraclelinux}-%{?_arch}.oracle.com
 
 Name:		ocne-catalog
-Version:	2.0.0
-Release:	3%{?dist}
+Version:	2.0.1
+Release:	1%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -36,6 +36,9 @@ cp -ap olm/icons/* %{buildroot}/opt/icons
 /opt/icons
 
 %changelog
+* Thu Oct 10 2024 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.1-1
+- Add several applications
+
 * Tue Sep 10 2024 Zaid Abdulrehman <zaid.a.abdulrehman@oracle.com> 2.0.0-3
 - Change UI and catalog to use fully qualified images
 
