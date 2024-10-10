@@ -14,8 +14,7 @@ logging:
   clusterName: local
   osURL: 'https://my-opensearch:9200'
   name: fluentd
-  fluentdImage: container-registry.oracle.com/verrazzano/fluentd-kubernetes-daemonset:v1.14.5-20230922100900-8777b84
-  # NOTE: The fluentd-kubernetes-daemonset image now comes from the bill of materials file (verrazzano-bom.json).
+  fluentdImage: verrazzano/fluentd-kubernetes-daemonset:v1.14.5-20230922100900-8777b84
 
 fluentd:
   enabled: true
