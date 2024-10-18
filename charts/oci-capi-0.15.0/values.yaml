@@ -58,3 +58,7 @@ webhookService:
     targetPort: webhook-server
   type: ClusterIP
 fullnameOverride: capoci
+proxy:
+  httpsProxy:
+  httpProxy:
+  noProxy:
