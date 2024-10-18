@@ -12,8 +12,7 @@ data:
     | b64enc | quote }}
   key: {{ required "authConfig.key is required" .Values.authConfig.key | b64enc |
     quote }}
-  passphrase: {{ required "authConfig.passphrase is required" .Values.authConfig.passphrase
-    | b64enc | quote }}
+  passphrase: {{ .Values.authConfig.passphrase | b64enc | quote }}
   region: {{ required "authConfig.region is required" .Values.authConfig.region |
     b64enc | quote }}
   tenancy: {{ required "authConfig.tenancy is required" .Values.authConfig.tenancy
