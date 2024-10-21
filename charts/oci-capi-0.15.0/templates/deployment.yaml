@@ -40,6 +40,18 @@ spec:
         command:
         - /manager
         env:
+{{ if .Values.proxy.httpsProxy }}
+        - name: https_proxy
+          value: {{ quote .Values.proxy.httpsProxy }}
+{{ end }}
+{{ if .Values.proxy.httpProxy }}
+        - name: http_proxy
+          value: {{ quote .Values.proxy.httpProxy }}
+{{ end }}
+{{ if .Values.proxy.noProxy }}
+        - name: no_proxy
+          value: {{ quote .Values.proxy.noProxy }}
+{{ end }}
         - name: AUTH_CONFIG_DIR
           value: {{ quote .Values.controllerManager.manager.env.authConfigDir }}
         - name: KUBERNETES_CLUSTER_DOMAIN
