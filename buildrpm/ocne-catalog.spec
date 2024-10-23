@@ -13,6 +13,7 @@ Source0:	%{name}-%{version}.tar.bz2
 BuildRequires:	helm
 BuildRequires:	make
 BuildRequires:	findutils
+BuildRequires:  yq
 
 %description
 An on-disk Helm chart repository
