@@ -7,7 +7,7 @@
 
 Name:		%{_name}-container-image
 Version:	2.0.0
-Release:	5%{?dist}
+Release:	6%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,11 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
+* Thu Oct 23 2024 Michael Gianatassio <michael.gianatassio@oracle.com> - 2.0.0-6
+- Add Fluentd
+- Add Istio 1.19
+- Remove requirement for Istio from Grafana
+
 * Thu Oct 10 2024 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-5
 - Add several applications
 
