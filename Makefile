@@ -12,6 +12,8 @@ $(REPO_DIR):
 
 .SECONDEXPANSION:
 $(REPO_DIR)/%.tgz: $$(shell find $$(CHART_DIR)/$$* -type f) | $(REPO_DIR)
+	$$(yq '.icon != null' $(CHART_DIR)/$(basename $(notdir $@))/Chart.yaml)
+	stat ./olm/$(shell yq '.icon' $(CHART_DIR)/$(basename $(notdir $@))/Chart.yaml)
 	helm package $(CHART_DIR)/$(basename $(notdir $@)) -d $(REPO_DIR) --dependency-update
 
 $(REPO_DIR)/index.yaml: $(CHART_TARBALLS) $(REPO_DIR)
