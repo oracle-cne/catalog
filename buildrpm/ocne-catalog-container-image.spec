@@ -37,7 +37,7 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
-* Thu Oct 23 2024 Michael Gianatassio <michael.gianatassio@oracle.com> - 2.0.0-6
+* Wed Oct 23 2024 Michael Gianatassio <michael.gianatassio@oracle.com> - 2.0.0-6
 - Add Fluentd
 - Add Istio 1.19
 - Remove requirement for Istio from Grafana
