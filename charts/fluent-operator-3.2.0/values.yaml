@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 # Set this to containerd or crio if you want to collect CRI format logs
-containerRuntime: docker
+containerRuntime: crio
 #  If you want to deploy a default Fluent Bit pipeline (including Fluent Bit Input, Filter, and output) to collect Kubernetes logs, you'll need to set the Kubernetes parameter to true
 # see https://github.com/fluent/fluent-operator/tree/master/manifests/logging-stack
 Kubernetes: true
@@ -57,7 +57,7 @@ operator:
   #  myExampleLabel: someValue
   logPath:
     # The operator currently assumes a Docker container runtime path for the logs as the default, for other container runtimes you can set the location explicitly below.
-    # crio: /var/log
+    crio: /var/log
     containerd: /var/log
   # By default, the operator provisions both Fluent Bit and FluentD controllers.
   # A specific controller can be disabled by setting the disableComponentControllers value.
