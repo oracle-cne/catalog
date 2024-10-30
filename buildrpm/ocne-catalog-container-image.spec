@@ -3,7 +3,7 @@
 %global registry container-registry.oracle.com/olcne
 %global _name ocne-catalog
 %global rpm_name %{_name}-%{version}-%{release}.%{_build_arch}
-%global docker_tag %{registry}/%{_name}:v%{version}
+%global docker_tag %{registry}/%{_name}:v%{version}-mg
 
 Name:		%{_name}-container-image
 Version:	2.0.0

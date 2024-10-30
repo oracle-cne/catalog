@@ -1,7 +1,7 @@
 @Library('olcne-pipeline')
 import com.oracle.olcne.pipeline.BranchPattern
 
-String version = "2.0.0"
+String version = "2.0.0-mg"
 String imageTag = "v" + version
 String container_registry_namespace = "olcne"
 String registry = "container-registry.oracle.com/" + container_registry_namespace
