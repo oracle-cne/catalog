@@ -7,7 +7,7 @@
 
 Name:		%{_name}-container-image
 Version:	2.0.0
-Release:	6%{?dist}
+Release:	7%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
+* Wed Oct 30 2024 Murali Annamneni <murali.annamneni@oracle.com> - 2.0.0-7
+- Add flannel-0.25.7 charts
+
 * Wed Oct 23 2024 Michael Gianatassio <michael.gianatassio@oracle.com> - 2.0.0-6
 - Add Fluentd
 - Add Istio 1.19
