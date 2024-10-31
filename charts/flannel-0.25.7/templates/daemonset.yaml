@@ -33,17 +33,6 @@ spec:
       {{- end }}
       serviceAccountName: flannel
       initContainers:
-      - name: install-cni-plugin
-        image: {{ .Values.flannel.image_cni.repository }}:{{ .Values.flannel.image_cni.tag }}
-        command:
-        - cp
-        args:
-        - -f
-        - /flannel
-        - /opt/cni/bin/flannel
-        volumeMounts:
-        - name: cni-plugin
-          mountPath: /opt/cni/bin
       - name: install-cni
         image: {{ .Values.flannel.image.repository }}:{{ .Values.flannel.image.tag }}
         command:
