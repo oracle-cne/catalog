@@ -35,9 +35,19 @@ operator:
   # Priority class applied to Fluent Operator. Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/#priorityclass
   priorityClassName: ""
   # Pod security context for Fluent Operator. Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
-  podSecurityContext: {}
+  podSecurityContext:
+    runAsGroup: 1025
+    runAsNonRoot: true
+    runAsUser: 1025
+    seccompProfile:
+      type: RuntimeDefault
   # Container security context for Fluent Operator container. Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
-  securityContext: {}
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    privileged: false
   # Fluent Operator resources. Usually user needn't to adjust these.
   resources:
     limits:
@@ -119,9 +129,20 @@ fluentbit:
   # fluent-bit daemonset use host network
   hostNetwork: false
   # Pod security context for Fluent Bit pods. Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
-  podSecurityContext: {}
+  podSecurityContext:
+    seccompProfile:
+      type: RuntimeDefault
   # Security context for Fluent Bit container. Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
-  securityContext: {}
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      add:
+        - DAC_OVERRIDE
+      drop:
+        - ALL
+    privileged: false
+    seLinuxOptions:
+      type: spc_t
   # List of volumes that can be mounted by containers belonging to the pod.
   additionalVolumes: []
   # Additional rbac rules which will be applied to the fluent-bit clusterrole. Ref: https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding
