@@ -3,7 +3,7 @@ appVersion: 2.39.1
 description: OpenID Connect (OIDC) identity and OAuth 2.0 provider with pluggable
   connectors.
 home: https://dexidp.io/
-icon: icons/cert-manager-icon.svg
+icon: icons/dex-icon.svg
 keywords:
 - oidc
 - oauth

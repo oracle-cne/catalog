@@ -62,3 +62,7 @@ serviceAccount:
   name:
 fullnameOverride: capoci
 nameOverride:
+proxy:
+  httpsProxy:
+  httpProxy:
+  noProxy:

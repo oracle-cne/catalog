@@ -3,7 +3,7 @@
 
 Name:		ocne-catalog
 Version:	2.0.0
-Release:	3%{?dist}
+Release:	7%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -13,6 +13,7 @@ Source0:	%{name}-%{version}.tar.bz2
 BuildRequires:	helm
 BuildRequires:	make
 BuildRequires:	findutils
+BuildRequires:  yq
 
 %description
 An on-disk Helm chart repository
@@ -36,6 +37,20 @@ cp -ap olm/icons/* %{buildroot}/opt/icons
 /opt/icons
 
 %changelog
+* Thu Oct 31 2024 Michael Gianatassio <michael.gianatassio@oracle.com> - 2.0.0-7
+- Replace fluent-operator 2.5.0 with 3.2.0
+
+* Wed Oct 23 2024 Michael Gianatassio <michael.gianatassio@oracle.com> - 2.0.0-6
+- Add Fluentd
+- Add Istio 1.19
+- Remove requirement for Istio from Grafana
+
+* Thu Oct 10 2024 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-5
+- Add several applications
+
+* Thu Sep 12 2024 Raaghav Wadhawan <raaghav.w.wadhawan@oracle.com> 2.0.0-4
+- Update Dex and cert-manager-webhook-oci icons.
+
 * Tue Sep 10 2024 Zaid Abdulrehman <zaid.a.abdulrehman@oracle.com> 2.0.0-3
 - Change UI and catalog to use fully qualified images
 
