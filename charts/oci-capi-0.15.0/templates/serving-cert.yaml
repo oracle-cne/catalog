@@ -1,16 +1,19 @@
+# Copyright (c) 2024, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: {{ include "oci-capi.fullname" . }}-serving-cert
+  name: {{ include "olvm-capi.fullname" . }}-serving-cert
   namespace: {{ .Release.Namespace }}
   labels:
-  {{- include "oci-capi.labels" . | nindent 4 }}
+  {{- include "olvm-capi.labels" . | nindent 4 }}
 spec:
   dnsNames:
-  - '{{ include "oci-capi.fullname" . }}-webhook-service.{{ .Release.Namespace }}.svc'
-  - '{{ include "oci-capi.fullname" . }}-webhook-service.{{ .Release.Namespace }}.svc.{{
+  - '{{ include "olvm-capi.fullname" . }}-webhook-service.{{ .Release.Namespace }}.svc'
+  - '{{ include "olvm-capi.fullname" . }}-webhook-service.{{ .Release.Namespace }}.svc.{{
     .Values.kubernetesClusterDomain }}'
   issuerRef:
     kind: Issuer
-    name: '{{ include "oci-capi.fullname" . }}-selfsigned-issuer'
-  secretName: capoci-webhook-service-cert
+    name: '{{ include "olvm-capi.fullname" . }}-selfsigned-issuer'
+  secretName: {{ include "olvm-capi.fullname" . }}-webhook-service-cert
