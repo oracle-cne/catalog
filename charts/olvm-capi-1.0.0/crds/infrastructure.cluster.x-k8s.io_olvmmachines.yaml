@@ -188,9 +188,13 @@ spec:
                     type: string
                   virtualMachine:
                     properties:
+                      CreateRequestSuccess:
+                        type: boolean
                       creationError:
                         type: string
                       creationStatus:
+                        type: string
+                      lastGeneration:
                         type: string
                       status:
                         type: string
@@ -198,6 +202,8 @@ spec:
                         type: string
                       vmName:
                         type: string
+                    required:
+                    - CreateRequestSuccess
                     type: object
                   vmTemplateID:
                     type: string
