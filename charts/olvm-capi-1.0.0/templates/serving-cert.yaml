@@ -11,7 +11,7 @@ metadata:
 spec:
   dnsNames:
   - '{{ include "olvm-capi.fullname" . }}-webhook-service.{{ .Release.Namespace }}.svc'
-  - '{{ include "ovlm-capi.fullname" . }}-webhook-service.{{ .Release.Namespace }}.svc.{{
+  - '{{ include "olvm-capi.fullname" . }}-webhook-service.{{ .Release.Namespace }}.svc.{{
     .Values.kubernetesClusterDomain }}'
   issuerRef:
     kind: Issuer
