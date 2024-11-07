@@ -8,6 +8,8 @@ logLevel: info
 
 metricsPort: 9110
 
+kubernetesClusterDomain: cluster.local
+
 controllerManager:
   manager:
     env:

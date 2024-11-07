@@ -1,0 +1,19 @@
+# Copyright (c) 2024, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "olvm-capi.fullname" . }}-webhook-service
+  namespace: {{ .Release.Namespace }}
+  labels:
+    cluster.x-k8s.io/provider: infrastructure-olvm
+    clusterctl.cluster.x-k8s.io: ""
+  {{- include "olvm-capi.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.webhookService.type }}
+  selector:
+    cluster.x-k8s.io/provider: infrastructure-olvm
+  {{- include "olvm-capi.selectorLabels" . | nindent 4 }}
+  ports:
+	{{- .Values.webhookService.ports | toYaml | nindent 2 }}
