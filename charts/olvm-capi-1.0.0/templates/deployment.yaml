@@ -31,8 +31,9 @@ spec:
     spec:
       containers:
         - name: manager
-          args:
-            - --zap-log-level={{ .Values.logLevel }}
+          args: {{- toYaml .Values.controllerManager.manager.args | nindent 8 }}
+          command:
+            - /manager
           image: {{ .Values.controllerManager.manager.image.repository}}:{{ .Values.controllerManager.manager.image.tag }}
           imagePullPolicy: {{ .Values.controllerManager.manager.imagePullPolicy }}
           livenessProbe:

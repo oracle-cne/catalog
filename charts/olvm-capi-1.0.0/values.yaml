@@ -6,7 +6,7 @@ fullnameOverride: olvmcapi
 
 logLevel: info
 
-metricsPort: 9110
+metricsPort: 8443
 
 # Temporary value
 webhooksEnabled: false
@@ -15,11 +15,13 @@ kubernetesClusterDomain: cluster.local
 
 controllerManager:
   manager:
-    env:
-      diagnosticsAddress: 8443
-      insecureDiagnostics: false
-      nodeAntiAffinity: false
-      namespacedScopedZones: false
+    args:
+      - --cert-dir=/etc/webhook/certs
+      - --metrics-addr=127.0.0.1:8443
+      - --zap-log-level=info
+      - --zap-encoder=json
+      - --zap-stacktrace-level=error
+      - --zap-time-encoding=epoch
     image:
       repository: olcne/cluster-api-olvm-controller
       tag: v1.0.0
