@@ -16,12 +16,12 @@ kubernetesClusterDomain: cluster.local
 controllerManager:
   manager:
     args:
-    - --cert-dir=/etc/webhook/certs
-    - --metrics-addr=127.0.0.1:8443
-    - --zap-log-level=info
-    - --zap-encoder=json
-    - --zap-stacktrace-level=error
-    - --zap-time-encoding=epoch
+    - -cert-dir=/etc/webhook/certs
+    - -metrics-addr=127.0.0.1:8443
+    - -zap-log-level=info
+    - -zap-encoder=json
+    - -zap-stacktrace-level=error
+    - -zap-time-encoding=epoch
     image:
       repository: olcne/cluster-api-olvm-controller
       tag: v1.0.0
