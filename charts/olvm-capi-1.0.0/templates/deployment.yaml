@@ -30,35 +30,48 @@ spec:
       {{- include "olvm-capi.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-        - name: manager
-          args: {{- toYaml .Values.controllerManager.manager.args | nindent 8 }}
-          command:
-            - /manager
-          image: {{ .Values.controllerManager.manager.image.repository}}:{{ .Values.controllerManager.manager.image.tag }}
-          imagePullPolicy: {{ .Values.controllerManager.manager.imagePullPolicy }}
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: healthz
-          ports:
-            - containerPort: 9443
-              name: webhook-server
-              protocol: TCP
-            - containerPort: 9440
-              name: healthz
-              protocol: TCP
-            - containerPort: {{ .Values.metricsPort }}
-              name: metrics
-              protocol: TCP
-          readinessProbe:
-            httpGet:
-              path: /readyz
-              port: healthz
-          resources:
-            {{- toYaml .Values.controllerManager.manager.resources | nindent 12 }}
-          securityContext:
-            {{- toYaml .Values.controllerManager.manager.containerSecurityContext | nindent 12 }}
-          terminationMessagePolicy: FallbackToLogsOnError
+      - name: manager
+        args: {{- toYaml .Values.controllerManager.manager.args | nindent 8 }}
+        command:
+        - /manager
+        env:
+        {{ if .Values.proxy.httpsProxy }}
+        - name: https_proxy
+          value: {{ quote .Values.proxy.httpsProxy }}
+        {{ end }}
+        {{ if .Values.proxy.httpProxy }}
+        - name: http_proxy
+          value: {{ quote .Values.proxy.httpProxy }}
+        {{ end }}
+        {{ if .Values.proxy.noProxy }}
+        - name: no_proxy
+          value: {{ quote .Values.proxy.noProxy }}
+        {{ end }}
+        image: {{ .Values.controllerManager.manager.image.repository}}:{{ .Values.controllerManager.manager.image.tag }}
+        imagePullPolicy: {{ .Values.controllerManager.manager.imagePullPolicy }}
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: healthz
+        ports:
+        - containerPort: 9443
+          name: webhook-server
+          protocol: TCP
+        - containerPort: 9440
+          name: healthz
+          protocol: TCP
+        - containerPort: {{ .Values.metricsPort }}
+          name: metrics
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: healthz
+        resources:
+          {{- toYaml .Values.controllerManager.manager.resources | nindent 12 }}
+        securityContext:
+          {{- toYaml .Values.controllerManager.manager.containerSecurityContext | nindent 12 }}
+        terminationMessagePolicy: FallbackToLogsOnError
       securityContext:
         {{- toYaml .Values.controllerManager.podSecurityContext | nindent 8 }}
       serviceAccountName: {{ include "olvm-capi.fullname" . }}-controller-manager
