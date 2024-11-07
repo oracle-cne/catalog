@@ -11,7 +11,7 @@ metadata:
   {{- include "olvm-capi.labels" . | nindent 4 }}
 webhooks:
 - admissionReviewVersions:
-  - v1alpha1
+  - v1beta1
   clientConfig:
     service:
       name: '{{ include "olvm-capi.fullname" . }}-webhook-service'
@@ -32,7 +32,7 @@ webhooks:
     - olvmclusters
   sideEffects: None
 - admissionReviewVersions:
-  - v1alpha1
+  - v1beta1
   clientConfig:
     service:
       name: '{{ include "olvm-capi.fullname" . }}-webhook-service'
