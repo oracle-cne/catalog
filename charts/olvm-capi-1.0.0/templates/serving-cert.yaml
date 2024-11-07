@@ -16,4 +16,4 @@ spec:
   issuerRef:
     kind: Issuer
     name: '{{ include "olvm-capi.fullname" . }}-selfsigned-issuer'
-  secretName: capolvm-webhook-service-cert
+  secretName: {{ include "olvm-capi.fullname" . }}-webhook-service-cert
