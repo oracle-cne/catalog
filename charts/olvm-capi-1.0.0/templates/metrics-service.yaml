@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "olvm-capi.fullname" . }}-controller-manager-metrics-service
+  namespace: {{ .Release.Namespace }}
+  labels:
+    cluster.x-k8s.io/provider: infrastructure-olvm
+    clusterctl.cluster.x-k8s.io: ""
+    control-plane: controller-manager
+  {{- include "olvm-capi.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.metricsService.type }}
+  selector:
+    cluster.x-k8s.io/provider: infrastructure-olvm
+    control-plane: controller-manager
+  {{- include "olvm-capi.selectorLabels" . | nindent 4 }}
+  ports:
+	{{- .Values.metricsService.ports | toYaml | nindent 2 }}
