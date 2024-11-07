@@ -11,12 +11,12 @@ metadata:
   {{- include "olvm-capi.labels" . | nindent 4 }}
 webhooks:
 - admissionReviewVersions:
-  - v1beta1
+  - v1alpha1
   clientConfig:
     service:
       name: '{{ include "olvm-capi.fullname" . }}-webhook-service'
       namespace: '{{ .Release.Namespace }}'
-      path: /validate-infrastructure-cluster-x-k8s-io-v1beta1-olvmcluster
+      path: /validate-infrastructure-cluster-x-k8s-io-v1alpha1-olvmcluster
   failurePolicy: Fail
   matchPolicy: Equivalent
   name: validation.olvmcluster.infrastructure.cluster.x-k8s.io
@@ -24,7 +24,7 @@ webhooks:
   - apiGroups:
     - infrastructure.cluster.x-k8s.io
     apiVersions:
-    - v1beta2
+    - v1alpha1
     operations:
     - CREATE
     - UPDATE
@@ -32,12 +32,12 @@ webhooks:
     - olvmclusters
   sideEffects: None
 - admissionReviewVersions:
-  - v1beta1
+  - v1alpha1
   clientConfig:
     service:
       name: '{{ include "olvm-capi.fullname" . }}-webhook-service'
       namespace: '{{ .Release.Namespace }}'
-      path: /validate-infrastructure-cluster-x-k8s-io-v1beta1-olvmmachinetemplate
+      path: /validate-infrastructure-cluster-x-k8s-io-v1alpha1-olvmmachinetemplate
   failurePolicy: Fail
   matchPolicy: Equivalent
   name: validation.olvmmachinetemplate.infrastructure.cluster.x-k8s.io
@@ -45,7 +45,7 @@ webhooks:
   - apiGroups:
     - infrastructure.cluster.x-k8s.io
     apiVersions:
-    - v1beta2
+    - v1alpha1
     operations:
     - CREATE
     - UPDATE
