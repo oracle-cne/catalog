@@ -1,0 +1,98 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.4
+  name: olvmmachinetemplates.infrastructure.cluster.x-k8s.io
+spec:
+  group: infrastructure.cluster.x-k8s.io
+  names:
+    categories:
+    - cluster-api
+    kind: OLVMMachineTemplate
+    listKind: OLVMMachineTemplateList
+    plural: olvmmachinetemplates
+    shortNames:
+    - olvmmt
+    singular: olvmmachinetemplate
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: OLVMMachineTemplate is the Schema for the OLVMMachineTemplates
+          API.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: OLVMMachineTemplateSpec defines the desired state of OLVMMachineTemplate.
+            properties:
+              template:
+                description: OLVMMachineTemplateResource specifies the resource that
+                  the template creates
+                properties:
+                  metadata:
+                    description: |-
+                      Standard object's metadata.
+                      More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+                    type: object
+                  spec:
+                    description: OLVMMachineSpec defines the specification for a OLVMMachine
+                      resource.
+                    properties:
+                      bootDevice:
+                        description: BootDevice is the VM boot device
+                        type: string
+                      memory:
+                        description: Memory for VM in Mi, MB, Gi, GB, ec.
+                        type: string
+                      olvmClusterName:
+                        description: OLVMlusterName is the CAPI OLVMCluster resource
+                          name
+                        type: string
+                      ovirtClusterName:
+                        description: OVirtCluster is the oVirt cluster within a datacenter
+                        type: string
+                      ovirtVMTemplateName:
+                        description: OVirtVMTemplateName of a pre-existing oVirt VM
+                          template
+                        type: string
+                      providerID:
+                        description: |-
+                          ProviderID is the identifier for the provider’s machine instance.
+                          This field is set by the controller
+                          ProviderID is expected to match the value set by the KCM cloud provider in the Nodes.
+                          The Machine controller bubbles it up to the Machine CR, and it’s used to find the matching Node.
+                          Any other consumers can use the providerID as the source of truth to match both Machines and Nodes.
+                        type: string
+                    required:
+                    - memory
+                    - olvmClusterName
+                    - ovirtClusterName
+                    type: object
+                required:
+                - spec
+                type: object
+            required:
+            - template
+            type: object
+        type: object
+    served: true
+    storage: true

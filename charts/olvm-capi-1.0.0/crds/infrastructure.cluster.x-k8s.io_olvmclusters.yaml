@@ -1,0 +1,208 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.4
+  name: olvmclusters.infrastructure.cluster.x-k8s.io
+spec:
+  group: infrastructure.cluster.x-k8s.io
+  names:
+    categories:
+    - cluster-api
+    kind: OLVMCluster
+    listKind: OLVMClusterList
+    plural: olvmclusters
+    shortNames:
+    - olvmc
+    singular: olvmcluster
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - description: True if the Cluster is ready
+      jsonPath: .status.conditions[:].status
+      name: Ready
+      type: string
+    - description: Last transition time
+      jsonPath: .status.conditions[:].lastTransitionTime
+      name: Transition Time
+      priority: 2
+      type: string
+    - description: Lifecycle message
+      jsonPath: .status.conditions[:].message
+      name: Message
+      priority: 2
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: OLVMCluster specifies am OLVMCluster instance.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: OLVMClusterSpec defines the specification for a OLVMCluster
+              resource.
+            properties:
+              controlPlaneEndpoint:
+                description: ControlPlaneEndpoint controlplane endpoint.  This is
+                  set by controller_foundation
+                properties:
+                  host:
+                    type: string
+                  port:
+                    format: int32
+                    type: integer
+                required:
+                - host
+                - port
+                type: object
+              ovirtAPI:
+                description: OVirtAPI contains the information needed to use the oVirst
+                  REST API
+                properties:
+                  caConfigMapName:
+                    description: CAConfigMapName is the name of the configmap that
+                      has the CA needed to for the oVirt REST API
+                    type: string
+                  credentialsSecretName:
+                    description: CredentialsSecretName is the name of the secret which
+                      has the credentials
+                    type: string
+                  endpointURL:
+                    description: Endpoint is the oVirt REST API endpoint
+                    type: string
+                required:
+                - caConfigMapName
+                - credentialsSecretName
+                - endpointURL
+                type: object
+              ovirtDatacenterName:
+                description: OVirtDatacenterName is the datacenter where the Kubernetes
+                  cluster will be created
+                type: string
+            required:
+            - ovirtAPI
+            - ovirtDatacenterName
+            type: object
+          status:
+            description: OLVMClusterStatus defines the status OLVMCluster resource.
+            properties:
+              conditions:
+                description: Conditions are the list of conditions for the OLVMCluster.
+                items:
+                  description: ClusterCondition describes the current condition of
+                    the OLVMCluster.
+                  properties:
+                    lastTransitionTime:
+                      description: LastTransitionTime is the last time the condition
+                        transitioned from one status to another.
+                      type: string
+                    message:
+                      description: Message is a human-readable message indicating
+                        details about the last transition.
+                      type: string
+                    reason:
+                      description: Reason for the condition.  This is a machine-readable
+                        one word value.
+                      type: string
+                    status:
+                      description: 'Status of the condition: one of `True`, `False`,
+                        or `Unknown`.'
+                      type: string
+                    type:
+                      description: Type of condition.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              failureDomains:
+                additionalProperties:
+                  description: FailureDomainSpec specifies a failuredomain
+                  properties:
+                    attributes:
+                      additionalProperties:
+                        type: string
+                      description: Attributes are arbitrary attributes for users to
+                        apply to a failure domain.
+                      type: object
+                    controlPlane:
+                      description: ControlPlane indicates if failure domain is appropriate
+                        for running control plane instances.
+                      type: boolean
+                  required:
+                  - controlPlane
+                  type: object
+                description: |-
+                  FailureDomains is the failure domains that machines should be placed in.
+                  The maputil key is the FailureDomain name
+                type: object
+              failureMessage:
+                description: |-
+                  FailureMessage indicates there is a fatal problem reconciling the provider’s infrastructure;
+                  meant to be a more descriptive value than failureReason
+                type: string
+              failureReason:
+                description: |-
+                  FailureReason indicates there is a fatal problem reconciling the provider’s infrastructure;
+                  meant to be suitable for programmatic interpretation
+                type: string
+              lastObservedGeneration:
+                description: |-
+                  LastObservedGeneration is the latest generation of the OLVMCluster
+                  that the controller_foundation has seen, but not necessarily reconciled.
+                format: int64
+                type: integer
+              lastSuccessfulGeneration:
+                description: LastSuccessfulGeneration is the last generation of the
+                  OLVMCluster that was successfully reconciled.
+                format: int64
+                type: integer
+              ovirt:
+                properties:
+                  dataCenterID:
+                    type: string
+                  dataCenterName:
+                    type: string
+                  system:
+                    properties:
+                      name:
+                        type: string
+                      version:
+                        type: string
+                    type: object
+                type: object
+              ready:
+                description: Ready indicates the provider-specific infrastructure
+                  has been provisioned and is ready
+                type: boolean
+            required:
+            - ovirt
+            - ready
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

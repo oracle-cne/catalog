@@ -1,0 +1,77 @@
+# Copyright (c) 2024, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+nameOverride:
+fullnameOverride: olvmcapi
+
+logLevel: info
+
+metricsPort: 9110
+
+controllerManager:
+  manager:
+    env:
+      diagnosticsAddress: 8443
+      insecureDiagnostics: false
+      nodeAntiAffinity: false
+      namespacedScopedZones: false
+    image:
+      repository: olcne/cluster-api-olvm-controller
+      tag: v1.0.0
+    imagePullPolicy: IfNotPresent
+    containerSecurityContext:
+      privileged: false
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      runAsGroup: 65532
+      runAsUser: 65532
+    resources:
+      requests:
+        memory: 128Mi
+  replicas: 1
+  serviceAccount:
+    annotations: {}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  podSecurityContext:
+    runAsUser: 1000
+    runAsGroup: 999
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  tolerations:
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/master
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                    - {{ include "olvm-capi.name" . }}
+            topologyKey: kubernetes.io/hostname
+          weight: 100
+  imagePullSecrets: []
+
+metricsService:
+  ports:
+    - name: https
+      port: 8443
+      targetPort: https
+  type: ClusterIP
+
+webhookService:
+  ports:
+    - port: 443
+      targetPort: webhook-server
+  type: ClusterIP
