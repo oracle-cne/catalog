@@ -8,6 +8,9 @@ logLevel: info
 
 metricsPort: 9110
 
+# Temporary value
+webhooksEnabled: false
+
 kubernetesClusterDomain: cluster.local
 
 controllerManager:

@@ -1,6 +1,7 @@
 # Copyright (c) 2024, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
+{{- if .Values.webhooksEnabled }}
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
@@ -37,10 +38,10 @@ webhooks:
     service:
       name: '{{ include "olvm-capi.fullname" . }}-webhook-service'
       namespace: '{{ .Release.Namespace }}'
-      path: /validate-infrastructure-cluster-x-k8s-io-v1alpha1-olvmmachinetemplate
+      path: /validate-infrastructure-cluster-x-k8s-io-v1alpha1-olvmmachine
   failurePolicy: Fail
   matchPolicy: Equivalent
-  name: validation.olvmmachinetemplate.infrastructure.cluster.x-k8s.io
+  name: validation.olvmmachine.infrastructure.cluster.x-k8s.io
   rules:
   - apiGroups:
     - infrastructure.cluster.x-k8s.io
@@ -50,5 +51,48 @@ webhooks:
     - CREATE
     - UPDATE
     resources:
-    - olvmmachinetemplates
+    - olvmmachine
   sideEffects: None
+- admissionReviewVersions:
+    - v1beta1
+  clientConfig:
+    service:
+      name: '{{ include "olvm-capi.fullname" . }}-webhook-service'
+      namespace: '{{ .Release.Namespace }}'
+      path: /validate-infrastructure-cluster-x-k8s-io-v1alpha1-olvmmachinetemplate
+  failurePolicy: Fail
+  matchPolicy: Equivalent
+  name: validation.olvmmachinetemplate.infrastructure.cluster.x-k8s.io
+  rules:
+    - apiGroups:
+        - infrastructure.cluster.x-k8s.io
+      apiVersions:
+        - v1alpha1
+      operations:
+        - CREATE
+        - UPDATE
+      resources:
+        - olvmmachinetemplates
+  sideEffects: None
+- admissionReviewVersions:
+    - v1beta1
+  clientConfig:
+    service:
+      name: '{{ include "olvm-capi.fullname" . }}-webhook-service'
+      namespace: '{{ .Release.Namespace }}'
+      path: /validate-infrastructure-cluster-x-k8s-io-v1alpha1-olvmclustertemplate
+  failurePolicy: Fail
+  matchPolicy: Equivalent
+  name: validation.olvmclustertemplate.infrastructure.cluster.x-k8s.io
+  rules:
+    - apiGroups:
+        - infrastructure.cluster.x-k8s.io
+      apiVersions:
+        - v1alpha1
+      operations:
+        - CREATE
+        - UPDATE
+      resources:
+        - olvmclustertemplates
+  sideEffects: None
+  {{- end }}
