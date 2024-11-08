@@ -5,7 +5,7 @@ icon: icons/android-192x192.png
 keywords:
 - istio
 - gateways
-name: gateway
+name: istio-gateway
 sources:
 - https://github.com/istio/istio
 type: application
