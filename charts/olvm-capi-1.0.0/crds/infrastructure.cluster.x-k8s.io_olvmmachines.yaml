@@ -66,7 +66,7 @@ spec:
                 description: Memory for VM in Mi, MB, Gi, GB, ec.
                 type: string
               olvmClusterName:
-                description: OLVMlusterName is the CAPI OLVMCluster resource name
+                description: OLVMClusterName is the CAPI OLVMCluster resource name
                 type: string
               ovirtClusterName:
                 description: OVirtCluster is the oVirt cluster within a datacenter
