@@ -4,6 +4,9 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.16.4
+  labels:
+    cluster.x-k8s.io/provider: infrastructure-olvm
+    cluster.x-k8s.io/v1beta1: v1beta1
   name: olvmmachines.infrastructure.cluster.x-k8s.io
 spec:
   group: infrastructure.cluster.x-k8s.io
@@ -33,7 +36,7 @@ spec:
       name: Message
       priority: 2
       type: string
-    name: v1alpha1
+    name: v1beta1
     schema:
       openAPIV3Schema:
         description: OLVMMachine specifies am OLVMMachine instance.
@@ -71,6 +74,28 @@ spec:
               ovirtClusterName:
                 description: OVirtCluster is the oVirt cluster within a datacenter
                 type: string
+              ovirtNetwork:
+                description: OVirtNetwork specifies the oVirt networking information
+                properties:
+                  interfaceType:
+                    description: |-
+                      InterfaceType is the optional interface.  The default is virtio.
+                      See https://www.ovirt.org/documentation/virtual_machine_management_guide/#Virtual_Machine_Network_Interface_dialogue_entries
+                    type: string
+                  networkName:
+                    description: NetworkName is the name of an existing network. Required
+                    type: string
+                  vnicName:
+                    description: VnicName is the name of vm vnic.  Default is nic1
+                    type: string
+                  vnicProfileName:
+                    description: VnicProfileName is the name of an existing vnic profile.
+                      Required
+                    type: string
+                required:
+                - networkName
+                - vnicProfileName
+                type: object
               ovirtVMTemplateName:
                 description: OVirtVMTemplateName of a pre-existing oVirt VM template
                 type: string
@@ -86,6 +111,7 @@ spec:
             - memory
             - olvmClusterName
             - ovirtClusterName
+            - ovirtNetwork
             type: object
           status:
             description: OLVMMachineStatus defines the status OLVMMachine resource.
@@ -186,6 +212,10 @@ spec:
                     type: string
                   clusterName:
                     type: string
+                  networkID:
+                    type: string
+                  networkName:
+                    type: string
                   virtualMachine:
                     properties:
                       CreateRequestSuccess:
@@ -208,6 +238,14 @@ spec:
                   vmTemplateID:
                     type: string
                   vmTemplateName:
+                    type: string
+                  vnicID:
+                    type: string
+                  vnicName:
+                    type: string
+                  vnicProfileID:
+                    type: string
+                  vnicProfileName:
                     type: string
                 required:
                 - virtualMachine

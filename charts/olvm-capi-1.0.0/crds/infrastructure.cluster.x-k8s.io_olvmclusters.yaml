@@ -4,6 +4,9 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.16.4
+  labels:
+    cluster.x-k8s.io/provider: infrastructure-olvm
+    cluster.x-k8s.io/v1beta1: v1beta1
   name: olvmclusters.infrastructure.cluster.x-k8s.io
 spec:
   group: infrastructure.cluster.x-k8s.io
@@ -33,7 +36,7 @@ spec:
       name: Message
       priority: 2
       type: string
-    name: v1alpha1
+    name: v1beta1
     schema:
       openAPIV3Schema:
         description: OLVMCluster specifies am OLVMCluster instance.
@@ -97,6 +100,7 @@ spec:
                   cluster will be created
                 type: string
             required:
+            - controlPlaneEndpoint
             - ovirtAPI
             - ovirtDatacenterName
             type: object
