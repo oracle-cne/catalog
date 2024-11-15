@@ -4,21 +4,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "olvm-capi.fullname" . }}-controller-manager
+  name: {{ include "olvm-capi.fullname" . }}-operator
   namespace: {{ .Release.Namespace }}
   labels:
     cluster.x-k8s.io/provider: infrastructure-olvm
     clusterctl.cluster.x-k8s.io: ""
-    control-plane: controller-manager
+    control-plane: operator
   {{- include "olvm-capi.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.controllerManager.replicas }}
+  replicas: {{ .Values.operator.replicas }}
   selector:
     matchLabels:
       cluster.x-k8s.io/provider: infrastructure-olvm
-      control-plane: controller-manager
+      control-plane: operator
     {{- include "olvm-capi.selectorLabels" . | nindent 6 }}
-  {{- with .Values.controllerManager.strategy }}
+  {{- with .Values.operator.strategy }}
   strategy:
     {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -26,12 +26,12 @@ spec:
     metadata:
       labels:
         cluster.x-k8s.io/provider: infrastructure-olvm
-        control-plane: controller-manager
+        control-plane: operator
       {{- include "olvm-capi.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-      - name: manager
-        args: {{- toYaml .Values.controllerManager.manager.args | nindent 8 }}
+      - name: operator
+        args: {{- toYaml .Values.operator.container.args | nindent 8 }}
         command:
         - /manager
         env:
@@ -47,12 +47,12 @@ spec:
         - name: no_proxy
           value: {{ quote .Values.proxy.noProxy }}
         {{ end }}
-        image: {{ .Values.controllerManager.manager.image.repository}}:{{ .Values.controllerManager.manager.image.tag }}
-        imagePullPolicy: {{ .Values.controllerManager.manager.imagePullPolicy }}
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: healthz
+        image: {{ .Values.operator.container.image.repository}}:{{ .Values.operator.container.image.tag }}
+        imagePullPolicy: {{ .Values.operator.container.imagePullPolicy }}
+#        livenessProbe:
+#          httpGet:
+#            path: /healthz
+#            port: healthz
         ports:
         - containerPort: 9443
           name: webhook-server
@@ -63,28 +63,28 @@ spec:
         - containerPort: {{ .Values.metricsPort }}
           name: metrics
           protocol: TCP
-        readinessProbe:
-          httpGet:
-            path: /readyz
-            port: healthz
+#        readinessProbe:
+#          httpGet:
+#            path: /readyz
+#            port: healthz
         resources:
-          {{- toYaml .Values.controllerManager.manager.resources | nindent 12 }}
+          {{- toYaml .Values.operator.container.resources | nindent 12 }}
         securityContext:
-          {{- toYaml .Values.controllerManager.manager.containerSecurityContext | nindent 12 }}
+          {{- toYaml .Values.operator.container.containerSecurityContext | nindent 12 }}
         terminationMessagePolicy: FallbackToLogsOnError
       securityContext:
-        {{- toYaml .Values.controllerManager.podSecurityContext | nindent 8 }}
-      serviceAccountName: {{ include "olvm-capi.fullname" . }}-controller-manager
-      terminationGracePeriodSeconds: 10
-      {{- with .Values.controllerManager.tolerations }}
+        {{- toYaml .Values.operator.podSecurityContext | nindent 8 }}
+      serviceAccountName: {{ include "olvm-capi.fullname" . }}-operator
+      terminationGracePeriodSeconds: 0
+      {{- with .Values.operator.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.controllerManager.imagePullSecrets }}
+      {{- with .Values.operator.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.controllerManager.affinity }}
+      {{- with .Values.operator.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
