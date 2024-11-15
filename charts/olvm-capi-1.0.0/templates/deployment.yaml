@@ -33,7 +33,7 @@ spec:
       - name: operator
         args: {{- toYaml .Values.operator.container.args | nindent 8 }}
         command:
-        - /manager
+        - /olvm-capi-operator
         env:
         {{ if .Values.proxy.httpsProxy }}
         - name: https_proxy
