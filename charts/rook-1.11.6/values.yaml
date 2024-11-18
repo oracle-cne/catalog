@@ -483,7 +483,7 @@ csi:
   provisioner:
     # -- Kubernetes CSI provisioner image
     # @default -- `registry.k8s.io/sig-storage/csi-provisioner:v3.4.0`
-    image: olcne/csi-provisioner:v3.4.0-3
+    image: olcne/csi-provisioner:v3.4.0-2
 
   snapshotter:
     # -- Kubernetes CSI snapshotter image
