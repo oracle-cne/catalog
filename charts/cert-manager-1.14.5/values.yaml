@@ -126,7 +126,7 @@ maxConcurrentChallenges: 60
 image:
   # The container registry to pull the manager image from
   # +docs:property
-  # registry: container-registry.oracle.com/olcne
+  # registry: container-registry.oracle.com
 
   # The container image for the cert-manager controller
   # +docs:property
@@ -749,7 +749,7 @@ webhook:
   image:
     # The container registry to pull the webhook image from
     # +docs:property
-    # container-registry.oracle.com/olcne
+    # registry: container-registry.oracle.com
 
     # The container image for the cert-manager webhook
     # +docs:property
@@ -1032,7 +1032,7 @@ cainjector:
   image:
     # The container registry to pull the cainjector image from
     # +docs:property
-    # registry: container-registry.oracle.com/olcne
+    # registry: container-registry.oracle.com
 
     # The container image for the cert-manager cainjector
     # +docs:property
@@ -1091,7 +1091,7 @@ acmesolver:
   image:
     # The container registry to pull the acmesolver image from
     # +docs:property
-    # registry: container-registry.oracle.com/olcne
+    # registry: container-registry.oracle.com
 
     # The container image for the cert-manager acmesolver
     # +docs:property
@@ -1218,7 +1218,7 @@ startupapicheck:
   image:
     # The container registry to pull the startupapicheck image from
     # +docs:property
-    # registry: container-registry.oracle.com/olcne
+    # registry: container-registry.oracle.com
 
     # The container image for the cert-manager startupapicheck
     # +docs:property
