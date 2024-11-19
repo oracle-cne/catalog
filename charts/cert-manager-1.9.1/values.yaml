@@ -57,7 +57,7 @@ featureGates: ""
 
 image:
   # You can manage a registry with
-  # registry: quay.io
+  # registry: container-registry.oracle.com
   repository: olcne/cert-manager-controller
 
   # Override the image tag to deploy by setting this variable.
@@ -95,7 +95,7 @@ serviceAccount:
 # automountServiceAccountToken: true
 
 # Additional command line flags to pass to cert-manager controller binary.
-# To see all available flags run docker run quay.io/jetstack/cert-manager-controller:<version> --help
+# To see all available flags run docker run container-registy.oracle.com/olcne/cert-manager-controller:<version> --help
 extraArgs: []
   # When this flag is enabled, secrets will be automatically removed when the certificate resource is deleted
   # - --enable-certificate-owner-ref=true
@@ -265,7 +265,7 @@ webhook:
   # validatingWebhookConfigurationAnnotations: {}
 
   # Additional command line flags to pass to cert-manager webhook binary.
-  # To see all available flags run docker run quay.io/jetstack/cert-manager-webhook:<version> --help
+  # To see all available flags run docker run container-registy.oracle.com/olcne/cert-manager-webhook:<version> --help
   extraArgs: []
   # Path to a file containing a WebhookConfiguration object used to configure the webhook
   # - --config=<path-to-config-file>
@@ -307,8 +307,8 @@ webhook:
   image:
     repository: olcne/cert-manager-webhook
     # You can manage a registry with
-    # registry: quay.io
-    # repository: jetstack/cert-manager-webhook
+    # registry: container-registry.oracle.com
+    # repository: olcne/cert-manager-webhook
 
     # Override the image tag to deploy by setting this variable.
     # If no value is set, the chart's appVersion will be used.
@@ -399,7 +399,7 @@ cainjector:
   # podAnnotations: {}
 
   # Additional command line flags to pass to cert-manager cainjector binary.
-  # To see all available flags run docker run quay.io/jetstack/cert-manager-cainjector:<version> --help
+  # To see all available flags run docker run container-registy.oracle.com/olcne/cert-manager-cainjector:<version> --help
   extraArgs: []
   # Enable profiling for cainjector
   # - --enable-profiling=true
@@ -422,8 +422,8 @@ cainjector:
   image:
     repository: olcne/cert-manager-cainjector
     # You can manage a registry with
-    # registry: quay.io
-    # repository: jetstack/cert-manager-cainjector
+    # registry: container-registry.oracle.com
+    # repository: olcne/cert-manager-cainjector
 
     # Override the image tag to deploy by setting this variable.
     # If no value is set, the chart's appVersion will be used.
@@ -493,7 +493,7 @@ startupapicheck:
   # podAnnotations: {}
 
   # Additional command line flags to pass to startupapicheck binary.
-  # To see all available flags run docker run quay.io/jetstack/cert-manager-ctl:<version> --help
+  # To see all available flags run docker run container-registy.oracle.com/olcne/cert-manager-ctl:<version> --help
   extraArgs: []
 
   resources: {}
@@ -513,8 +513,8 @@ startupapicheck:
 
   image:
     # You can manage a registry with
-    # registry: quay.io
-    # repository: jetstack/cert-manager-ctl
+    # registry: container-registry.oracle.com/
+    # repository: olcne/cert-manager-ctl
 
     # Override the image tag to deploy by setting this variable.
     # If no value is set, the chart's appVersion will be used.

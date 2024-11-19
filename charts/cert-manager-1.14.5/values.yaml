@@ -126,7 +126,7 @@ maxConcurrentChallenges: 60
 image:
   # The container registry to pull the manager image from
   # +docs:property
-  # registry: quay.io
+  # registry: container-registry.oracle.com/olcne
 
   # The container image for the cert-manager controller
   # +docs:property
@@ -230,7 +230,7 @@ dns01RecursiveNameservers: ""
 dns01RecursiveNameserversOnly: false
 
 # Additional command line flags to pass to cert-manager controller binary.
-# To see all available flags run docker run quay.io/jetstack/cert-manager-controller:<version> --help
+# To see all available flags run docker run container-registy.oracle.com/olcne/cert-manager-controller:<version> --help
 #
 # Use this flag to enable or disable arbitrary controllers, for example, disable the CertificiateRequests approver
 #
@@ -652,7 +652,7 @@ webhook:
 
 
   # Additional command line flags to pass to cert-manager webhook binary.
-  # To see all available flags run docker run quay.io/jetstack/cert-manager-webhook:<version> --help
+  # To see all available flags run docker run container-registy.oracle.com/olcne/cert-manager-webhook:<version> --help
   extraArgs: []
   # Path to a file containing a WebhookConfiguration object used to configure the webhook
   # - --config=<path-to-config-file>
@@ -749,7 +749,7 @@ webhook:
   image:
     # The container registry to pull the webhook image from
     # +docs:property
-    # registry: quay.io
+    # container-registry.oracle.com/olcne
 
     # The container image for the cert-manager webhook
     # +docs:property
@@ -959,7 +959,7 @@ cainjector:
   # podAnnotations: {}
 
   # Additional command line flags to pass to cert-manager cainjector binary.
-  # To see all available flags run docker run quay.io/jetstack/cert-manager-cainjector:<version> --help
+  # To see all available flags run docker run container-registy.oracle.com/olcne/cert-manager-cainjector:<version> --help
   extraArgs: []
   # Enable profiling for cainjector
   # - --enable-profiling=true
@@ -1032,7 +1032,7 @@ cainjector:
   image:
     # The container registry to pull the cainjector image from
     # +docs:property
-    # registry: quay.io
+    # registry: container-registry.oracle.com/olcne
 
     # The container image for the cert-manager cainjector
     # +docs:property
@@ -1091,7 +1091,7 @@ acmesolver:
   image:
     # The container registry to pull the acmesolver image from
     # +docs:property
-    # registry: quay.io
+    # registry: container-registry.oracle.com/olcne
 
     # The container image for the cert-manager acmesolver
     # +docs:property
@@ -1158,7 +1158,7 @@ startupapicheck:
   # podAnnotations: {}
 
   # Additional command line flags to pass to startupapicheck binary.
-  # To see all available flags run docker run quay.io/jetstack/cert-manager-ctl:<version> --help
+  # To see all available flags run docker run container-registy.oracle.com/olcne/cert-manager-ctl:<version> --help
   #
   # We enable verbose logging by default so that if startupapicheck fails, users
   # can know what exactly caused the failure. Verbose logs include details of
@@ -1218,7 +1218,7 @@ startupapicheck:
   image:
     # The container registry to pull the startupapicheck image from
     # +docs:property
-    # registry: quay.io
+    # registry: container-registry.oracle.com/olcne
 
     # The container image for the cert-manager startupapicheck
     # +docs:property

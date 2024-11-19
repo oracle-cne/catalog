@@ -56,7 +56,7 @@ are documented in our full [upgrading guide](https://cert-manager.io/docs/instal
 To uninstall/delete the `my-release` deployment:
 
 ```console
-$ helm delete my-release
+$ ocne application uninstall -r my-release -n my-namespace
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -84,7 +84,7 @@ The following table lists the configurable parameters of the cert-manager chart 
 | `global.leaderElection.renewDeadline` | The interval between attempts by the acting master to renew a leadership slot before it stops leading. This must be less than or equal to the lease duration |  |
 | `global.leaderElection.retryPeriod` | The duration the clients should wait between attempting acquisition and renewal of a leadership |  |
 | `installCRDs` | If true, CRD resources will be installed as part of the Helm chart. If enabled, when uninstalling CRD resources will be deleted causing all installed custom resources to be DELETED | `false` |
-| `image.repository` | Image repository | `quay.io/jetstack/cert-manager-controller` |
+| `image.repository` | Image repository | `container-registy.oracle.com/olcne/cert-manager-controller` |
 | `image.tag` | Image tag | `{{RELEASE_VERSION}}` |
 | `image.pullPolicy` | Image pull policy | `IfNotPresent` |
 | `replicaCount`  | Number of cert-manager replicas  | `1` |
@@ -146,7 +146,7 @@ The following table lists the configurable parameters of the cert-manager chart 
 | `webhook.nodeSelector` | Node labels for webhook pod assignment | `{}` |
 | `webhook.affinity` | Node affinity for webhook pod assignment | `{}` |
 | `webhook.tolerations` | Node tolerations for webhook pod assignment | `[]` |
-| `webhook.image.repository` | Webhook image repository | `quay.io/jetstack/cert-manager-webhook` |
+| `webhook.image.repository` | Webhook image repository | `container-registy.oracle.com/olcne/cert-manager-webhook` |
 | `webhook.image.tag` | Webhook image tag | `{{RELEASE_VERSION}}` |
 | `webhook.image.pullPolicy` | Webhook image pull policy | `IfNotPresent` |
 | `webhook.securePort` | The port that the webhook should listen on for requests. | `10250` |
@@ -180,7 +180,7 @@ The following table lists the configurable parameters of the cert-manager chart 
 | `cainjector.nodeSelector` | Node labels for cainjector pod assignment | `{}` |
 | `cainjector.affinity` | Node affinity for cainjector pod assignment | `{}` |
 | `cainjector.tolerations` | Node tolerations for cainjector pod assignment | `[]` |
-| `cainjector.image.repository` | cainjector image repository | `quay.io/jetstack/cert-manager-cainjector` |
+| `cainjector.image.repository` | cainjector image repository | `container-registy.oracle.com/olcne/cert-manager-cainjector` |
 | `cainjector.image.tag` | cainjector image tag | `{{RELEASE_VERSION}}` |
 | `cainjector.image.pullPolicy` | cainjector image pull policy | `IfNotPresent` |
 | `cainjector.securityContext` | Security context for cainjector pod assignment | `{}` |
@@ -197,7 +197,7 @@ The following table lists the configurable parameters of the cert-manager chart 
 | `startupapicheck.affinity` | Node affinity for startupapicheck pod assignment | `{}` |
 | `startupapicheck.tolerations` | Node tolerations for startupapicheck pod assignment | `[]` |
 | `startupapicheck.podLabels` | Optional additional labels to add to the startupapicheck Pods | `{}` |
-| `startupapicheck.image.repository` | startupapicheck image repository | `quay.io/jetstack/cert-manager-ctl` |
+| `startupapicheck.image.repository` | startupapicheck image repository | `container-registy.oracle.com/olcne/cert-manager-ctl` |
 | `startupapicheck.image.tag` | startupapicheck image tag | `{{RELEASE_VERSION}}` |
 | `startupapicheck.image.pullPolicy` | startupapicheck image pull policy | `IfNotPresent` |
 | `startupapicheck.serviceAccount.create` | If `true`, create a new service account for the startupapicheck component | `true` |
