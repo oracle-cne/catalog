@@ -56,13 +56,6 @@ Cert Manager can be [installed](https://cert-manager.io/docs/installation/kubern
 
 ```shell
 ocne application install --namespace cert-manager --release cert-manager --name cert-manager
-helm repo add jetstack https://charts.jetstack.io
-helm repo update
-kubectl create namespace cert-manager
-helm install \
-  cert-manager jetstack/cert-manager \
-  --namespace cert-manager \
-  --set installCRDs=true
 ```
 
 The next step is setting up an [issuer](https://cert-manager.io/docs/concepts/issuer/) (eg. [Let's Encrypt](https://letsencrypt.org/)):
