@@ -19,37 +19,29 @@ helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 ```
 
-## Install Chart
-
-**Important:** only helm3 is supported
+## Install The Application
 
 ```console
-helm install [RELEASE_NAME] ingress-nginx/ingress-nginx
+ocne application install --name ingress-nginx --release [RELEASE_NAME] --namespace ingress-nginx
 ```
 
 The command deploys ingress-nginx on the Kubernetes cluster in the default configuration.
 
 _See [configuration](#configuration) below._
 
-_See [helm install](https://helm.sh/docs/helm/helm_install/) for command documentation._
-
-## Uninstall Chart
+## Uninstall The Application
 
 ```console
-helm uninstall [RELEASE_NAME]
+ocne application uninstall --release [RELEASE_NAME] --namespace [NAMESPACE]
 ```
 
 This removes all the Kubernetes components associated with the chart and deletes the release.
 
-_See [helm uninstall](https://helm.sh/docs/helm/helm_uninstall/) for command documentation._
-
 ## Upgrading Chart
 
 ```console
-helm upgrade [RELEASE_NAME] [CHART] --install
+ocne application update --release [RELEASE_NAME] --namespace [NAMESPACE]
 ```
-
-_See [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) for command documentation._
 
 ### Migrating from stable/nginx-ingress
 
@@ -63,14 +55,6 @@ There are two main ways to migrate a release from `stable/nginx-ingress` to `ing
     1. [Uninstall](#uninstall-chart) the old controller once traffic has fully drained from it
 
 Note that there are some different and upgraded configurations between the two charts, described by Rimas Mocevicius from JFrog in the "Upgrading to ingress-nginx Helm chart" section of [Migrating from Helm chart nginx-ingress to ingress-nginx](https://rimusz.net/migrating-to-ingress-nginx). As the `ingress-nginx/ingress-nginx` chart continues to update, you will want to check current differences by running [helm configuration](#configuration) commands on both charts.
-
-## Configuration
-
-See [Customizing the Chart Before Installing](https://helm.sh/docs/intro/using_helm/#customizing-the-chart-before-installing). To see all configurable options with detailed comments, visit the chart's [values.yaml](./values.yaml), or run these configuration commands:
-
-```console
-helm show values ingress-nginx/ingress-nginx
-```
 
 ### PodDisruptionBudget
 
@@ -254,10 +238,10 @@ As of version `1.26.0` of this chart, by simply not providing any clusterIP valu
 | controller.admissionWebhooks.objectSelector | object | `{}` |  |
 | controller.admissionWebhooks.patch.enabled | bool | `true` |  |
 | controller.admissionWebhooks.patch.image.digest | string | `"sha256:25d6a5f11211cc5c3f9f2bf552b585374af287b4debf693cacbe2da47daa5084"` |  |
-| controller.admissionWebhooks.patch.image.image | string | `"ingress-nginx/kube-webhook-certgen"` |  |
+| controller.admissionWebhooks.patch.image.image | string | `"olcne/kube-webhook-certgen"` |  |
 | controller.admissionWebhooks.patch.image.pullPolicy | string | `"IfNotPresent"` |  |
-| controller.admissionWebhooks.patch.image.registry | string | `"registry.k8s.io"` |  |
-| controller.admissionWebhooks.patch.image.tag | string | `"v20231226-1a7112e06"` |  |
+| controller.admissionWebhooks.patch.image.registry | string | `""` |  |
+| controller.admissionWebhooks.patch.image.tag | string | `"v1.9.6"` |  |
 | controller.admissionWebhooks.patch.labels | object | `{}` | Labels to be added to patch job resources |
 | controller.admissionWebhooks.patch.networkPolicy.enabled | bool | `false` | Enable 'networkPolicy' or not |
 | controller.admissionWebhooks.patch.nodeSelector."kubernetes.io/os" | string | `"linux"` |  |
@@ -319,10 +303,10 @@ As of version `1.26.0` of this chart, by simply not providing any clusterIP valu
 | controller.image.chroot | bool | `false` |  |
 | controller.image.digest | string | `"sha256:1405cc613bd95b2c6edd8b2a152510ae91c7e62aea4698500d23b2145960ab9c"` |  |
 | controller.image.digestChroot | string | `"sha256:7eb46ff733429e0e46892903c7394aff149ac6d284d92b3946f3baf7ff26a096"` |  |
-| controller.image.image | string | `"ingress-nginx/controller"` |  |
+| controller.image.image | string | `"olcne/controller"` |  |
 | controller.image.pullPolicy | string | `"IfNotPresent"` |  |
 | controller.image.readOnlyRootFilesystem | bool | `false` |  |
-| controller.image.registry | string | `"registry.k8s.io"` |  |
+| controller.image.registry | string | `""` |  |
 | controller.image.runAsNonRoot | bool | `true` |  |
 | controller.image.runAsUser | int | `101` |  |
 | controller.image.seccompProfile.type | string | `"RuntimeDefault"` |  |
