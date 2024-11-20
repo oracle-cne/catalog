@@ -57,7 +57,11 @@ webhookService:
   - port: 443
     targetPort: webhook-server
   type: ClusterIP
+serviceAccount:
+  create:
+  name:
 fullnameOverride: capoci
+nameOverride:
 proxy:
   httpsProxy:
   httpProxy:
