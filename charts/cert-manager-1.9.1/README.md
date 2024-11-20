@@ -197,7 +197,7 @@ The following table lists the configurable parameters of the cert-manager chart 
 | `startupapicheck.affinity` | Node affinity for startupapicheck pod assignment | `{}` |
 | `startupapicheck.tolerations` | Node tolerations for startupapicheck pod assignment | `[]` |
 | `startupapicheck.podLabels` | Optional additional labels to add to the startupapicheck Pods | `{}` |
-| `startupapicheck.image.repository` | startupapicheck image repository | `container-registy.oracle.com/olcne/cert-manager-ctl` |
+| `startupapicheck.image.repository` | startupapicheck image repository | `container-registy.oracle.com/olcne/cert-manager-startupapicheck` |
 | `startupapicheck.image.tag` | startupapicheck image tag | `{{RELEASE_VERSION}}` |
 | `startupapicheck.image.pullPolicy` | startupapicheck image pull policy | `IfNotPresent` |
 | `startupapicheck.serviceAccount.create` | If `true`, create a new service account for the startupapicheck component | `true` |

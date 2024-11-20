@@ -491,7 +491,7 @@ startupapicheck:
   # podAnnotations: {}
 
   # Additional command line flags to pass to startupapicheck binary.
-  # To see all available flags run docker run container-registy.oracle.com/olcne/cert-manager-ctl:<version> --help
+  # To see all available flags run docker run container-registy.oracle.com/olcne/cert-manager-startupapicheck:<version> --help
   extraArgs: []
 
   resources: {}
