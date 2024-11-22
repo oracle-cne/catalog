@@ -63,8 +63,8 @@ spec:
               resource.
             properties:
               controlPlaneEndpoint:
-                description: ControlPlaneEndpoint controlplane endpoint.  This is
-                  set by controller_foundation
+                description: ControlPlaneEndpoint specifies the Kubernetes control
+                  plane endpoint.
                 properties:
                   host:
                     type: string
@@ -79,6 +79,9 @@ spec:
                 description: OVirtAPI contains the information needed to use the oVirst
                   REST API
                 properties:
+                  apiServerURL:
+                    description: ApiServerURL is the oVirt REST API endpoint
+                    type: string
                   caConfigMapName:
                     description: CAConfigMapName is the name of the configmap that
                       has the CA needed to for the oVirt REST API
@@ -87,13 +90,10 @@ spec:
                     description: CredentialsSecretName is the name of the secret which
                       has the credentials
                     type: string
-                  endpointURL:
-                    description: Endpoint is the oVirt REST API endpoint
-                    type: string
                 required:
+                - apiServerURL
                 - caConfigMapName
                 - credentialsSecretName
-                - endpointURL
                 type: object
               ovirtDatacenterName:
                 description: OVirtDatacenterName is the datacenter where the Kubernetes

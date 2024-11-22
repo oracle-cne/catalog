@@ -62,43 +62,53 @@ spec:
             description: OLVMMachineSpec defines the specification for a OLVMMachine
               resource.
             properties:
-              bootDevice:
-                description: BootDevice is the VM boot device
-                type: string
-              memory:
-                description: Memory for VM in Mi, MB, Gi, GB, ec.
-                type: string
               olvmClusterName:
                 description: OLVMClusterName is the CAPI OLVMCluster resource name
                 type: string
-              ovirtClusterName:
-                description: OVirtCluster is the oVirt cluster within a datacenter
-                type: string
-              ovirtNetwork:
-                description: OVirtNetwork specifies the oVirt networking information
+              ovirt:
+                description: OVirtSpecInfo specifies the ovirt info used by the OLVM
+                  spec
                 properties:
-                  interfaceType:
-                    description: |-
-                      InterfaceType is the optional interface.  The default is virtio.
-                      See https://www.ovirt.org/documentation/virtual_machine_management_guide/#Virtual_Machine_Network_Interface_dialogue_entries
+                  memory:
+                    description: Memory is the memory size of the VM
                     type: string
-                  networkName:
-                    description: NetworkName is the name of an existing network. Required
+                  network:
+                    description: OVirtNetwork specifies the ovirt network information
+                      required to create a VM
+                    properties:
+                      interfaceType:
+                        description: |-
+                          InterfaceType is the optional interface.  The default is virtio.
+                          See https://www.ovirt.org/documentation/virtual_machine_management_guide/#Virtual_Machine_Network_Interface_dialogue_entries
+                        type: string
+                      networkName:
+                        description: NetworkName is the name of an existing network.
+                          Required
+                        type: string
+                      vnicName:
+                        description: VnicName is the name of vm vnic.  Default is
+                          nic1
+                        type: string
+                      vnicProfileName:
+                        description: VnicProfileName is the name of an existing vnic
+                          profile. Required
+                        type: string
+                    required:
+                    - networkName
+                    - vnicProfileName
+                    type: object
+                  ovirtClusterName:
+                    description: OVirtClusterName is the name of the cluster where
+                      the VM will be created
                     type: string
-                  vnicName:
-                    description: VnicName is the name of vm vnic.  Default is nic1
-                    type: string
-                  vnicProfileName:
-                    description: VnicProfileName is the name of an existing vnic profile.
-                      Required
+                  vmTemplateName:
+                    description: VMTemplateName is the name of the template used to
+                      create a VM
                     type: string
                 required:
-                - networkName
-                - vnicProfileName
+                - memory
+                - network
                 type: object
-              ovirtVMTemplateName:
-                description: OVirtVMTemplateName of a pre-existing oVirt VM template
-                type: string
               providerID:
                 description: |-
                   ProviderID is the identifier for the provider’s machine instance.
@@ -108,10 +118,8 @@ spec:
                   Any other consumers can use the providerID as the source of truth to match both Machines and Nodes.
                 type: string
             required:
-            - memory
             - olvmClusterName
-            - ovirtClusterName
-            - ovirtNetwork
+            - ovirt
             type: object
           status:
             description: OLVMMachineStatus defines the status OLVMMachine resource.
