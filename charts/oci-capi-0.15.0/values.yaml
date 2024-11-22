@@ -62,3 +62,6 @@ proxy:
   httpsProxy:
   httpProxy:
   noProxy:
+
+# initContainers configuration for deployment
+initContainers: []

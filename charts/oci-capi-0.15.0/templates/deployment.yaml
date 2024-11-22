@@ -35,6 +35,9 @@ spec:
               - key: node-role.kubernetes.io/master
                 operator: Exists
             weight: 10
+{{- if .Values.initContainers }}
+      initContainers:
+{{ toYaml .Values.initContainers | indent 8 }}
       containers:
       - args: {{- toYaml .Values.controllerManager.manager.args | nindent 8 }}
         command:
