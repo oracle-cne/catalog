@@ -65,3 +65,6 @@ proxy:
 
 # initContainers configuration for deployment
 initContainers: []
+
+# Additional volumes to mount for the pod
+volumes: []
