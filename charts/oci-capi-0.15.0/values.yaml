@@ -6,6 +6,7 @@ authConfig:
   tenancy: ""
   useInstancePrincipal: ""
   user: ""
+  pcaCerts: ""
 controllerManager:
   manager:
     args:
