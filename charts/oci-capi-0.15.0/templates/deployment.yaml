@@ -90,6 +90,9 @@ spec:
         - mountPath: /etc/oci
           name: auth-config-dir
           readOnly: true
+{{- if .Values.volumeMounts }}
+      {{ toYaml .Values.volumeMounts | nindent 8 }}
+{{- end }}
       securityContext:
         runAsNonRoot: true
         seccompProfile:
