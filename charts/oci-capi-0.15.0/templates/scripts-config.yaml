@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "oci-capi.fullname" . }}-trusted-certs
+  namespace: {{ .Release.Namespace }}
+  labels:
+    cluster.x-k8s.io/provider: infrastructure-oci
+    clusterctl.cluster.x-k8s.io: ""
+  {{- include "oci-capi.labels" . | nindent 4 }}
+data:
+  update-ca-trust-store.sh: |
+    #! /bin/bash
+    #
+    # Copyright (c) 2024, Oracle and/or its affiliates.
+    # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+    CERT_FILE=${1}
+
+    # Copy the additional certs to updat area
+    cp ${CERT_FILE} /usr/share/pki/ca-trust-source/anchors/certs.pem
+
+    # Update the CA trust store
+    update-ca-trust
