@@ -21,4 +21,6 @@ data:
     .Values.authConfig.useInstancePrincipal | b64enc | quote }}
   user: {{ required "authConfig.user is required" .Values.authConfig.user | b64enc
     | quote }}
+  pcaCerts: {{ required "authConfig.pcaCerts is required" .Values.authConfig.pcaCerts | b64enc |
+    quote }}
 type: Opaque
