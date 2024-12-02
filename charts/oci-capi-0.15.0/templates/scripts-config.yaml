@@ -15,9 +15,17 @@ data:
     # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
     CERT_FILE=${1}
+    BASE_OUTPUT_PATH=${2}
 
-    # Copy the additional certs to updat area
+    # Copy the additional certs to update area
     cp ${CERT_FILE} /usr/share/pki/ca-trust-source/anchors/certs.pem
 
     # Update the CA trust store
     update-ca-trust
+
+    # Copy the updated certs to the emptyDir shared between the containers
+    mkdir -p ${BASE_OUTPUT_PATH}/etc/pki/ca-trust/extracted/openssl
+    cp /etc/pki/ca-trust/extracted/openssl/* ${BASE_OUTPUT_PATH}/etc/pki/ca-trust/extracted/openssl
+
+    mkdir -p ${BASE_OUTPUT_PATH}/etc/pki/ca-trust/extracted/pem
+    cp /etc/pki/ca-trust/extracted/pem/* ${BASE_OUTPUT_PATH}/etc/pki/ca-trust/extracted/pem
