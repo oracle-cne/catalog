@@ -22,4 +22,4 @@ version: 2.0.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "current"
-con: icons/kubernetes-logo.svg 
+icon: icons/kubernetes-logo.svg 

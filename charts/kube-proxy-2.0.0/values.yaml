@@ -10,7 +10,6 @@ apiServer:
 
 # The contents of a kubeproxy.config.k8s.io/KubeProxyConfiguration
 config:
-  apiVersion: kubeproxy.config.k8s.io/v1alpha1
   bindAddress: 0.0.0.0
   bindAddressHardFail: false
   clientConnection:
@@ -19,7 +18,7 @@ config:
     contentType: ""
     kubeconfig: /var/lib/kube-proxy/kubeconfig.conf
     qps: 0
-  clusterCIDR: ""
+  clusterCIDR: "10.244.0.0/16"
   configSyncPeriod: 0s
   conntrack:
     maxPerCore: null
@@ -51,7 +50,6 @@ config:
     tcpFinTimeout: 0s
     tcpTimeout: 0s
     udpTimeout: 0s
-  kind: KubeProxyConfiguration
   logging:
     flushFrequency: 0
     options:
@@ -60,8 +58,8 @@ config:
       text:
         infoBufferSize: "0"
     verbosity: 0
-  metricsBindAddress: ""
-  mode: ""
+  metricsBindAddress: "0.0.0.0:10249"
+  mode: iptables
   nftables:
     masqueradeAll: false
     masqueradeBit: null

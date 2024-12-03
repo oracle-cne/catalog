@@ -33,7 +33,7 @@ spec:
       priorityClassName: system-node-critical
       containers:
       - name: kube-proxy
-        image: registry.k8s.io/kube-proxy:v1.31.3
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         command:
         - /usr/local/bin/kube-proxy
