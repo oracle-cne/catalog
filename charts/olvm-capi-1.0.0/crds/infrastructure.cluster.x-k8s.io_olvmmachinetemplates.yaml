@@ -68,6 +68,24 @@ spec:
                         description: OVirtSpecInfo specifies the ovirt info used by
                           the OLVM spec
                         properties:
+                          cpu:
+                            description: Cpu is the vm CPU
+                            properties:
+                              architecture:
+                                type: string
+                              topology:
+                                properties:
+                                  cores:
+                                    format: int32
+                                    type: integer
+                                  sockets:
+                                    format: int32
+                                    type: integer
+                                  threads:
+                                    format: int32
+                                    type: integer
+                                type: object
+                            type: object
                           memory:
                             description: Memory is the memory size of the VM
                             type: string
