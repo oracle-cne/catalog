@@ -14,7 +14,7 @@ installing the `ocne-catalog` chart.
 ### Supported for Oracle Cloud Native Environment 2.0
 
 | Application | Chart | Versions |
-----------------------------------
+|-------------|-------|----------|
 | Cluster API Core Controller | core-capi | 1.7.1 |
 | Cluster API Kubeadm Control Plane Controller | control-plane-capi | 1.7.1 |
 | Cluster API Kubeadm Bootstrap Controller | bootstrap-capi | 1.7.1 |
@@ -50,7 +50,7 @@ installing the `ocne-catalog` chart.
 ### Supported While Upgrading From Oracle Cloud Native Environment 1.x
 
 | Application | Chart | Versions |
-----------------------------------
+|-------------|-------|----------|
 | Cert Manager | cert-manager | 1.9.1 |
 | Istio CRDs | istio-base | 1.19.9 |
 | Istiod | istiod | 1.19.9 |
