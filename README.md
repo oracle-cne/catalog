@@ -32,7 +32,7 @@ installing the `ocne-catalog` chart.
 | Istiod | istiod | 1.20.5 |
 | Istio Egress Gateway | istio-egress | 1.20.5 |
 | Istio Ingress Gateway | istio-ingress | 1.20.5 |
-| Kube Prometheus Stack | kube-prometheus-stack | 45.25.0 |
+| Kube Prometheus Stack | kube-prometheus-stack | 0.63.0 |
 | Kube State Metrics | kube-state-metrics | 2.8.2 |
 | KubeVirt | kubevirt | 1.1.1 |
 | MetalLB | metallb | 0.13.10 |
