@@ -45,6 +45,7 @@ installing the `ocne-catalog` chart.
 | Rook | rook | 1.12.3 |
 | Tigera Operator with Calico 3.27 | tigera-operator | 1.32.4 |
 | Oracle Cloud Native Environment Dashboard | ui | 2.0.0 |
+| oVirt CSI Driver | ovirt-csi-driver | 1.0.0 |
 
 
 ### Supported While Upgrading From Oracle Cloud Native Environment 1.x
