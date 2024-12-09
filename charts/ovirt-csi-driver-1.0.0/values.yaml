@@ -19,15 +19,15 @@ ovirtplugin:
     containerSecurityContext:
       privileged: true
     image:
-      repository: registry.k8s.io/sig-storage/csi-attacher
-      tag: v3.5.0
+      repository: olcne/csi-attacher
+      tag: v4.3.0
     resources:
       limits:
-        cpu: 160m
-        memory: 128Mi
+ cpu: 160m
+ memory: 128Mi
       requests:
-        cpu: 80m
-        memory: 64Mi
+ cpu: 80m
+ memory: 64Mi
   csiProvisioner:
     args:
     - --csi-address=/csi/csi.sock
@@ -36,15 +36,15 @@ ovirtplugin:
     containerSecurityContext:
       privileged: true
     image:
-      repository: registry.k8s.io/sig-storage/csi-provisioner
-      tag: v3.2.0
+      repository: olcne/csi-provisioner
+      tag: v3.5.0
     resources:
       limits:
-        cpu: 160m
-        memory: 128Mi
+ cpu: 160m
+ memory: 128Mi
       requests:
-        cpu: 80m
-        memory: 64Mi
+ cpu: 80m
+ memory: 64Mi
   csiResizer:
     args:
     - -csi-address=/csi/csi.sock
@@ -52,29 +52,29 @@ ovirtplugin:
     containerSecurityContext:
       privileged: true
     image:
-      repository: registry.k8s.io/sig-storage/csi-resizer
-      tag: v1.5.0
+      repository: olcne/csi-resizer
+      tag: v1.8.0
     resources:
       limits:
-        cpu: 160m
-        memory: 128Mi
+ cpu: 160m
+ memory: 128Mi
       requests:
-        cpu: 80m
-        memory: 64Mi
+ cpu: 80m
+ memory: 64Mi
   livenessProbe:
     args:
     - --csi-address=/csi/csi.sock
     - --health-port=9898
     image:
-      repository: registry.k8s.io/sig-storage/livenessprobe
+      repository: olcne/livenessprobe
       tag: v2.7.0
     resources:
       limits:
-        cpu: 160m
-        memory: 128Mi
+ cpu: 160m
+ memory: 128Mi
       requests:
-        cpu: 80m
-        memory: 64Mi
+ cpu: 80m
+ memory: 64Mi
   ovirt:
     args:
     - --endpoint=$(CSI_ENDPOINT)
@@ -84,27 +84,27 @@ ovirtplugin:
       csiEndpoint: unix:///csi/csi.sock
       ovirtConfig: /tmp/config/ovirt-config.yaml
     image:
-      repository: quay.io/openshift/origin-ovirt-csi-driver
-      tag: latest
+      repository: olcne/ovirt-csi-driver
+      tag: v1.0.0
     imagePullPolicy: IfNotPresent
     resources:
       limits:
-        cpu: 160m
-        memory: 128Mi
+ cpu: 160m
+ memory: 128Mi
       requests:
-        cpu: 80m
-        memory: 64Mi
+ cpu: 80m
+ memory: 64Mi
   prepareOvirtConfig:
     env:
       ovirtCafile: /tmp/config/ovirt-engine-ca.pem
     image:
-      repository: quay.io/openshift/origin-ovirt-csi-driver
-      tag: latest
+      repository: olcne/ovirt-csi-driver
+      tag: v1.0.0
     imagePullPolicy: IfNotPresent
     resources:
       requests:
-        cpu: 160m
-        memory: 128Mi
+ cpu: 160m
+ memory: 128Mi
   replicas: 1
 ovirtpluginNode:
   csiDriverRegistrar:
@@ -113,29 +113,29 @@ ovirtpluginNode:
     - --csi-address=/csi/csi.sock
     - --kubelet-registration-path=/var/lib/kubelet/plugins/csi.ovirt.org/csi.sock
     image:
-      repository: k8s.gcr.io/sig-storage/csi-node-driver-registrar
-      tag: v2.5.0
+      repository: olcne/csi-node-driver-registrar
+      tag: v2.8.0
     resources:
       limits:
-        cpu: 160m
-        memory: 128Mi
+ cpu: 160m
+ memory: 128Mi
       requests:
-        cpu: 80m
-        memory: 64Mi
+ cpu: 80m
+ memory: 64Mi
   livenessProbe:
     args:
     - --csi-address=/csi/csi.sock
     - --health-port=9898
     image:
-      repository: registry.k8s.io/sig-storage/livenessprobe
+      repository: olcne/livenessprobe
       tag: v2.7.0
     resources:
       limits:
-        cpu: 160m
-        memory: 128Mi
+ cpu: 160m
+ memory: 128Mi
       requests:
-        cpu: 80m
-        memory: 64Mi
+ cpu: 80m
+ memory: 64Mi
   ovirt:
     args:
     - --endpoint=$(CSI_ENDPOINT)
@@ -146,24 +146,24 @@ ovirtpluginNode:
       csiEndpoint: unix:///csi/csi.sock
       ovirtConfig: /tmp/config/ovirt-config.yaml
     image:
-      repository: quay.io/openshift/origin-ovirt-csi-driver
-      tag: latest
+      repository: olcne/ovirt-csi-driver
+      tag: v1.0.0
     imagePullPolicy: IfNotPresent
     resources:
       limits:
-        cpu: 160m
-        memory: 128Mi
+ cpu: 160m
+ memory: 128Mi
       requests:
-        cpu: 80m
-        memory: 64Mi
+ cpu: 80m
+ memory: 64Mi
   prepareOvirtConfig:
     env:
       ovirtCafile: /tmp/config/ovirt-engine-ca.pem
     image:
-      repository: quay.io/openshift/origin-ovirt-csi-driver
-      tag: latest
+      repository: olcne/ovirt-csi-driver
+      tag: v1.0.0
     imagePullPolicy: IfNotPresent
     resources:
       requests:
-        cpu: 10m
-        memory: 50Mi
+ cpu: 10m
+ memory: 50Mi
