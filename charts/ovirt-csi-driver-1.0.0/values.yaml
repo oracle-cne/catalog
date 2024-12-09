@@ -1,10 +1,4 @@
 kubernetesClusterDomain: cluster.local
-ovirtCredentials:
-  ovirtCaBundle: ""
-  ovirtInsecure: ""
-  ovirtPassword: ""
-  ovirtUrl: ""
-  ovirtUsername: ""
 ovirtCsiDriverControllerSa:
   serviceAccount:
     annotations: {}
@@ -23,11 +17,11 @@ ovirtplugin:
       tag: v4.3.0
     resources:
       limits:
- cpu: 160m
- memory: 128Mi
+        cpu: 160m
+        memory: 128Mi
       requests:
- cpu: 80m
- memory: 64Mi
+        cpu: 80m
+        memory: 64Mi
   csiProvisioner:
     args:
     - --csi-address=/csi/csi.sock
@@ -40,11 +34,11 @@ ovirtplugin:
       tag: v3.5.0
     resources:
       limits:
- cpu: 160m
- memory: 128Mi
+        cpu: 160m
+        memory: 128Mi
       requests:
- cpu: 80m
- memory: 64Mi
+        cpu: 80m
+        memory: 64Mi
   csiResizer:
     args:
     - -csi-address=/csi/csi.sock
@@ -56,11 +50,11 @@ ovirtplugin:
       tag: v1.8.0
     resources:
       limits:
- cpu: 160m
- memory: 128Mi
+        cpu: 160m
+        memory: 128Mi
       requests:
- cpu: 80m
- memory: 64Mi
+        cpu: 80m
+        memory: 64Mi
   livenessProbe:
     args:
     - --csi-address=/csi/csi.sock
@@ -70,11 +64,11 @@ ovirtplugin:
       tag: v2.7.0
     resources:
       limits:
- cpu: 160m
- memory: 128Mi
+        cpu: 160m
+        memory: 128Mi
       requests:
- cpu: 80m
- memory: 64Mi
+        cpu: 80m
+        memory: 64Mi
   ovirt:
     args:
     - --endpoint=$(CSI_ENDPOINT)
@@ -89,11 +83,11 @@ ovirtplugin:
     imagePullPolicy: IfNotPresent
     resources:
       limits:
- cpu: 160m
- memory: 128Mi
+        cpu: 160m
+        memory: 128Mi
       requests:
- cpu: 80m
- memory: 64Mi
+        cpu: 80m
+        memory: 64Mi
   prepareOvirtConfig:
     env:
       ovirtCafile: /tmp/config/ovirt-engine-ca.pem
@@ -103,8 +97,8 @@ ovirtplugin:
     imagePullPolicy: IfNotPresent
     resources:
       requests:
- cpu: 160m
- memory: 128Mi
+        cpu: 160m
+        memory: 128Mi
   replicas: 1
 ovirtpluginNode:
   csiDriverRegistrar:
@@ -117,11 +111,11 @@ ovirtpluginNode:
       tag: v2.8.0
     resources:
       limits:
- cpu: 160m
- memory: 128Mi
+        cpu: 160m
+        memory: 128Mi
       requests:
- cpu: 80m
- memory: 64Mi
+        cpu: 80m
+        memory: 64Mi
   livenessProbe:
     args:
     - --csi-address=/csi/csi.sock
@@ -131,11 +125,11 @@ ovirtpluginNode:
       tag: v2.7.0
     resources:
       limits:
- cpu: 160m
- memory: 128Mi
+        cpu: 160m
+        memory: 128Mi
       requests:
- cpu: 80m
- memory: 64Mi
+        cpu: 80m
+        memory: 64Mi
   ovirt:
     args:
     - --endpoint=$(CSI_ENDPOINT)
@@ -151,11 +145,11 @@ ovirtpluginNode:
     imagePullPolicy: IfNotPresent
     resources:
       limits:
- cpu: 160m
- memory: 128Mi
+        cpu: 160m
+        memory: 128Mi
       requests:
- cpu: 80m
- memory: 64Mi
+        cpu: 80m
+        memory: 64Mi
   prepareOvirtConfig:
     env:
       ovirtCafile: /tmp/config/ovirt-engine-ca.pem
@@ -165,5 +159,5 @@ ovirtpluginNode:
     imagePullPolicy: IfNotPresent
     resources:
       requests:
- cpu: 10m
- memory: 50Mi
+        cpu: 10m
+        memory: 50Mi
