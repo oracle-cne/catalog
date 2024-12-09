@@ -1,0 +1,178 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "ovirt-csi-driver.fullname" . }}-node
+  labels:
+    app.kubernetes.io/component: plugin
+    app.kubernetes.io/part-of: csi-driver-ovirt
+  {{- include "ovirt-csi-driver.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: plugin
+      app.kubernetes.io/instance: ovirt.csi.k8s.io
+      app.kubernetes.io/name: ovirt-csi-driver-node
+      app.kubernetes.io/part-of: csi-driver-ovirt
+    {{- include "ovirt-csi-driver.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: plugin
+        app.kubernetes.io/instance: ovirt.csi.k8s.io
+        app.kubernetes.io/name: ovirt-csi-driver-node
+        app.kubernetes.io/part-of: csi-driver-ovirt
+      {{- include "ovirt-csi-driver.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - args: {{- toYaml .Values.ovirtpluginNode.ovirt.args | nindent 8 }}
+        env:
+        - name: CSI_ENDPOINT
+          value: {{ quote .Values.ovirtpluginNode.ovirt.env.csiEndpoint }}
+        - name: KUBE_NODE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.nodeName
+        - name: OVIRT_CONFIG
+          value: {{ quote .Values.ovirtpluginNode.ovirt.env.ovirtConfig }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.ovirtpluginNode.ovirt.image.repository }}:{{ .Values.ovirtpluginNode.ovirt.image.tag
+          | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.ovirtpluginNode.ovirt.imagePullPolicy }}
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /healthz
+            port: healthz
+          initialDelaySeconds: 10
+          periodSeconds: 2
+          timeoutSeconds: 3
+        name: ovirt
+        ports:
+        - containerPort: 9898
+          name: healthz
+          protocol: TCP
+        resources: {{- toYaml .Values.ovirtpluginNode.ovirt.resources | nindent 10 }}
+        securityContext: {{- toYaml .Values.ovirtpluginNode.ovirt.containerSecurityContext
+          | nindent 10 }}
+        volumeMounts:
+        - mountPath: /csi
+          name: socket-dir
+        - mountPath: /var/lib/kubelet
+          mountPropagation: Bidirectional
+          name: kubelet-dir
+        - mountPath: /dev
+          name: dev-dir
+        - mountPath: /tmp/config
+          name: config
+      - args: {{- toYaml .Values.ovirtpluginNode.livenessProbe.args | nindent 8 }}
+        env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.ovirtpluginNode.livenessProbe.image.repository }}:{{ .Values.ovirtpluginNode.livenessProbe.image.tag
+          | default .Chart.AppVersion }}
+        name: liveness-probe
+        resources: {{- toYaml .Values.ovirtpluginNode.livenessProbe.resources | nindent
+          10 }}
+        volumeMounts:
+        - mountPath: /csi
+          name: socket-dir
+      - args: {{- toYaml .Values.ovirtpluginNode.csiDriverRegistrar.args | nindent 8 }}
+        env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.ovirtpluginNode.csiDriverRegistrar.image.repository }}:{{ .Values.ovirtpluginNode.csiDriverRegistrar.image.tag
+          | default .Chart.AppVersion }}
+        livenessProbe:
+          exec:
+            command:
+            - /csi-node-driver-registrar
+            - --kubelet-registration-path=/var/lib/kubelet/plugins/csi.ovirt.org/csi.sock
+            - --mode=kubelet-registration-probe
+          initialDelaySeconds: 30
+          timeoutSeconds: 15
+        name: csi-driver-registrar
+        resources: {{- toYaml .Values.ovirtpluginNode.csiDriverRegistrar.resources | nindent
+          10 }}
+        volumeMounts:
+        - mountPath: /csi
+          name: socket-dir
+        - mountPath: /registration
+          name: registration-dir
+      initContainers:
+      - command:
+        - /bin/sh
+        - -c
+        - |
+          #!/bin/sh
+          cat << EOF > /tmp/config/ovirt-config.yaml
+          ovirt_url: $OVIRT_URL
+          ovirt_username: $OVIRT_USERNAME
+          ovirt_password: $OVIRT_PASSWORD
+          # set a valid path only if ca bundle has content
+          ovirt_cafile: ${OVIRT_CA_BUNDLE:+$OVIRT_CAFILE}
+          ovirt_insecure: $OVIRT_INSECURE
+          EOF
+          if [[ -n "$OVIRT_CA_BUNDLE" ]]; then echo "$OVIRT_CA_BUNDLE" > $OVIRT_CAFILE ; fi
+        env:
+        - name: OVIRT_URL
+          valueFrom:
+            secretKeyRef:
+              key: ovirt_url
+              name: {{ include "ovirt-csi-driver.fullname" . }}-credentials
+        - name: OVIRT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              key: ovirt_username
+              name: {{ include "ovirt-csi-driver.fullname" . }}-credentials
+        - name: OVIRT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: ovirt_password
+              name: {{ include "ovirt-csi-driver.fullname" . }}-credentials
+        - name: OVIRT_CAFILE
+          value: {{ quote .Values.ovirtpluginNode.prepareOvirtConfig.env.ovirtCafile }}
+        - name: OVIRT_INSECURE
+          valueFrom:
+            secretKeyRef:
+              key: ovirt_insecure
+              name: {{ include "ovirt-csi-driver.fullname" . }}-credentials
+        - name: OVIRT_CA_BUNDLE
+          valueFrom:
+            secretKeyRef:
+              key: ovirt_ca_bundle
+              name: {{ include "ovirt-csi-driver.fullname" . }}-credentials
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.ovirtpluginNode.prepareOvirtConfig.image.repository }}:{{ .Values.ovirtpluginNode.prepareOvirtConfig.image.tag
+          | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.ovirtpluginNode.prepareOvirtConfig.imagePullPolicy
+          }}
+        name: prepare-ovirt-config
+        resources: {{- toYaml .Values.ovirtpluginNode.prepareOvirtConfig.resources | nindent
+          10 }}
+        volumeMounts:
+        - mountPath: /tmp/config
+          name: config
+      serviceAccountName: {{ include "ovirt-csi-driver.fullname" . }}-node-sa
+      volumes:
+      - hostPath:
+          path: /var/lib/kubelet/plugins/csi.ovirt.org
+          type: DirectoryOrCreate
+        name: socket-dir
+      - hostPath:
+          path: /var/lib/kubelet
+          type: DirectoryOrCreate
+        name: kubelet-dir
+      - hostPath:
+          path: /var/lib/kubelet/plugins_registry
+          type: Directory
+        name: registration-dir
+      - hostPath:
+          path: /dev
+          type: Directory
+        name: dev-dir
+      - emptyDir:
+          medium: Memory
+        name: config

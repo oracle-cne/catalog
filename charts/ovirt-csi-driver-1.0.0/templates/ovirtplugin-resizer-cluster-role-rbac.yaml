@@ -1,0 +1,16 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "ovirt-csi-driver.fullname" . }}-resizer-cluster-role
+  labels:
+    app.kubernetes.io/component: resizer-cluster-role
+    app.kubernetes.io/part-of: csi-driver-ovirt
+  {{- include "ovirt-csi-driver.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: '{{ include "ovirt-csi-driver.fullname" . }}-external-resizer-runner'
+subjects:
+- kind: ServiceAccount
+  name: '{{ include "ovirt-csi-driver.fullname" . }}-controller-sa'
+  namespace: '{{ .Release.Namespace }}'
