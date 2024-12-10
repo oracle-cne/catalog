@@ -4,7 +4,7 @@ metadata:
 spec:
   initContainers:
     - name: grpc-bootstrap-init
-      image: busybox:1.28
+      image: os/oraclelinux:8-slim
       volumeMounts:
         - mountPath: /var/lib/grpc/data/
           name: grpc-io-proxyless-bootstrap
