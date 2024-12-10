@@ -15,13 +15,13 @@ dependencies:
   repository: file://../../charts/ztunnel
   version: 1.24.1
 description: Helm umbrella chart for ambient
-icon: https://istio.io/latest/favicons/android-192x192.png
+icon: icons/android-192x192.png
 keywords:
 - istio-cni
 - istio
 - ambient
 kubeVersion: '>= 1.23.0-0'
-name: ambient
+name: istio-ambient
 sources:
 - https://github.com/istio/istio
 type: application
