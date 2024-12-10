@@ -97,10 +97,41 @@ spec:
                         description: OVirtDatacenterName is the datacenter where the
                           Kubernetes cluster will be created
                         type: string
+                      vmIpProfiles:
+                        description: VmIpProfiles is the list IP profiles available
+                          to machines
+                        items:
+                          properties:
+                            device:
+                              description: Device is the network device, such as enp1s0
+                              type: string
+                            gateway:
+                              description: Gateway is the VM gateway
+                              type: string
+                            name:
+                              description: Name is the profile name
+                              type: string
+                            netmask:
+                              description: Netmask is the IpAddress netmask
+                              type: string
+                            startingIpAddress:
+                              description: |-
+                                StartingIpAddress is the lowest IP address to use.  All machines will coordinate to
+                                allocate an IP address starting with this one
+                              type: string
+                          required:
+                          - device
+                          - gateway
+                          - name
+                          - netmask
+                          - startingIpAddress
+                          type: object
+                        type: array
                     required:
                     - controlPlaneEndpoint
                     - ovirtAPI
                     - ovirtDatacenterName
+                    - vmIpProfiles
                     type: object
                 required:
                 - spec

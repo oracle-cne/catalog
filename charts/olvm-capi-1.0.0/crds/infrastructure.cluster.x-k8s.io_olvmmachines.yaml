@@ -22,19 +22,46 @@ spec:
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
-    - description: True if the Machine is ready
-      jsonPath: .status.conditions[:].status
+    - description: The CAPI OLVMCluster that contains this machine
+      jsonPath: .spec.olvmClusterName
+      name: Cluster
+      type: string
+    - description: True if the OLVMCluster is ready
+      jsonPath: .status.ready
       name: Ready
       type: string
-    - description: Last transition time
-      jsonPath: .status.conditions[:].lastTransitionTime
-      name: Transition Time
+    - description: The age of the OLVMCluster
+      jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: The oVirt Cluster that contains the VM
+      jsonPath: .spec.ovirt.ovirtClusterName
+      name: OVIRT-Cluster
       priority: 2
       type: string
-    - description: Lifecycle message
-      jsonPath: .status.conditions[:].message
-      name: Message
+    - description: The VM memory size
+      jsonPath: .spec.ovirt.memory
+      name: Memory
       priority: 2
+      type: string
+    - description: The number of VM CPU cores
+      jsonPath: .spec.ovirt.cpu.topology.cores
+      name: Cores
+      priority: 2
+      type: string
+    - description: The number of VM CPU sockets
+      jsonPath: .spec.ovirt.cpu.topology.sockets
+      name: Sockets
+      priority: 2
+      type: string
+    - description: The oVirt VM status
+      jsonPath: .status.ovirt.virtualMachine.status
+      name: VMStatus
+      priority: 2
+      type: string
+    - description: The oVirt VM IP Address
+      jsonPath: .status.ovirt.ipAddress
+      name: VMIPAddress
       type: string
     name: v1beta1
     schema:
@@ -65,6 +92,10 @@ spec:
               olvmClusterName:
                 description: OLVMClusterName is the CAPI OLVMCluster resource name
                 type: string
+              olvmVmIpProfileName:
+                description: OLVMVmIpProfileName is the OLVM VmIpProfile name specified
+                  in the OLVM cluster
+                type: string
               ovirt:
                 description: OVirtSpecInfo specifies the ovirt info used by the OLVM
                   spec
@@ -73,16 +104,25 @@ spec:
                     description: Cpu is the vm CPU
                     properties:
                       architecture:
+                        description: Architecture specifies the CPU topology.  The
+                          default is x86_64/
                         type: string
                       topology:
+                        description: Topology specifies the CPU topology.
                         properties:
                           cores:
+                            description: Cores specifies the number of CPU cores.  The
+                              default is 2.
                             format: int32
                             type: integer
                           sockets:
+                            description: Sockets specifies the number of CPU sockets.  The
+                              default is 2.
                             format: int32
                             type: integer
                           threads:
+                            description: Threads specifies the number of CPU Threads.  The
+                              default is 1.
                             format: int32
                             type: integer
                         type: object
@@ -137,6 +177,7 @@ spec:
                 type: string
             required:
             - olvmClusterName
+            - olvmVmIpProfileName
             - ovirt
             type: object
           status:
@@ -237,6 +278,8 @@ spec:
                   clusterID:
                     type: string
                   clusterName:
+                    type: string
+                  ipAddress:
                     type: string
                   networkID:
                     type: string
