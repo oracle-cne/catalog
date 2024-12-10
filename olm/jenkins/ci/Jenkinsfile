@@ -8,7 +8,7 @@ String registry = "container-registry.oracle.com/" + container_registry_namespac
 
 olcnePipeline(
     branchPattern: new BranchPattern(master: '(master|release/.*)', feature: '(?!^master$)(?!^release/.*$)(^.*$)'),
-    containers: [(registry + '/ocne-catalog:' + imageTag) : container_registry_namespace + '/ocne-catalog:' + imageTag],
+    containers: [(registry + '/ocne-catalog-developer:' + imageTag) : container_registry_namespace + '/ocne-catalog-developer:' + imageTag],
     architectures: ['x86_64', 'aarch64'],
     platforms: ['ol8']
 )

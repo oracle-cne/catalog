@@ -1,7 +1,0 @@
-apiVersion: v1
-deprecated: true
-description: DEPRECATED A Helm chart for Fluentd
-name: fluentd
-version: 1.14.5
-appVersion: 1.14.5
-icon: icons/fluentd-icon.svg
