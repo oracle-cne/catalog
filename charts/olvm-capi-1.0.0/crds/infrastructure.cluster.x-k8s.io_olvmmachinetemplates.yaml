@@ -64,6 +64,10 @@ spec:
                         description: OLVMClusterName is the CAPI OLVMCluster resource
                           name
                         type: string
+                      olvmVmIpProfileName:
+                        description: OLVMVmIpProfileName is the OLVM VmIpProfile name
+                          specified in the OLVM cluster
+                        type: string
                       ovirt:
                         description: OVirtSpecInfo specifies the ovirt info used by
                           the OLVM spec
@@ -72,16 +76,25 @@ spec:
                             description: Cpu is the vm CPU
                             properties:
                               architecture:
+                                description: Architecture specifies the CPU topology.  The
+                                  default is x86_64/
                                 type: string
                               topology:
+                                description: Topology specifies the CPU topology.
                                 properties:
                                   cores:
+                                    description: Cores specifies the number of CPU
+                                      cores.  The default is 2.
                                     format: int32
                                     type: integer
                                   sockets:
+                                    description: Sockets specifies the number of CPU
+                                      sockets.  The default is 2.
                                     format: int32
                                     type: integer
                                   threads:
+                                    description: Threads specifies the number of CPU
+                                      Threads.  The default is 1.
                                     format: int32
                                     type: integer
                                 type: object
@@ -136,6 +149,7 @@ spec:
                         type: string
                     required:
                     - olvmClusterName
+                    - olvmVmIpProfileName
                     - ovirt
                     type: object
                 required:

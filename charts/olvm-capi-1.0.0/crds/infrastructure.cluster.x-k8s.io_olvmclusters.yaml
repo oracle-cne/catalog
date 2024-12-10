@@ -22,18 +22,21 @@ spec:
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
-    - description: True if the Cluster is ready
-      jsonPath: .status.conditions[:].status
+    - description: True if the OLVMCluster is ready
+      jsonPath: .status.ready
       name: Ready
       type: string
-    - description: Last transition time
-      jsonPath: .status.conditions[:].lastTransitionTime
-      name: Transition Time
-      priority: 2
+    - description: The oVirt Data Center that contains the oVirt Cluster
+      jsonPath: .status.ovirt.dataCenterName
+      name: DataCenter
       type: string
-    - description: Lifecycle message
-      jsonPath: .status.conditions[:].message
-      name: Message
+    - description: The age of the OLVMCluster
+      jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: The URL of the oVirt API server
+      jsonPath: .spec.ovirtAPI.apiServerURL
+      name: OvirtServerURL
       priority: 2
       type: string
     name: v1beta1
@@ -99,10 +102,40 @@ spec:
                 description: OVirtDatacenterName is the datacenter where the Kubernetes
                   cluster will be created
                 type: string
+              vmIpProfiles:
+                description: VmIpProfiles is the list IP profiles available to machines
+                items:
+                  properties:
+                    device:
+                      description: Device is the network device, such as enp1s0
+                      type: string
+                    gateway:
+                      description: Gateway is the VM gateway
+                      type: string
+                    name:
+                      description: Name is the profile name
+                      type: string
+                    netmask:
+                      description: Netmask is the IpAddress netmask
+                      type: string
+                    startingIpAddress:
+                      description: |-
+                        StartingIpAddress is the lowest IP address to use.  All machines will coordinate to
+                        allocate an IP address starting with this one
+                      type: string
+                  required:
+                  - device
+                  - gateway
+                  - name
+                  - netmask
+                  - startingIpAddress
+                  type: object
+                type: array
             required:
             - controlPlaneEndpoint
             - ovirtAPI
             - ovirtDatacenterName
+            - vmIpProfiles
             type: object
           status:
             description: OLVMClusterStatus defines the status OLVMCluster resource.
