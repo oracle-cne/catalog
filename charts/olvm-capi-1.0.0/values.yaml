@@ -24,7 +24,7 @@ operator:
     - -zap-time-encoding=epoch
     image:
       repository: olcne/cluster-api-olvm-operator
-      tag: v1.0.0
+      tag: v1.0.0-amd64
     imagePullPolicy: IfNotPresent
     containerSecurityContext:
       privileged: false
