@@ -15,36 +15,42 @@ installing the `ocne-catalog` chart.
 
 | Application | Chart | Versions |
 |-------------|-------|----------|
-| Cluster API Core Controller | core-capi | 1.7.1 |
-| Cluster API Kubeadm Control Plane Controller | control-plane-capi | 1.7.1 |
-| Cluster API Kubeadm Bootstrap Controller | bootstrap-capi | 1.7.1 |
-| Cluster API for Oracle Cloud Infrastructure | oci-capi | 0.15.0 |
-| Cert Manager | cert-manager | 1.14.5 |
-| Cert Manager OCI Webhook | cert-manager-webhook-oci | 1.1.0 |
-| Dex | dex | 2.39.1 |
-| ExternalIP Webhook | externalip-webhook | 1.0.0 |
-| Flannel | flannel | 0.22.3 |
-| Fluent Operator | fluent-operator | 3.2.0 |
-| Fluentd | fluentd | 1.14.5 |
-| Grafana | grafana | 7.5.17 |
-| Ingress Nginx | ingress-nginx | 1.9.6 |
+| Cluster API Core Controller | core-capi | 1.7.1    |
+| Cluster API Kubeadm Control Plane Controller | control-plane-capi | 1.7.1    |
+| Cluster API Kubeadm Bootstrap Controller | bootstrap-capi | 1.7.1    |
+| Cluster API for Oracle Cloud Infrastructure | oci-capi | 0.15.0   |
+| Cert Manager | cert-manager | 1.14.5   |
+| Cert Manager OCI Webhook | cert-manager-webhook-oci | 1.1.0    |
+| Dex | dex | 2.39.1   |
+| ExternalIP Webhook | externalip-webhook | 1.0.0    |
+| Flannel | flannel | 0.22.3   |
+| Fluent Operator | fluent-operator | 3.2.0    |
+| Fluentd | fluentd | 1.14.5   |
+| Grafana | grafana | 7.5.17   |
+| Ingress Nginx | ingress-nginx | 1.9.6    |
 | Istio CRDs | istio-base | 1.20.5 |
 | Istiod | istiod | 1.20.5 |
 | Istio Egress Gateway | istio-egress | 1.20.5 |
 | Istio Ingress Gateway | istio-ingress | 1.20.5 |
-| Kube Prometheus Stack | kube-prometheus-stack | 0.63.0 |
-| Kube State Metrics | kube-state-metrics | 2.8.2 |
-| KubeVirt | kubevirt | 1.1.1 |
-| MetalLB | metallb | 0.13.10 |
-| Multus | multus | 4.0.2 |
-| OCI Cloud Controller Manager | oci-ccm | 1.28.0 |
-| Oracle Cloud Native Environment Application Catalog | ocne-catalog | 2.0.0 |
-| Prometheus | prometheus | 2.31.1 |
-| Prometheus Adapter | prometheus-adapter | 0.10.0 |
-| Prometheus Node Exporter | prometheus-node-exporter | 1.6.1 |
-| Rook | rook | 1.12.3 |
-| Tigera Operator with Calico 3.27 | tigera-operator | 1.32.4 |
-| Oracle Cloud Native Environment Dashboard | ui | 2.0.0 |
+| Istio CRDs | istio-base | 1.24.1   |
+| Istiod | istiod | 1.24.1   |
+| Istio Gateway | istio-gateway | 1.24.1   |
+| Istio Ambient | istio-ambient | 1.24.1   |
+| Istio Ztunnel | istio-ztunnel | 1.24.1   |
+| Istio CNI | istio-cni | 1.24.1   |
+| Kube Prometheus Stack | kube-prometheus-stack | 0.63.0   |
+| Kube State Metrics | kube-state-metrics | 2.8.2    |
+| KubeVirt | kubevirt | 1.1.1    |
+| MetalLB | metallb | 0.13.10  |
+| Multus | multus | 4.0.2    |
+| OCI Cloud Controller Manager | oci-ccm | 1.28.0   |
+| Oracle Cloud Native Environment Application Catalog | ocne-catalog | 2.0.0    |
+| Prometheus | prometheus | 2.31.1   |
+| Prometheus Adapter | prometheus-adapter | 0.10.0   |
+| Prometheus Node Exporter | prometheus-node-exporter | 1.6.1    |
+| Rook | rook | 1.12.3   |
+| Tigera Operator with Calico 3.27 | tigera-operator | 1.32.4   |
+| Oracle Cloud Native Environment Dashboard | ui | 2.0.0    |
 
 
 ### Supported While Upgrading From Oracle Cloud Native Environment 1.x

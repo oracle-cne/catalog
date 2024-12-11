@@ -2,17 +2,17 @@ apiVersion: v2
 appVersion: 1.24.1
 dependencies:
 - name: base
-  repository: file://../../charts/base
+  repository: file://../../charts/istio-base-1.24.1
   version: 1.24.1
 - name: cni
-  repository: file://../../charts/istio-cni
+  repository: file://../../charts/istio-cni-1.24.1
   version: 1.24.1
 - condition: istiod.enabled
   name: istiod
-  repository: file://../../charts/istio-control/istio-discovery
+  repository: file://../../charts/istiod-1.24.1
   version: 1.24.1
 - name: ztunnel
-  repository: file://../../charts/ztunnel
+  repository: file://../../charts/istio-ztunnel-1.24.1
   version: 1.24.1
 description: Helm umbrella chart for ambient
 icon: icons/android-192x192.png
