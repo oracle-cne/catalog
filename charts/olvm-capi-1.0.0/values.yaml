@@ -23,8 +23,8 @@ operator:
     - -zap-stacktrace-level=error
     - -zap-time-encoding=epoch
     image:
-      repository: olcne/cluster-api-olvm-operator
-      tag: v1.0.0
+      repository: ghcr.io/oracle-cne/cluster-api-olvm-operator
+      tag: v0.1.0
     imagePullPolicy: IfNotPresent
     containerSecurityContext:
       privileged: false
