@@ -56,7 +56,6 @@ spec:
       opensearch.verrazzano.io/role-data: "true"
   policyTypes:
   - Ingress
-status: {}
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -106,7 +105,6 @@ spec:
       opensearch.verrazzano.io/role-master: "true"
   policyTypes:
   - Ingress
-status: {}
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -163,4 +161,3 @@ spec:
       opensearch.verrazzano.io/role-ingest: "true"
   policyTypes:
   - Ingress
-status: {}
