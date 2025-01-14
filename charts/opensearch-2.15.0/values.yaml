@@ -43,7 +43,7 @@ esData0:
     imagePullPolicy: IfNotPresent
     resources:
       requests:
-        memory: 5153960755200m
+        memory: "5153960755200m"
   replicas: 1
   revisionHistoryLimit: 10
 esData1:
@@ -84,7 +84,7 @@ esData1:
     imagePullPolicy: IfNotPresent
     resources:
       requests:
-        memory: 5153960755200m
+        memory: "5153960755200m"
   replicas: 1
   revisionHistoryLimit: 10
 esData2:
@@ -125,7 +125,7 @@ esData2:
     imagePullPolicy: IfNotPresent
     resources:
       requests:
-        memory: 5153960755200m
+        memory: "5153960755200m"
   replicas: 1
   revisionHistoryLimit: 10
 esIngest:
