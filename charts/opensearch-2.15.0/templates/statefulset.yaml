@@ -19,7 +19,7 @@ spec:
   template:
     metadata:
       annotations:
-        proxy.istio.io/config: { holdApplicationUntilProxyStarts: true }
+        proxy.istio.io/config: '{ ''holdApplicationUntilProxyStarts'': true }'
         traffic.sidecar.istio.io/excludeInboundPorts: "9300"
         traffic.sidecar.istio.io/excludeOutboundPorts: "9300"
       labels:
