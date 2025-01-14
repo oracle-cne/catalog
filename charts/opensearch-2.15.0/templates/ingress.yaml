@@ -1,62 +1,36 @@
-{{- if .Values.ingress.enabled -}}
-{{- $fullName := include "opensearch.serviceName" . -}}
-{{- $servicePort := .Values.httpPort -}}
-{{- $ingressPath := .Values.ingress.path -}}
-{{- $ingressApiIsStable := eq (include "opensearch.ingress.isStable" .) "true" -}}
-{{- $ingressSupportsIngressClassName := eq (include "opensearch.ingress.supportsIngressClassName" .) "true" -}}
-{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1
-{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
-apiVersion: networking.k8s.io/v1beta1
-{{- else -}}
-apiVersion: extensions/v1beta1
-{{- end }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: {{ include "mychart.fullname" . }}-os-ingest
   labels:
-    {{- include "opensearch.labels" . | nindent 4 }}
-{{- with .Values.ingress.annotations }}
+    k8s-app: verrazzano.io
+    vmo.v1.verrazzano.io: system
+  {{- include "mychart.labels" . | nindent 4 }}
   annotations:
-{{ toYaml . | indent 4 }}
-{{- end }}
+    cert-manager.io/cluster-issuer: verrazzano-cluster-issuer
+    cert-manager.io/common-name: opensearch.vmi.system.default.100.101.68.154.nip.io
+    external-dns.alpha.kubernetes.io/target: verrazzano-ingress.default.100.101.68.154.nip.io
+    external-dns.alpha.kubernetes.io/ttl: "60"
+    field.cattle.io/publicEndpoints: '[{"addresses":["100.101.68.154"],"port":443,"protocol":"HTTPS","serviceName":"verrazzano-system:verrazzano-authproxy","ingressName":"verrazzano-system:vmi-system-os-ingest","hostname":"opensearch.vmi.system.default.100.101.68.154.nip.io","path":"/()(.*)","allNodes":false}]'
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: 65M
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/service-upstream: "true"
+    nginx.ingress.kubernetes.io/upstream-vhost: ${service_name}.${namespace}.svc.cluster.local
 spec:
-  {{- if and $ingressSupportsIngressClassName .Values.ingress.ingressClassName }}
-  ingressClassName: {{ .Values.ingress.ingressClassName }}
-  {{- end -}}
-{{- if .Values.ingress.tls }}
-  tls:
-  {{- range .Values.ingress.tls }}
-    - hosts:
-      {{- range .hosts }}
-        - {{ . }}
-      {{- end }}
-      secretName: {{ .secretName }}
-  {{- end }}
-{{- end }}
+  ingressClassName: verrazzano-nginx
   rules:
-    {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
-    {{- range .Values.ingress.hosts }}
-    - host: {{ . | quote }}
-      http:
-        paths:
-          - path: {{ $ingressPath }}
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ $fullName }}
-                port:
-                  number: {{ $servicePort }}
-    {{- end }}
-    {{- else -}}
-    {{- range .Values.ingress.hosts }}
-    - host: {{ . | quote }}
-      http:
-        paths:
-          - path: {{ $ingressPath }}
-            backend:
-              serviceName: {{ $fullName }}
-              servicePort: {{ $servicePort }}
-    {{- end }}
-    {{- end }}
-{{- end }}
+  - host: opensearch.vmi.system.default.100.101.68.154.nip.io
+    http:
+      paths:
+      - backend:
+          service:
+            name: verrazzano-authproxy
+            port:
+              number: 8775
+        path: /()(.*)
+        pathType: ImplementationSpecific
+  tls:
+  - hosts:
+    - opensearch.vmi.system.default.100.101.68.154.nip.io
+    secretName: system-tls-os-ingest
