@@ -204,7 +204,7 @@ esMaster:
     imagePullPolicy: IfNotPresent
     resources:
       requests:
-        memory: 1503238553600m
+        memory: 2560Mi
   ports:
   - name: http-es-master
     port: 9300
