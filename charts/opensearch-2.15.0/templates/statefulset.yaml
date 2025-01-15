@@ -60,18 +60,6 @@ spec:
           value: {{ quote .Values.esMaster.esMaster.env.httpEnable }}
         - name: logger.org.opensearch
           value: {{ quote .Values.esMaster.esMaster.env.loggerOrgOpensearch }}
-        - name: OBJECT_STORE_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              key: object_store_access_key
-              name: verrazzano-backup
-              optional: true
-        - name: OBJECT_STORE_SECRET_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              key: object_store_secret_key
-              name: verrazzano-backup
-              optional: true
         - name: DISABLE_SECURITY_PLUGIN
           value: {{ quote .Values.esMaster.esMaster.env.disableSecurityPlugin }}
         - name: OPENSEARCH_JAVA_OPTS
@@ -84,6 +72,7 @@ spec:
           value: {{ quote .Values.esMaster.esMaster.env.clusterInitialMasterNodes }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
+        {{- toYaml .Values.esMaster.esMaster.env.additionalEnv | nindent 8 }}
         image: {{ .Values.esMaster.esMaster.image.repository }}:{{ .Values.esMaster.esMaster.image.tag
           | default .Chart.AppVersion }}
         imagePullPolicy: {{ .Values.esMaster.esMaster.imagePullPolicy }}
