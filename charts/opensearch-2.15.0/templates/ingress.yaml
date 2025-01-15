@@ -3,8 +3,7 @@ kind: Ingress
 metadata:
   name: {{ include "mychart.fullname" . }}-os-ingest
   labels:
-    k8s-app: verrazzano.io
-    vmo.v1.verrazzano.io: system
+  {{- .Values.ingress.extraLabels | toYaml | nindent 4 }}
   {{- include "mychart.labels" . | nindent 4 }}
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: 65M
