@@ -12,6 +12,8 @@ esData:
   service:
     extraLabels:
     extraSelectorLabels:
+  serviceAccount:
+  extraLabels:
 esData0:
   elasticsearchInit:
     args:
@@ -124,6 +126,7 @@ esData2:
   replicas: 1
   revisionHistoryLimit: 10
 esIngest:
+  serviceAccount:
   elasticsearchInit:
     args:
     - sysctl

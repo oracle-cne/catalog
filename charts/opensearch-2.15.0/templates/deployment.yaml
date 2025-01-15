@@ -3,10 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "mychart.fullname" . }}-es-data-0
   labels:
-    k8s-app: verrazzano.io
-    opensearch.verrazzano.io/role-data: "true"
-    verrazzano-component: opensearch
-    vmo.v1.verrazzano.io: system
+  {{- toYaml .Values.esData.extraLabels | nindent 10 }}
   {{- include "mychart.labels" . | nindent 4 }}
   annotations:
     deployment.kubernetes.io/revision: "1"
@@ -154,8 +151,8 @@ spec:
         fsGroup: 1000
         seccompProfile:
           type: RuntimeDefault
-      serviceAccount: verrazzano-monitoring-operator
-      serviceAccountName: verrazzano-monitoring-operator
+      serviceAccount: {{ .Values.esData.serviceAccount }}
+      serviceAccountName: {{ .Values.esData.serviceAccount }}
       terminationGracePeriodSeconds: 1
       volumes:
       - name: storage-volume
@@ -167,10 +164,7 @@ kind: Deployment
 metadata:
   name: {{ include "mychart.fullname" . }}-es-data-1
   labels:
-    k8s-app: verrazzano.io
-    opensearch.verrazzano.io/role-data: "true"
-    verrazzano-component: opensearch
-    vmo.v1.verrazzano.io: system
+  {{- toYaml .Values.esData.extraLabels | nindent 10 }}
   {{- include "mychart.labels" . | nindent 4 }}
   annotations:
     deployment.kubernetes.io/revision: "1"
@@ -318,8 +312,8 @@ spec:
         fsGroup: 1000
         seccompProfile:
           type: RuntimeDefault
-      serviceAccount: verrazzano-monitoring-operator
-      serviceAccountName: verrazzano-monitoring-operator
+      serviceAccount: {{ .Values.esData.serviceAccount }}
+      serviceAccountName: {{ .Values.esData.serviceAccount }}
       terminationGracePeriodSeconds: 1
       volumes:
       - name: storage-volume
@@ -331,10 +325,7 @@ kind: Deployment
 metadata:
   name: {{ include "mychart.fullname" . }}-es-data-2
   labels:
-    k8s-app: verrazzano.io
-    opensearch.verrazzano.io/role-data: "true"
-    verrazzano-component: opensearch
-    vmo.v1.verrazzano.io: system
+  {{- toYaml .Values.esData.extraLabels | nindent 10 }}
   {{- include "mychart.labels" . | nindent 4 }}
   annotations:
     deployment.kubernetes.io/revision: "1"
@@ -482,8 +473,8 @@ spec:
         fsGroup: 1000
         seccompProfile:
           type: RuntimeDefault
-      serviceAccount: verrazzano-monitoring-operator
-      serviceAccountName: verrazzano-monitoring-operator
+      serviceAccount: {{ .Values.esData.serviceAccount }}
+      serviceAccountName: {{ .Values.esData.serviceAccount }}
       terminationGracePeriodSeconds: 1
       volumes:
       - name: storage-volume
@@ -620,6 +611,6 @@ spec:
       securityContext:
         seccompProfile:
           type: RuntimeDefault
-      serviceAccount: verrazzano-monitoring-operator
-      serviceAccountName: verrazzano-monitoring-operator
+      serviceAccount: {{ .Values.esIngest.serviceAccount }}
+      serviceAccountName: {{ .Values.esIngest.serviceAccount }}
       terminationGracePeriodSeconds: 1
