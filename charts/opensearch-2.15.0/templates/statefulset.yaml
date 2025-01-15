@@ -3,9 +3,7 @@ kind: StatefulSet
 metadata:
   name: {{ include "mychart.fullname" . }}-es-master
   labels:
-    k8s-app: verrazzano.io
-    verrazzano-component: opensearch
-    vmo.v1.verrazzano.io: system
+  {{- toYaml .Values.esMaster.extraMetadataLabels | nindent 4 }}
   {{- include "mychart.labels" . | nindent 4 }}
 spec:
   podManagementPolicy: Parallel
@@ -25,8 +23,7 @@ spec:
       labels:
         app: system-es-master
         node-group: es-master
-        opensearch.verrazzano.io/role-master: "true"
-        verrazzano-component: opensearch
+        {{- toYaml .Values.esMaster.extraTemplateLabels | nindent 8 }}
     spec:
       affinity:
         podAntiAffinity:
@@ -174,8 +171,8 @@ spec:
       securityContext:
         seccompProfile:
           type: RuntimeDefault
-      serviceAccount: verrazzano-monitoring-operator
-      serviceAccountName: verrazzano-monitoring-operator
+      serviceAccount: {{ .Values.esMaster.serviceAccount }}
+      serviceAccountName: {{ .Values.esMaster.serviceAccount }}
       terminationGracePeriodSeconds: 1
   updateStrategy:
     rollingUpdate:
@@ -185,9 +182,8 @@ spec:
   - apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
-      creationTimestamp: null
       name: elasticsearch-master
-      namespace: verrazzano-system
+      namespace: {{ .Values.esMaster.namespace }}
     spec:
       accessModes:
       - ReadWriteOnce

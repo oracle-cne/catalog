@@ -18,7 +18,7 @@ esData0:
       runAsNonRoot: false
       runAsUser: 0
     image:
-      repository: ghcr.io/oracle/oraclelinux
+      repository: os/oraclelinux
       tag: "8"
     imagePullPolicy: IfNotPresent
   esData:
@@ -59,7 +59,7 @@ esData1:
       runAsNonRoot: false
       runAsUser: 0
     image:
-      repository: ghcr.io/oracle/oraclelinux
+      repository: os/oraclelinux
       tag: "8"
     imagePullPolicy: IfNotPresent
   esData:
@@ -100,7 +100,7 @@ esData2:
       runAsNonRoot: false
       runAsUser: 0
     image:
-      repository: ghcr.io/oracle/oraclelinux
+      repository: os/oraclelinux
       tag: "8"
     imagePullPolicy: IfNotPresent
   esData:
@@ -141,7 +141,7 @@ esIngest:
       runAsNonRoot: false
       runAsUser: 0
     image:
-      repository: ghcr.io/oracle/oraclelinux
+      repository: os/oraclelinux
       tag: "8"
     imagePullPolicy: IfNotPresent
   esIngest:
@@ -170,6 +170,10 @@ esIngest:
   replicas: 1
   revisionHistoryLimit: 10
 esMaster:
+  serviceAccount:
+  namespace:
+  extraMetadataLabels:
+  extraTemplateLabels:
   elasticsearchInit:
     containerSecurityContext:
       allowPrivilegeEscalation: true
@@ -178,7 +182,7 @@ esMaster:
       runAsNonRoot: false
       runAsUser: 0
     image:
-      repository: ghcr.io/oracle/oraclelinux
+      repository: os/oraclelinux
       tag: "8"
     imagePullPolicy: IfNotPresent
   esMaster:
