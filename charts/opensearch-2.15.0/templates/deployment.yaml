@@ -22,8 +22,7 @@ spec:
         app: system-es-data
         index: "0"
         node-group: es-data
-        opensearch.verrazzano.io/role-data: "true"
-        verrazzano-component: opensearch
+        {{- toYaml .Values.esData.extraTemplateLabels | nindent 8 }}
       {{- include "mychart.selectorLabels" . | nindent 8 }}
       annotations:
         proxy.istio.io/config: '{ ''holdApplicationUntilProxyStarts'': true }'
@@ -172,8 +171,7 @@ spec:
         app: system-es-data
         index: "1"
         node-group: es-data
-        opensearch.verrazzano.io/role-data: "true"
-        verrazzano-component: opensearch
+        {{- toYaml .Values.esData.extraTemplateLabels | nindent 8 }}
       {{- include "mychart.selectorLabels" . | nindent 8 }}
       annotations:
         proxy.istio.io/config: '{ ''holdApplicationUntilProxyStarts'': true }'
@@ -322,8 +320,7 @@ spec:
         app: system-es-data
         index: "2"
         node-group: es-data
-        opensearch.verrazzano.io/role-data: "true"
-        verrazzano-component: opensearch
+        {{- toYaml .Values.esData.extraTemplateLabels | nindent 8 }}
       {{- include "mychart.selectorLabels" . | nindent 8 }}
       annotations:
         proxy.istio.io/config: '{ ''holdApplicationUntilProxyStarts'': true }'
