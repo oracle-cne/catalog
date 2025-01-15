@@ -208,6 +208,9 @@ esMaster:
     elasticsearchMaster:
       requests:
         storage: 50Gi
+  service:
+    extraLabels:
+    extraSelectorLabels:
 esMasterHttp:
   ports:
   - name: http-es-master
@@ -215,6 +218,9 @@ esMasterHttp:
     protocol: TCP
     targetPort: 9200
   type: ClusterIP
+  service:
+    extraLabels:
+    extraSelectorLabels:
 kubernetesClusterDomain: cluster.local
 osIngest:
   ports:

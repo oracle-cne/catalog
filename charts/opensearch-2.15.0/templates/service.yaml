@@ -18,14 +18,12 @@ kind: Service
 metadata:
   name: {{ include "mychart.fullname" . }}-es-master
   labels:
-    k8s-app: verrazzano.io
-    verrazzano-component: opensearch
-    vmo.v1.verrazzano.io: system
+  {{- .Values.esMaster.service.extraLabels | toYaml | nindent 4 }}
   {{- include "mychart.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.esMaster.type }}
   selector:
-    opensearch.verrazzano.io/role-master: "true"
+  {{- .Values.esMaster.service.extraSelectorLabels | toYaml | nindent 4 }}
   {{- include "mychart.selectorLabels" . | nindent 4 }}
   ports:
 	{{- .Values.esMaster.ports | toYaml | nindent 2 }}
@@ -35,14 +33,12 @@ kind: Service
 metadata:
   name: {{ include "mychart.fullname" . }}-es-master-http
   labels:
-    k8s-app: verrazzano.io
-    verrazzano-component: opensearch
-    vmo.v1.verrazzano.io: system
+  {{- .Values.esMasterHttp.service.extraLabels | toYaml | nindent 4 }}
   {{- include "mychart.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.esMasterHttp.type }}
   selector:
-    opensearch.verrazzano.io/role-master: "true"
+  {{- .Values.esMasterHttp.service.extraSelectorLabels | toYaml | nindent 4 }}
   {{- include "mychart.selectorLabels" . | nindent 4 }}
   ports:
 	{{- .Values.esMasterHttp.ports | toYaml | nindent 2 }}
