@@ -202,7 +202,7 @@ esMaster:
       loggerOrgOpensearch: info
       nodeRoles: master
       opensearchJavaOpts: -Xms1076m -Xmx1076m
-      additionalEnv: {}
+      additionalEnv: []
     image:
       repository: ghcr.io/verrazzano/opensearch
       tag: 2.3.0-20230914055551-b6247ad8ac8
