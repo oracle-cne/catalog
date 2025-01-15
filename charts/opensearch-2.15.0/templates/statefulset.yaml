@@ -73,9 +73,8 @@ spec:
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
         {{- toYaml .Values.esMaster.esMaster.env.additionalEnv | nindent 8 }}
-        image: {{ .Values.esMaster.esMaster.image.repository }}:{{ .Values.esMaster.esMaster.image.tag
-          | default .Chart.AppVersion }}
-        imagePullPolicy: {{ .Values.esMaster.esMaster.imagePullPolicy }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
           failureThreshold: 5
           initialDelaySeconds: 30
