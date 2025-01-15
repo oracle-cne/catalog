@@ -224,3 +224,8 @@ ingress:
   host:
   extraAnnotations: {}
   extraLabels: {}
+  spec:
+    ingressClassName:
+    backend:
+      service:
+        name:

@@ -12,14 +12,14 @@ metadata:
     nginx.ingress.kubernetes.io/upstream-vhost: ${service_name}.${namespace}.svc.cluster.local
  {{- .Values.ingress.extraAnnotations | toYaml | nindent 4 }}
 spec:
-  ingressClassName: verrazzano-nginx
+  ingressClassName: {{ .Values.ingress.spec.ingressClassName }}
   rules:
   - host: {{ .Values.ingress.host }}
     http:
       paths:
       - backend:
           service:
-            name: verrazzano-authproxy
+            name: {{ .Values.ingress.spec.backend.service.name }}
             port:
               number: 8775
         path: /()(.*)

@@ -4,9 +4,6 @@ metadata:
   name: {{ include "mychart.fullname" . }}-es-data
   labels:
   {{- include "mychart.labels" . | nindent 4 }}
-  annotations:
-    meta.helm.sh/release-name: verrazzano-network-policies
-    meta.helm.sh/release-namespace: verrazzano-system
 spec:
   ingress:
   - from:
@@ -63,9 +60,6 @@ metadata:
   name: {{ include "mychart.fullname" . }}-es-master
   labels:
   {{- include "mychart.labels" . | nindent 4 }}
-  annotations:
-    meta.helm.sh/release-name: verrazzano-network-policies
-    meta.helm.sh/release-namespace: verrazzano-system
 spec:
   ingress:
   - from:
@@ -112,9 +106,6 @@ metadata:
   name: {{ include "mychart.fullname" . }}-os-ingest
   labels:
   {{- include "mychart.labels" . | nindent 4 }}
-  annotations:
-    meta.helm.sh/release-name: verrazzano-network-policies
-    meta.helm.sh/release-namespace: verrazzano-system
 spec:
   ingress:
   - from:
