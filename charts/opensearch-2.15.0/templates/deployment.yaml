@@ -76,22 +76,11 @@ spec:
           value: {{ quote .Values.esData0.esData.env.nodeRoles }}
         - name: OPENSEARCH_JAVA_OPTS
           value: {{ quote .Values.esData0.esData.env.opensearchJavaOpts }}
-        - name: OBJECT_STORE_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              key: object_store_access_key
-              name: verrazzano-backup
-              optional: true
-        - name: OBJECT_STORE_SECRET_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              key: object_store_secret_key
-              name: verrazzano-backup
-              optional: true
         - name: DISABLE_SECURITY_PLUGIN
           value: {{ quote .Values.esData0.esData.env.disableSecurityPlugin }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
+        {{- toYaml .Values.esData.extraEnv | nindent 8 }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
@@ -237,22 +226,11 @@ spec:
           value: {{ quote .Values.esData1.esData.env.nodeRoles }}
         - name: OPENSEARCH_JAVA_OPTS
           value: {{ quote .Values.esData1.esData.env.opensearchJavaOpts }}
-        - name: OBJECT_STORE_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              key: object_store_access_key
-              name: verrazzano-backup
-              optional: true
-        - name: OBJECT_STORE_SECRET_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              key: object_store_secret_key
-              name: verrazzano-backup
-              optional: true
         - name: DISABLE_SECURITY_PLUGIN
           value: {{ quote .Values.esData1.esData.env.disableSecurityPlugin }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
+        {{- toYaml .Values.esData.extraEnv | nindent 8 }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
@@ -398,22 +376,11 @@ spec:
           value: {{ quote .Values.esData2.esData.env.nodeRoles }}
         - name: OPENSEARCH_JAVA_OPTS
           value: {{ quote .Values.esData2.esData.env.opensearchJavaOpts }}
-        - name: OBJECT_STORE_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              key: object_store_access_key
-              name: verrazzano-backup
-              optional: true
-        - name: OBJECT_STORE_SECRET_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              key: object_store_secret_key
-              name: verrazzano-backup
-              optional: true
         - name: DISABLE_SECURITY_PLUGIN
           value: {{ quote .Values.esData2.esData.env.disableSecurityPlugin }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
+        {{- toYaml .Values.esData.extraEnv | nindent 8 }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
