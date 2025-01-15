@@ -48,14 +48,12 @@ kind: Service
 metadata:
   name: {{ include "mychart.fullname" . }}-os-ingest
   labels:
-    k8s-app: verrazzano.io
-    verrazzano-component: opensearch
-    vmo.v1.verrazzano.io: system
+  {{- .Values.osIngest.service.extraLabels | toYaml | nindent 4 }}
   {{- include "mychart.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.osIngest.type }}
   selector:
-    opensearch.verrazzano.io/role-ingest: "true"
+  {{- .Values.osIngest.service.extraSelectorLabels | toYaml | nindent 4 }}
   {{- include "mychart.selectorLabels" . | nindent 4 }}
   ports:
 	{{- .Values.osIngest.ports | toYaml | nindent 2 }}

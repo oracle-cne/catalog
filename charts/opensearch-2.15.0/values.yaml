@@ -229,6 +229,9 @@ osIngest:
     protocol: TCP
     targetPort: 9200
   type: ClusterIP
+  service:
+    extraLabels:
+    extraSelectorLabels:
 ingress:
   host:
   extraAnnotations: {}
