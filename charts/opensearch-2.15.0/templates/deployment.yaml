@@ -450,10 +450,7 @@ kind: Deployment
 metadata:
   name: {{ include "mychart.fullname" . }}-es-ingest
   labels:
-    k8s-app: verrazzano.io
-    opensearch.verrazzano.io/role-ingest: "true"
-    verrazzano-component: opensearch
-    vmo.v1.verrazzano.io: system
+  {{- toYaml .Values.esIngest.extraLabels | nindent 4 }}
   {{- include "mychart.labels" . | nindent 4 }}
   annotations:
     deployment.kubernetes.io/revision: "1"
@@ -470,8 +467,7 @@ spec:
       labels:
         app: system-es-ingest
         node-group: es-ingest
-        opensearch.verrazzano.io/role-ingest: "true"
-        verrazzano-component: opensearch
+      {{- toYaml .Values.esIngest.extraTemplateLabels | nindent 8 }}
       {{- include "mychart.selectorLabels" . | nindent 8 }}
       annotations:
         proxy.istio.io/config: '{ ''holdApplicationUntilProxyStarts'': true }'

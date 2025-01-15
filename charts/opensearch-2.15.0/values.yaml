@@ -129,6 +129,8 @@ esData2:
   revisionHistoryLimit: 10
 esIngest:
   serviceAccount:
+  extraLabels:
+  extraTemplateLabels:
   elasticsearchInit:
     args:
     - sysctl
