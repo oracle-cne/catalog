@@ -1,3 +1,7 @@
+image:
+  repository: olcne/opensearch
+  tag: v2.15.0
+  pullPolicy: IfNotPresent
 esData:
   ports:
   - name: http-es-data
@@ -37,10 +41,6 @@ esData0:
       nodeAttrAvailabilityDomain: None
       nodeRoles: data
       opensearchJavaOpts: -Xms3687m -Xmx3687m
-    image:
-      repository: ghcr.io/verrazzano/opensearch
-      tag: 2.3.0-20230914055551-b6247ad8ac8
-    imagePullPolicy: IfNotPresent
     resources:
       requests:
         memory: 2560Mi
@@ -78,10 +78,6 @@ esData1:
       nodeAttrAvailabilityDomain: None
       nodeRoles: data
       opensearchJavaOpts: -Xms3687m -Xmx3687m
-    image:
-      repository: ghcr.io/verrazzano/opensearch
-      tag: 2.3.0-20230914055551-b6247ad8ac8
-    imagePullPolicy: IfNotPresent
     resources:
       requests:
         memory: 2560Mi
@@ -119,10 +115,6 @@ esData2:
       nodeAttrAvailabilityDomain: None
       nodeRoles: data
       opensearchJavaOpts: -Xms3687m -Xmx3687m
-    image:
-      repository: ghcr.io/verrazzano/opensearch
-      tag: 2.3.0-20230914055551-b6247ad8ac8
-    imagePullPolicy: IfNotPresent
     resources:
       requests:
         memory: 2560Mi
@@ -160,10 +152,6 @@ esIngest:
       networkHost: 0.0.0.0
       nodeRoles: ingest
       opensearchJavaOpts: -Xms1920m -Xmx1920m
-    image:
-      repository: ghcr.io/verrazzano/opensearch
-      tag: 2.3.0-20230914055551-b6247ad8ac8
-    imagePullPolicy: IfNotPresent
     resources:
       requests:
         memory: 2560Mi
@@ -203,10 +191,6 @@ esMaster:
       nodeRoles: master
       opensearchJavaOpts: -Xms1076m -Xmx1076m
       additionalEnv: []
-    image:
-      repository: ghcr.io/verrazzano/opensearch
-      tag: 2.3.0-20230914055551-b6247ad8ac8
-    imagePullPolicy: IfNotPresent
     resources:
       requests:
         memory: 2560Mi

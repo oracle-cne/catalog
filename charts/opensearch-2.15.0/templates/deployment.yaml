@@ -95,9 +95,8 @@ spec:
           value: {{ quote .Values.esData0.esData.env.disableSecurityPlugin }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
-        image: {{ .Values.esData0.esData.image.repository }}:{{ .Values.esData0.esData.image.tag
-          | default .Chart.AppVersion }}
-        imagePullPolicy: {{ .Values.esData0.esData.imagePullPolicy }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
           failureThreshold: 5
           httpGet:
@@ -260,9 +259,8 @@ spec:
           value: {{ quote .Values.esData1.esData.env.disableSecurityPlugin }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
-        image: {{ .Values.esData1.esData.image.repository }}:{{ .Values.esData1.esData.image.tag
-          | default .Chart.AppVersion }}
-        imagePullPolicy: {{ .Values.esData1.esData.imagePullPolicy }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
           failureThreshold: 5
           httpGet:
@@ -425,9 +423,8 @@ spec:
           value: {{ quote .Values.esData2.esData.env.disableSecurityPlugin }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
-        image: {{ .Values.esData2.esData.image.repository }}:{{ .Values.esData2.esData.image.tag
-          | default .Chart.AppVersion }}
-        imagePullPolicy: {{ .Values.esData2.esData.imagePullPolicy }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
           failureThreshold: 5
           httpGet:
@@ -568,9 +565,8 @@ spec:
           value: {{ quote .Values.esIngest.esIngest.env.disableSecurityPlugin }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
-        image: {{ .Values.esIngest.esIngest.image.repository }}:{{ .Values.esIngest.esIngest.image.tag
-          | default .Chart.AppVersion }}
-        imagePullPolicy: {{ .Values.esIngest.esIngest.imagePullPolicy }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
           failureThreshold: 5
           httpGet:
