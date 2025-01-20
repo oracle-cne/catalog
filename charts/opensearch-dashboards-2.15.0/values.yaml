@@ -2799,7 +2799,9 @@ opensearchOpensearchDashboard:
       "uid": "pIZicTl7z",
       "version": 1
     }
-osd:
+deployment:
+  extraLabels:
+  serviceAccount:
   osd:
     containerSecurityContext:
       allowPrivilegeEscalation: false

@@ -3,15 +3,13 @@ kind: Deployment
 metadata:
   name: {{ include "mychart.fullname" . }}-vmi-system-osd
   labels:
-    k8s-app: verrazzano.io
-    verrazzano-component: osd
-    vmo.v1.verrazzano.io: system
+  {{- .Values.deployment.extraLabels | toYaml | nindent 4 }}
   {{- include "mychart.labels" . | nindent 4 }}
   annotations:
     deployment.kubernetes.io/revision: "15"
 spec:
-  replicas: {{ .Values.osd.replicas }}
-  revisionHistoryLimit: {{ .Values.osd.revisionHistoryLimit }}
+  replicas: {{ .Values.deployment.replicas }}
+  revisionHistoryLimit: {{ .Values.deployment.revisionHistoryLimit }}
   selector:
     matchLabels:
       app: system-osd
@@ -42,15 +40,15 @@ spec:
         - "#!/usr/bin/env bash -e\n    \n\t./opensearch-dashboards-docker-entrypoint.sh"
         env:
         - name: OPENSEARCH_HOSTS
-          value: {{ quote .Values.osd.osd.env.opensearchHosts }}
+          value: {{ quote .Values.deployment.osd.env.opensearchHosts }}
         - name: DISABLE_SECURITY_DASHBOARDS_PLUGIN
-          value: {{ quote .Values.osd.osd.env.disableSecurityDashboardsPlugin
+          value: {{ quote .Values.deployment.osd.env.disableSecurityDashboardsPlugin
             }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
-        image: {{ .Values.osd.osd.image.repository }}:{{ .Values.osd.osd.image.tag
+        image: {{ .Values.deployment.osd.image.repository }}:{{ .Values.deployment.osd.image.tag
           | default .Chart.AppVersion }}
-        imagePullPolicy: {{ .Values.osd.osd.imagePullPolicy }}
+        imagePullPolicy: {{ .Values.deployment.osd.imagePullPolicy }}
         livenessProbe:
           failureThreshold: 10
           httpGet:
@@ -76,8 +74,8 @@ spec:
           periodSeconds: 20
           successThreshold: 1
           timeoutSeconds: 3
-        resources: {{- toYaml .Values.osd.osd.resources | nindent 10 }}
-        securityContext: {{- toYaml .Values.osd.osd.containerSecurityContext |
+        resources: {{- toYaml .Values.deployment.osd.resources | nindent 10 }}
+        securityContext: {{- toYaml .Values.deployment.osd.containerSecurityContext |
           nindent 10 }}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
@@ -91,6 +89,6 @@ spec:
         runAsUser: 1000
         seccompProfile:
           type: RuntimeDefault
-      serviceAccount: verrazzano-monitoring-operator
-      serviceAccountName: verrazzano-monitoring-operator
+      serviceAccount: {{ .Values.deployment.serviceAccount }}
+      serviceAccountName: {{ .Values.deployment.serviceAccount }}
       terminationGracePeriodSeconds: 1

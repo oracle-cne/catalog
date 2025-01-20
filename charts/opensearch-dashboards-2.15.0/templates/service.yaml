@@ -6,9 +6,9 @@ metadata:
   {{- .Values.service.extraLabels | toYaml | nindent 4 }}
   {{- include "mychart.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.osd.type }}
+  type: {{ .Values.deployment.type }}
   selector:
     app: system-osd
   {{- include "mychart.selectorLabels" . | nindent 4 }}
   ports:
-	{{- .Values.osd.ports | toYaml | nindent 2 }}
+	{{- .Values.deployment.ports | toYaml | nindent 2 }}
