@@ -2825,3 +2825,5 @@ osd:
   replicas: 1
   revisionHistoryLimit: 10
   type: ClusterIP
+service:
+  extraLabels:

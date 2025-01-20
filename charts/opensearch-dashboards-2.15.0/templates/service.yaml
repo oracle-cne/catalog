@@ -3,9 +3,7 @@ kind: Service
 metadata:
   name: {{ include "mychart.fullname" . }}-vmi-system-osd
   labels:
-    k8s-app: verrazzano.io
-    verrazzano-component: osd
-    vmo.v1.verrazzano.io: system
+  {{- .Values.service.extraLabels | toYaml | nindent 4 }}
   {{- include "mychart.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.osd.type }}
