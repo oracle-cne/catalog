@@ -18,7 +18,7 @@ spec:
     metadata:
       labels:
         app: system-osd
-        verrazzano-component: osd
+      {{- .Values.deployment.extraTemplateLabels | toYaml | nindent 8 }}
       {{- include "mychart.selectorLabels" . | nindent 8 }}
       annotations:
         proxy.istio.io/config: '{ ''holdApplicationUntilProxyStarts'': true }'

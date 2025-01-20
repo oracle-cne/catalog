@@ -2801,6 +2801,7 @@ opensearchOpensearchDashboard:
     }
 deployment:
   extraLabels:
+  extraTemplateLabels:
   serviceAccount:
   osd:
     containerSecurityContext:
@@ -2810,8 +2811,8 @@ deployment:
         - ALL
       privileged: false
     env:
-      disableSecurityDashboardsPlugin: "true"
-      opensearchHosts: http://vmi-system-os-ingest:9200/
+      disableSecurityDashboardsPlugin: "false"
+      opensearchHosts:
     image:
       repository: olcne/opensearch-dashboards
       tag: 2.15.0
