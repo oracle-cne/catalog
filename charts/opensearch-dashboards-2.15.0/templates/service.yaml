@@ -8,9 +8,9 @@ metadata:
     vmo.v1.verrazzano.io: system
   {{- include "mychart.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.vmiSystemOsd.type }}
+  type: {{ .Values.osd.type }}
   selector:
     app: system-osd
   {{- include "mychart.selectorLabels" . | nindent 4 }}
   ports:
-	{{- .Values.vmiSystemOsd.ports | toYaml | nindent 2 }}
+	{{- .Values.osd.ports | toYaml | nindent 2 }}

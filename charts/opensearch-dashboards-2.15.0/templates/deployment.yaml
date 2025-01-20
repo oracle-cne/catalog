@@ -10,8 +10,8 @@ metadata:
   annotations:
     deployment.kubernetes.io/revision: "15"
 spec:
-  replicas: {{ .Values.vmiSystemOsd.replicas }}
-  revisionHistoryLimit: {{ .Values.vmiSystemOsd.revisionHistoryLimit }}
+  replicas: {{ .Values.osd.replicas }}
+  revisionHistoryLimit: {{ .Values.osd.revisionHistoryLimit }}
   selector:
     matchLabels:
       app: system-osd
@@ -42,15 +42,15 @@ spec:
         - "#!/usr/bin/env bash -e\n    \n\t./opensearch-dashboards-docker-entrypoint.sh"
         env:
         - name: OPENSEARCH_HOSTS
-          value: {{ quote .Values.vmiSystemOsd.osd.env.opensearchHosts }}
+          value: {{ quote .Values.osd.osd.env.opensearchHosts }}
         - name: DISABLE_SECURITY_DASHBOARDS_PLUGIN
-          value: {{ quote .Values.vmiSystemOsd.osd.env.disableSecurityDashboardsPlugin
+          value: {{ quote .Values.osd.osd.env.disableSecurityDashboardsPlugin
             }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
-        image: {{ .Values.vmiSystemOsd.osd.image.repository }}:{{ .Values.vmiSystemOsd.osd.image.tag
+        image: {{ .Values.osd.osd.image.repository }}:{{ .Values.osd.osd.image.tag
           | default .Chart.AppVersion }}
-        imagePullPolicy: {{ .Values.vmiSystemOsd.osd.imagePullPolicy }}
+        imagePullPolicy: {{ .Values.osd.osd.imagePullPolicy }}
         livenessProbe:
           failureThreshold: 10
           httpGet:
@@ -76,8 +76,8 @@ spec:
           periodSeconds: 20
           successThreshold: 1
           timeoutSeconds: 3
-        resources: {{- toYaml .Values.vmiSystemOsd.osd.resources | nindent 10 }}
-        securityContext: {{- toYaml .Values.vmiSystemOsd.osd.containerSecurityContext |
+        resources: {{- toYaml .Values.osd.osd.resources | nindent 10 }}
+        securityContext: {{- toYaml .Values.osd.osd.containerSecurityContext |
           nindent 10 }}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File

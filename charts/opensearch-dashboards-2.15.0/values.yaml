@@ -2799,7 +2799,7 @@ opensearchOpensearchDashboard:
       "uid": "pIZicTl7z",
       "version": 1
     }
-vmiSystemOsd:
+osd:
   osd:
     containerSecurityContext:
       allowPrivilegeEscalation: false
@@ -2811,9 +2811,9 @@ vmiSystemOsd:
       disableSecurityDashboardsPlugin: "true"
       opensearchHosts: http://vmi-system-os-ingest:9200/
     image:
-      repository: ghcr.io/verrazzano/opensearch-dashboards
-      tag: 2.3.0-20230918052256-cc04b43c2b
-    imagePullPolicy: Always
+      repository: olcne/opensearch-dashboards
+      tag: 2.15.0
+    imagePullPolicy: IfNotPresent
     resources:
       requests:
         memory: 192Mi
