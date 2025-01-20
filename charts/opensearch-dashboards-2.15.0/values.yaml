@@ -2802,6 +2802,7 @@ opensearchOpensearchDashboard:
 deployment:
   extraLabels:
   extraTemplateLabels:
+  extraTemplateAnnotations:
   serviceAccount:
   osd:
     containerSecurityContext:

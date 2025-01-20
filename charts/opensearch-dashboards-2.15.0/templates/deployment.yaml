@@ -21,8 +21,7 @@ spec:
       {{- .Values.deployment.extraTemplateLabels | toYaml | nindent 8 }}
       {{- include "mychart.selectorLabels" . | nindent 8 }}
       annotations:
-        proxy.istio.io/config: '{ ''holdApplicationUntilProxyStarts'': true }'
-        traffic.sidecar.istio.io/includeOutboundPorts: "9200"
+      {{- .Values.deployment.extraTemplateAnnotations | toYaml | nindent 8 }}
     spec:
       affinity:
         podAntiAffinity:
