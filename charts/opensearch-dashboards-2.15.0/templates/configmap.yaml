@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mychart.fullname" . }}-opensearch-opensearch-dashboard
+  labels:
+    grafana_dashboard: "1"
+  {{- include "mychart.labels" . | nindent 4 }}
+  annotations:
+    k8s-sidecar-target-directory: OpenSearch
+    meta.helm.sh/release-name: verrazzano-grafana-dashboards
+    meta.helm.sh/release-namespace: verrazzano-system
+data:
+  opensearch_dashboard.json: {{ .Values.opensearchOpensearchDashboard.opensearchDashboardJson
+    | toYaml | indent 1 }}

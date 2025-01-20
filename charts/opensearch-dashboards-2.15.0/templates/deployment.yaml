@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mychart.fullname" . }}-vmi-system-osd
+  labels:
+    k8s-app: verrazzano.io
+    verrazzano-component: osd
+    vmo.v1.verrazzano.io: system
+  {{- include "mychart.labels" . | nindent 4 }}
+  annotations:
+    deployment.kubernetes.io/revision: "15"
+spec:
+  replicas: {{ .Values.vmiSystemOsd.replicas }}
+  revisionHistoryLimit: {{ .Values.vmiSystemOsd.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app: system-osd
+    {{- include "mychart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: system-osd
+        verrazzano-component: osd
+      {{- include "mychart.selectorLabels" . | nindent 8 }}
+      annotations:
+        proxy.istio.io/config: '{ ''holdApplicationUntilProxyStarts'': true }'
+        traffic.sidecar.istio.io/includeOutboundPorts: "9200"
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: system-osd
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+            weight: 100
+      containers:
+      - command:
+        - sh
+        - -c
+        - "#!/usr/bin/env bash -e\n    \n\t./opensearch-dashboards-docker-entrypoint.sh"
+        env:
+        - name: OPENSEARCH_HOSTS
+          value: {{ quote .Values.vmiSystemOsd.osd.env.opensearchHosts }}
+        - name: DISABLE_SECURITY_DASHBOARDS_PLUGIN
+          value: {{ quote .Values.vmiSystemOsd.osd.env.disableSecurityDashboardsPlugin
+            }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.vmiSystemOsd.osd.image.repository }}:{{ .Values.vmiSystemOsd.osd.image.tag
+          | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.vmiSystemOsd.osd.imagePullPolicy }}
+        livenessProbe:
+          failureThreshold: 10
+          httpGet:
+            path: /api/status
+            port: 5601
+            scheme: HTTP
+          initialDelaySeconds: 120
+          periodSeconds: 20
+          successThreshold: 1
+          timeoutSeconds: 3
+        name: osd
+        ports:
+        - containerPort: 5601
+          name: osd
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /api/status
+            port: 5601
+            scheme: HTTP
+          initialDelaySeconds: 15
+          periodSeconds: 20
+          successThreshold: 1
+          timeoutSeconds: 3
+        resources: {{- toYaml .Values.vmiSystemOsd.osd.resources | nindent 10 }}
+        securityContext: {{- toYaml .Values.vmiSystemOsd.osd.containerSecurityContext |
+          nindent 10 }}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccount: verrazzano-monitoring-operator
+      serviceAccountName: verrazzano-monitoring-operator
+      terminationGracePeriodSeconds: 1

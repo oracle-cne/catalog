@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mychart.fullname" . }}-vmi-system-osd
+  labels:
+    k8s-app: verrazzano.io
+    verrazzano-component: osd
+    vmo.v1.verrazzano.io: system
+  {{- include "mychart.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.vmiSystemOsd.type }}
+  selector:
+    app: system-osd
+  {{- include "mychart.selectorLabels" . | nindent 4 }}
+  ports:
+	{{- .Values.vmiSystemOsd.ports | toYaml | nindent 2 }}
