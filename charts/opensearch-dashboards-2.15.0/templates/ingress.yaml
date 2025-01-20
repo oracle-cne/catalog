@@ -3,34 +3,28 @@ kind: Ingress
 metadata:
   name: {{ include "mychart.fullname" . }}-vmi-system-osd
   labels:
-    k8s-app: verrazzano.io
-    vmo.v1.verrazzano.io: system
+  {{- .Values.ingress.extraLabels | toYaml | nindent 4 }}
   {{- include "mychart.labels" . | nindent 4 }}
   annotations:
-    cert-manager.io/cluster-issuer: verrazzano-cluster-issuer
-    cert-manager.io/common-name: osd.vmi.system.default.100.101.68.12.nip.io
-    external-dns.alpha.kubernetes.io/target: verrazzano-ingress.default.100.101.68.12.nip.io
-    external-dns.alpha.kubernetes.io/ttl: "60"
-    field.cattle.io/publicEndpoints: '[{"addresses":["100.101.68.12"],"port":443,"protocol":"HTTPS","serviceName":"verrazzano-system:verrazzano-authproxy","ingressName":"verrazzano-system:vmi-system-osd","hostname":"osd.vmi.system.default.100.101.68.12.nip.io","path":"/()(.*)","allNodes":false}]'
-    kubernetes.io/tls-acme: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: 6M
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/service-upstream: "true"
     nginx.ingress.kubernetes.io/upstream-vhost: ${service_name}.${namespace}.svc.cluster.local
+  {{- .Values.ingress.extraAnnotations | toYaml | nindent 4 }}
 spec:
-  ingressClassName: verrazzano-nginx
+  ingressClassName: {{ .Values.ingress.spec.ingressClassName }}
   rules:
-  - host: osd.vmi.system.default.100.101.68.12.nip.io
+  - host: {{ .Values.ingress.spec.rules.host }}
     http:
       paths:
       - backend:
           service:
-            name: verrazzano-authproxy
+            name: {{ .Values.ingress.spec.rules.service.name }}
             port:
-              number: 8775
+              number: {{ .Values.ingress.spec.rules.service.port.number }}
         path: /()(.*)
         pathType: ImplementationSpecific
   tls:
   - hosts:
-    - osd.vmi.system.default.100.101.68.12.nip.io
-    secretName: system-tls-osd
+    - {{ .Values.ingress.spec.rules.host }}
+    secretName: {{ .Values.ingress.spec.tls.secretName }}

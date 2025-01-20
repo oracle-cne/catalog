@@ -2827,3 +2827,16 @@ osd:
   type: ClusterIP
 service:
   extraLabels:
+ingress:
+  extraLabels:
+  extraAnnotations:
+  spec:
+    ingressClassName:
+    rules:
+      host:
+      service:
+        name:
+        port:
+          number:
+    tls:
+      secretName:
