@@ -35,7 +35,8 @@ spec:
               topologyKey: failure-domain.beta.kubernetes.io/zone
             weight: 100
       containers:
-      - command: {{ .Values.esMaster.esMaster.command }}
+      - command:
+        {{- toYaml .Values.esMaster.esMaster.command | nindent 8}}
         env:
         - name: node.name
           valueFrom:
