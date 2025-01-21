@@ -35,19 +35,7 @@ spec:
               topologyKey: failure-domain.beta.kubernetes.io/zone
             weight: 100
       containers:
-      - command:
-        - sh
-        - -c
-        - "#!/usr/bin/env bash -e\n\t# Updating opensearch keystore with keys\n\t# required
-          for the repository-s3 plugin\n\tif [ \"${OBJECT_STORE_ACCESS_KEY_ID:-}\" ];
-          then\n\t\techo \"Updating object store access key...\"\n\t\techo $OBJECT_STORE_ACCESS_KEY_ID
-          | /usr/share/opensearch/bin/opensearch-keystore add --stdin --force s3.client.default.access_key;\n\tfi\n\tif
-          [ \"${OBJECT_STORE_SECRET_KEY_ID:-}\" ]; then\n\t\techo \"Updating object
-          store secret key...\"\n\t\techo $OBJECT_STORE_SECRET_KEY_ID | /usr/share/opensearch/bin/opensearch-keystore
-          add --stdin --force s3.client.default.secret_key;\n\tfi\n\t\n\t\n\t# Disable
-          the jvm heap settings in jvm.options\n\techo \"Commenting out java heap settings
-          in jvm.options...\"\n\tsed -i -e /^-Xms/s/^/#/g -e /^-Xmx/s/^/#/g config/jvm.options\n\t\n\n
-          \    \n\t\n\t/usr/local/bin/docker-entrypoint.sh"
+      - command: {{ .Values.esMaster.esMaster.command }}
         env:
         - name: node.name
           valueFrom:

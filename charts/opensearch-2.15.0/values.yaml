@@ -201,6 +201,7 @@ esMaster:
       nodeRoles: master
       opensearchJavaOpts: -Xms1076m -Xmx1076m
       additionalEnv: []
+    command: []
     resources:
       requests:
         memory: 2560Mi
