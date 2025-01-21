@@ -29,7 +29,7 @@ esData0:
       runAsNonRoot: false
       runAsUser: 0
     image:
-      repository: container-registry.oracle.com/olcne/oraclelinux:8
+      repository: container-registry.oracle.com/olcne/oraclelinux
       tag: "8"
     imagePullPolicy: IfNotPresent
   esData:
@@ -66,7 +66,7 @@ esData1:
       runAsNonRoot: false
       runAsUser: 0
     image:
-      repository: container-registry.oracle.com/olcne/oraclelinux:8
+      repository: container-registry.oracle.com/olcne/oraclelinux
       tag: "8"
     imagePullPolicy: IfNotPresent
   esData:
@@ -103,7 +103,7 @@ esData2:
       runAsNonRoot: false
       runAsUser: 0
     image:
-      repository: container-registry.oracle.com/olcne/oraclelinux:8
+      repository: container-registry.oracle.com/olcne/oraclelinux
       tag: "8"
     imagePullPolicy: IfNotPresent
   esData:
@@ -143,7 +143,7 @@ esIngest:
       runAsNonRoot: false
       runAsUser: 0
     image:
-      repository: container-registry.oracle.com/olcne/oraclelinux:8
+      repository: container-registry.oracle.com/olcne/oraclelinux
       tag: "8"
     imagePullPolicy: IfNotPresent
   esIngest:
@@ -180,7 +180,7 @@ esMaster:
       runAsNonRoot: false
       runAsUser: 0
     image:
-      repository: container-registry.oracle.com/olcne/oraclelinux:8
+      repository: container-registry.oracle.com/olcne/oraclelinux
       tag: "8"
     imagePullPolicy: IfNotPresent
   esMaster:
