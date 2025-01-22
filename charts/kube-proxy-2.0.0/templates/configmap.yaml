@@ -8,6 +8,11 @@ metadata:
     app: kube-proxy
 data:
   kubeconfig.conf: |-
+    {{- if .Values.kubeconfig }}
+    {{- with .Values.kubeconfig }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- else}}
     apiVersion: v1
     kind: Config
     clusters:
@@ -26,9 +31,8 @@ data:
     - name: default
       user:
         tokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    {{- end }}
   config.conf: |-
-    apiVersion: kubeproxy.config.k8s.io/v1alpha1
-    kind: KubeProxyConfiguration
     {{- with .Values.config }}
     {{- toYaml . | nindent 4 }}
     {{- end }}

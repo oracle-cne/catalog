@@ -8,8 +8,10 @@ apiServer:
   host:
   port: 6443
 
-# The contents of a kubeproxy.config.k8s.io/KubeProxyConfiguration
+kubeconfig: {}
 config:
+  apiVersion: kubeproxy.config.k8s.io/v1alpha1
+  kind: KubeProxyConfiguration
   bindAddress: 0.0.0.0
   bindAddressHardFail: false
   clientConnection:
