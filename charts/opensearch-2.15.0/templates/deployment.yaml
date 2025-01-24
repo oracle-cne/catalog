@@ -1,4 +1,4 @@
-{{- range $i := .Values.esData.numDeployments }}
+{{- range $i := until .Values.esData.numDeployments }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
