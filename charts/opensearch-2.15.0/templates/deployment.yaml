@@ -1,15 +1,16 @@
+{{- range $i := .Values.esData.numDeployments }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "mychart.fullname" . }}-es-data-0
+  name: {{ include "mychart.fullname" . }}-es-data-{{ $i }}
   labels:
   {{- toYaml .Values.esData.extraLabels | nindent 4 }}
   {{- include "mychart.labels" . | nindent 4 }}
   annotations:
     deployment.kubernetes.io/revision: "1"
 spec:
-  replicas: {{ .Values.esData0.replicas }}
-  revisionHistoryLimit: {{ .Values.esData0.revisionHistoryLimit }}
+  replicas: {{ .Values.esData.replicas }}
+  revisionHistoryLimit: {{ .Values.esData.revisionHistoryLimit }}
   selector:
     matchLabels:
       app: system-es-data
@@ -64,19 +65,19 @@ spec:
               apiVersion: v1
               fieldPath: metadata.name
         - name: cluster.name
-          value: {{ quote .Values.esData0.esData.env.clusterName }}
+          value: {{ quote .Values.esData.esData.env.clusterName }}
         - name: logger.org.opensearch
-          value: {{ quote .Values.esData0.esData.env.loggerOrgOpensearch }}
+          value: {{ quote .Values.esData.esData.env.loggerOrgOpensearch }}
         - name: discovery.seed_hosts
-          value: {{ quote .Values.esData0.esData.env.discoverySeedHosts }}
+          value: {{ quote .Values.esData.esData.env.discoverySeedHosts }}
         - name: node.attr.availability_domain
-          value: {{ quote .Values.esData0.esData.env.nodeAttrAvailabilityDomain }}
+          value: {{ quote .Values.esData.esData.env.nodeAttrAvailabilityDomain }}
         - name: node.roles
-          value: {{ quote .Values.esData0.esData.env.nodeRoles }}
+          value: {{ quote .Values.esData.esData.env.nodeRoles }}
         - name: OPENSEARCH_JAVA_OPTS
-          value: {{ quote .Values.esData0.esData.env.opensearchJavaOpts }}
+          value: {{ quote .Values.esData.esData.env.opensearchJavaOpts }}
         - name: DISABLE_SECURITY_PLUGIN
-          value: {{ quote .Values.esData0.esData.env.disableSecurityPlugin }}
+          value: {{ quote .Values.esData.esData.env.disableSecurityPlugin }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
         {{- toYaml .Values.esData.extraEnv | nindent 8 }}
@@ -110,8 +111,8 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 3
-        resources: {{- toYaml .Values.esData0.esData.resources | nindent 10 }}
-        securityContext: {{- toYaml .Values.esData0.esData.containerSecurityContext | nindent
+        resources: {{- toYaml .Values.esData.esData.resources | nindent 10 }}
+        securityContext: {{- toYaml .Values.esData.esData.containerSecurityContext | nindent
           10 }}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
@@ -120,16 +121,16 @@ spec:
           name: storage-volume
       dnsPolicy: ClusterFirst
       initContainers:
-      - args: {{- toYaml .Values.esData0.elasticsearchInit.args | nindent 8 }}
+      - args: {{- toYaml .Values.esData.elasticsearchInit.args | nindent 8 }}
         env:
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
-        image: {{ .Values.esData0.elasticsearchInit.image.repository }}:{{ .Values.esData0.elasticsearchInit.image.tag
+        image: {{ .Values.esData.elasticsearchInit.image.repository }}:{{ .Values.esData.elasticsearchInit.image.tag
           | default .Chart.AppVersion }}
-        imagePullPolicy: {{ .Values.esData0.elasticsearchInit.imagePullPolicy }}
+        imagePullPolicy: {{ .Values.esData.elasticsearchInit.imagePullPolicy }}
         name: elasticsearch-init
         resources: {}
-        securityContext: {{- toYaml .Values.esData0.elasticsearchInit.containerSecurityContext
+        securityContext: {{- toYaml .Values.esData.elasticsearchInit.containerSecurityContext
           | nindent 10 }}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
@@ -146,304 +147,7 @@ spec:
       - name: storage-volume
         persistentVolumeClaim:
           claimName: {{ include "mychart.fullname" . }}-es-data
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: {{ include "mychart.fullname" . }}-es-data-1
-  labels:
-  {{- toYaml .Values.esData.extraLabels | nindent 4 }}
-  {{- include "mychart.labels" . | nindent 4 }}
-  annotations:
-    deployment.kubernetes.io/revision: "1"
-spec:
-  replicas: {{ .Values.esData1.replicas }}
-  revisionHistoryLimit: {{ .Values.esData1.revisionHistoryLimit }}
-  selector:
-    matchLabels:
-      app: system-es-data
-      index: "1"
-      node-group: es-data
-    {{- include "mychart.selectorLabels" . | nindent 6 }}
-  template:
-    metadata:
-      labels:
-        app: system-es-data
-        index: "1"
-        node-group: es-data
-        {{- toYaml .Values.esData.extraTemplateLabels | nindent 8 }}
-      {{- include "mychart.selectorLabels" . | nindent 8 }}
-      annotations:
-        proxy.istio.io/config: '{ ''holdApplicationUntilProxyStarts'': true }'
-        traffic.sidecar.istio.io/excludeInboundPorts: "9300"
-        traffic.sidecar.istio.io/excludeOutboundPorts: "9300"
-    spec:
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app: system-es-data
-              topologyKey: kubernetes.io/hostname
-            weight: 100
-      containers:
-      - command:
-        - sh
-        - -c
-        - "#!/usr/bin/env bash -e\n\t# Updating opensearch keystore with keys\n\t# required
-          for the repository-s3 plugin\n\tif [ \"${OBJECT_STORE_ACCESS_KEY_ID:-}\" ]; then\n\t\techo
-          \"Updating object store access key...\"\n\t\techo $OBJECT_STORE_ACCESS_KEY_ID
-          | /usr/share/opensearch/bin/opensearch-keystore add --stdin --force s3.client.default.access_key;\n\tfi\n\tif
-          [ \"${OBJECT_STORE_SECRET_KEY_ID:-}\" ]; then\n\t\techo \"Updating object store
-          secret key...\"\n\t\techo $OBJECT_STORE_SECRET_KEY_ID | /usr/share/opensearch/bin/opensearch-keystore
-          add --stdin --force s3.client.default.secret_key;\n\tfi\n\t\n\t\n\t# Disable the
-          jvm heap settings in jvm.options\n\techo \"Commenting out java heap settings in
-          jvm.options...\"\n\tsed -i -e /^-Xms/s/^/#/g -e /^-Xmx/s/^/#/g config/jvm.options\n\t\n\n
-          \    \n\t\n\t/usr/local/bin/docker-entrypoint.sh"
-        env:
-        - name: NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
-        - name: node.name
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.name
-        - name: cluster.name
-          value: {{ quote .Values.esData1.esData.env.clusterName }}
-        - name: logger.org.opensearch
-          value: {{ quote .Values.esData1.esData.env.loggerOrgOpensearch }}
-        - name: discovery.seed_hosts
-          value: {{ quote .Values.esData1.esData.env.discoverySeedHosts }}
-        - name: node.attr.availability_domain
-          value: {{ quote .Values.esData1.esData.env.nodeAttrAvailabilityDomain }}
-        - name: node.roles
-          value: {{ quote .Values.esData1.esData.env.nodeRoles }}
-        - name: OPENSEARCH_JAVA_OPTS
-          value: {{ quote .Values.esData1.esData.env.opensearchJavaOpts }}
-        - name: DISABLE_SECURITY_PLUGIN
-          value: {{ quote .Values.esData1.esData.env.disableSecurityPlugin }}
-        - name: KUBERNETES_CLUSTER_DOMAIN
-          value: {{ quote .Values.kubernetesClusterDomain }}
-        {{- toYaml .Values.esData.extraEnv | nindent 8 }}
-        image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        livenessProbe:
-          failureThreshold: 5
-          httpGet:
-            path: /_cluster/health
-            port: 9200
-            scheme: HTTP
-          initialDelaySeconds: 60
-          periodSeconds: 20
-          successThreshold: 1
-          timeoutSeconds: 3
-        name: es-data
-        ports:
-        - containerPort: 9200
-          name: http
-          protocol: TCP
-        - containerPort: 9300
-          name: transport
-          protocol: TCP
-        readinessProbe:
-          failureThreshold: 10
-          httpGet:
-            path: /_cluster/health
-            port: 9200
-            scheme: HTTP
-          initialDelaySeconds: 60
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 3
-        resources: {{- toYaml .Values.esData1.esData.resources | nindent 10 }}
-        securityContext: {{- toYaml .Values.esData1.esData.containerSecurityContext | nindent
-          10 }}
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-        volumeMounts:
-        - mountPath: /usr/share/opensearch/data
-          name: storage-volume
-      dnsPolicy: ClusterFirst
-      initContainers:
-      - args: {{- toYaml .Values.esData1.elasticsearchInit.args | nindent 8 }}
-        env:
-        - name: KUBERNETES_CLUSTER_DOMAIN
-          value: {{ quote .Values.kubernetesClusterDomain }}
-        image: {{ .Values.esData1.elasticsearchInit.image.repository }}:{{ .Values.esData1.elasticsearchInit.image.tag
-          | default .Chart.AppVersion }}
-        imagePullPolicy: {{ .Values.esData1.elasticsearchInit.imagePullPolicy }}
-        name: elasticsearch-init
-        resources: {}
-        securityContext: {{- toYaml .Values.esData1.elasticsearchInit.containerSecurityContext
-          | nindent 10 }}
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-      restartPolicy: Always
-      schedulerName: default-scheduler
-      securityContext:
-        fsGroup: 1000
-        seccompProfile:
-          type: RuntimeDefault
-      serviceAccount: {{ .Values.esData.serviceAccount }}
-      serviceAccountName: {{ .Values.esData.serviceAccount }}
-      terminationGracePeriodSeconds: 1
-      volumes:
-      - name: storage-volume
-        persistentVolumeClaim:
-          claimName: {{ include "mychart.fullname" . }}-es-data-1
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: {{ include "mychart.fullname" . }}-es-data-2
-  labels:
-  {{- toYaml .Values.esData.extraLabels | nindent 4 }}
-  {{- include "mychart.labels" . | nindent 4 }}
-  annotations:
-    deployment.kubernetes.io/revision: "1"
-spec:
-  replicas: {{ .Values.esData2.replicas }}
-  revisionHistoryLimit: {{ .Values.esData2.revisionHistoryLimit }}
-  selector:
-    matchLabels:
-      app: system-es-data
-      index: "2"
-      node-group: es-data
-    {{- include "mychart.selectorLabels" . | nindent 6 }}
-  template:
-    metadata:
-      labels:
-        app: system-es-data
-        index: "2"
-        node-group: es-data
-        {{- toYaml .Values.esData.extraTemplateLabels | nindent 8 }}
-      {{- include "mychart.selectorLabels" . | nindent 8 }}
-      annotations:
-        proxy.istio.io/config: '{ ''holdApplicationUntilProxyStarts'': true }'
-        traffic.sidecar.istio.io/excludeInboundPorts: "9300"
-        traffic.sidecar.istio.io/excludeOutboundPorts: "9300"
-    spec:
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app: system-es-data
-              topologyKey: kubernetes.io/hostname
-            weight: 100
-      containers:
-      - command:
-        - sh
-        - -c
-        - "#!/usr/bin/env bash -e\n\t# Updating opensearch keystore with keys\n\t# required
-          for the repository-s3 plugin\n\tif [ \"${OBJECT_STORE_ACCESS_KEY_ID:-}\" ]; then\n\t\techo
-          \"Updating object store access key...\"\n\t\techo $OBJECT_STORE_ACCESS_KEY_ID
-          | /usr/share/opensearch/bin/opensearch-keystore add --stdin --force s3.client.default.access_key;\n\tfi\n\tif
-          [ \"${OBJECT_STORE_SECRET_KEY_ID:-}\" ]; then\n\t\techo \"Updating object store
-          secret key...\"\n\t\techo $OBJECT_STORE_SECRET_KEY_ID | /usr/share/opensearch/bin/opensearch-keystore
-          add --stdin --force s3.client.default.secret_key;\n\tfi\n\t\n\t\n\t# Disable the
-          jvm heap settings in jvm.options\n\techo \"Commenting out java heap settings in
-          jvm.options...\"\n\tsed -i -e /^-Xms/s/^/#/g -e /^-Xmx/s/^/#/g config/jvm.options\n\t\n\n
-          \    \n\t\n\t/usr/local/bin/docker-entrypoint.sh"
-        env:
-        - name: NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
-        - name: node.name
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.name
-        - name: cluster.name
-          value: {{ quote .Values.esData2.esData.env.clusterName }}
-        - name: logger.org.opensearch
-          value: {{ quote .Values.esData2.esData.env.loggerOrgOpensearch }}
-        - name: discovery.seed_hosts
-          value: {{ quote .Values.esData2.esData.env.discoverySeedHosts }}
-        - name: node.attr.availability_domain
-          value: {{ quote .Values.esData2.esData.env.nodeAttrAvailabilityDomain }}
-        - name: node.roles
-          value: {{ quote .Values.esData2.esData.env.nodeRoles }}
-        - name: OPENSEARCH_JAVA_OPTS
-          value: {{ quote .Values.esData2.esData.env.opensearchJavaOpts }}
-        - name: DISABLE_SECURITY_PLUGIN
-          value: {{ quote .Values.esData2.esData.env.disableSecurityPlugin }}
-        - name: KUBERNETES_CLUSTER_DOMAIN
-          value: {{ quote .Values.kubernetesClusterDomain }}
-        {{- toYaml .Values.esData.extraEnv | nindent 8 }}
-        image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        livenessProbe:
-          failureThreshold: 5
-          httpGet:
-            path: /_cluster/health
-            port: 9200
-            scheme: HTTP
-          initialDelaySeconds: 60
-          periodSeconds: 20
-          successThreshold: 1
-          timeoutSeconds: 3
-        name: es-data
-        ports:
-        - containerPort: 9200
-          name: http
-          protocol: TCP
-        - containerPort: 9300
-          name: transport
-          protocol: TCP
-        readinessProbe:
-          failureThreshold: 10
-          httpGet:
-            path: /_cluster/health
-            port: 9200
-            scheme: HTTP
-          initialDelaySeconds: 60
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 3
-        resources: {{- toYaml .Values.esData2.esData.resources | nindent 10 }}
-        securityContext: {{- toYaml .Values.esData2.esData.containerSecurityContext | nindent
-          10 }}
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-        volumeMounts:
-        - mountPath: /usr/share/opensearch/data
-          name: storage-volume
-      dnsPolicy: ClusterFirst
-      initContainers:
-      - args: {{- toYaml .Values.esData2.elasticsearchInit.args | nindent 8 }}
-        env:
-        - name: KUBERNETES_CLUSTER_DOMAIN
-          value: {{ quote .Values.kubernetesClusterDomain }}
-        image: {{ .Values.esData2.elasticsearchInit.image.repository }}:{{ .Values.esData2.elasticsearchInit.image.tag
-          | default .Chart.AppVersion }}
-        imagePullPolicy: {{ .Values.esData2.elasticsearchInit.imagePullPolicy }}
-        name: elasticsearch-init
-        resources: {}
-        securityContext: {{- toYaml .Values.esData2.elasticsearchInit.containerSecurityContext
-          | nindent 10 }}
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-      restartPolicy: Always
-      schedulerName: default-scheduler
-      securityContext:
-        fsGroup: 1000
-        seccompProfile:
-          type: RuntimeDefault
-      serviceAccount: {{ .Values.esData.serviceAccount }}
-      serviceAccountName: {{ .Values.esData.serviceAccount }}
-      terminationGracePeriodSeconds: 1
-      volumes:
-      - name: storage-volume
-        persistentVolumeClaim:
-          claimName: {{ include "mychart.fullname" . }}-es-data-2
+{{- end }}
 ---
 apiVersion: apps/v1
 kind: Deployment

@@ -3,6 +3,7 @@ image:
   tag: v2.15.0
   pullPolicy: IfNotPresent
 esData:
+  numDeployments: 3
   ports:
   - name: http-es-data
     port: 9200
@@ -16,81 +17,6 @@ esData:
   extraLabels:
   extraTemplateLabels:
   extraEnv: []
-esData0:
-  elasticsearchInit:
-    args:
-    - sysctl
-    - -w
-    - vm.max_map_count=262144
-    containerSecurityContext:
-      allowPrivilegeEscalation: true
-      privileged: true
-      runAsGroup: 0
-      runAsNonRoot: false
-      runAsUser: 0
-    image:
-      repository: container-registry.oracle.com/os/oraclelinux
-      tag: "8"
-    imagePullPolicy: IfNotPresent
-  esData:
-    containerSecurityContext:
-      allowPrivilegeEscalation: false
-      capabilities:
-        drop:
-        - ALL
-      privileged: false
-      runAsUser: 1000
-    env:
-      clusterName: system
-      disableSecurityPlugin: "true"
-      discoverySeedHosts: vmi-system-es-master
-      loggerOrgOpensearch: info
-      nodeAttrAvailabilityDomain: None
-      nodeRoles: data
-      opensearchJavaOpts: -Xms3687m -Xmx3687m
-    resources:
-      requests:
-        memory: 2560Mi
-  replicas: 1
-  revisionHistoryLimit: 10
-esData1:
-  elasticsearchInit:
-    args:
-    - sysctl
-    - -w
-    - vm.max_map_count=262144
-    containerSecurityContext:
-      allowPrivilegeEscalation: true
-      privileged: true
-      runAsGroup: 0
-      runAsNonRoot: false
-      runAsUser: 0
-    image:
-      repository: container-registry.oracle.com/os/oraclelinux
-      tag: "8"
-    imagePullPolicy: IfNotPresent
-  esData:
-    containerSecurityContext:
-      allowPrivilegeEscalation: false
-      capabilities:
-        drop:
-        - ALL
-      privileged: false
-      runAsUser: 1000
-    env:
-      clusterName: system
-      disableSecurityPlugin: "true"
-      discoverySeedHosts: vmi-system-es-master
-      loggerOrgOpensearch: info
-      nodeAttrAvailabilityDomain: None
-      nodeRoles: data
-      opensearchJavaOpts: -Xms3687m -Xmx3687m
-    resources:
-      requests:
-        memory: 2560Mi
-  replicas: 1
-  revisionHistoryLimit: 10
-esData2:
   elasticsearchInit:
     args:
     - sysctl
