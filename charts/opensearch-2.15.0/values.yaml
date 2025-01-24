@@ -15,7 +15,6 @@ esData:
   serviceAccount:
   extraLabels:
   extraTemplateLabels:
-  extraEnv: []
   elasticsearchInit:
     args:
     - sysctl
@@ -47,6 +46,8 @@ esData:
       nodeAttrAvailabilityDomain: None
       nodeRoles: data
       opensearchJavaOpts: -Xms3687m -Xmx3687m
+      extraEnv: []
+    command: []
     resources:
       requests:
         memory: 2560Mi

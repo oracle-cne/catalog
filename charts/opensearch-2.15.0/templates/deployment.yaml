@@ -40,18 +40,7 @@ spec:
             weight: 100
       containers:
       - command:
-        - sh
-        - -c
-        - "#!/usr/bin/env bash -e\n\t# Updating opensearch keystore with keys\n\t# required
-          for the repository-s3 plugin\n\tif [ \"${OBJECT_STORE_ACCESS_KEY_ID:-}\" ]; then\n\t\techo
-          \"Updating object store access key...\"\n\t\techo $OBJECT_STORE_ACCESS_KEY_ID
-          | /usr/share/opensearch/bin/opensearch-keystore add --stdin --force s3.client.default.access_key;\n\tfi\n\tif
-          [ \"${OBJECT_STORE_SECRET_KEY_ID:-}\" ]; then\n\t\techo \"Updating object store
-          secret key...\"\n\t\techo $OBJECT_STORE_SECRET_KEY_ID | /usr/share/opensearch/bin/opensearch-keystore
-          add --stdin --force s3.client.default.secret_key;\n\tfi\n\t\n\t\n\t# Disable the
-          jvm heap settings in jvm.options\n\techo \"Commenting out java heap settings in
-          jvm.options...\"\n\tsed -i -e /^-Xms/s/^/#/g -e /^-Xmx/s/^/#/g config/jvm.options\n\t\n\n
-          \    \n\t\n\t/usr/local/bin/docker-entrypoint.sh"
+        {{- toYaml .Values.esData.esData.command | nindent 8}}
         env:
         - name: NAMESPACE
           valueFrom:
@@ -79,7 +68,7 @@ spec:
           value: {{ quote .Values.esData.esData.env.disableSecurityPlugin }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
-        {{- toYaml .Values.esData.extraEnv | nindent 8 }}
+        {{- toYaml .Values.esData.esData.env.extraEnv | nindent 8 }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
@@ -189,18 +178,7 @@ spec:
             weight: 100
       containers:
       - command:
-        - sh
-        - -c
-        - "#!/usr/bin/env bash -e\n\t# Updating opensearch keystore with keys\n\t# required
-          for the repository-s3 plugin\n\tif [ \"${OBJECT_STORE_ACCESS_KEY_ID:-}\" ]; then\n\t\techo
-          \"Updating object store access key...\"\n\t\techo $OBJECT_STORE_ACCESS_KEY_ID
-          | /usr/share/opensearch/bin/opensearch-keystore add --stdin --force s3.client.default.access_key;\n\tfi\n\tif
-          [ \"${OBJECT_STORE_SECRET_KEY_ID:-}\" ]; then\n\t\techo \"Updating object store
-          secret key...\"\n\t\techo $OBJECT_STORE_SECRET_KEY_ID | /usr/share/opensearch/bin/opensearch-keystore
-          add --stdin --force s3.client.default.secret_key;\n\tfi\n\t\n\t\n\t# Disable the
-          jvm heap settings in jvm.options\n\techo \"Commenting out java heap settings in
-          jvm.options...\"\n\tsed -i -e /^-Xms/s/^/#/g -e /^-Xmx/s/^/#/g config/jvm.options\n\t\n\n
-          \    \n\t\n\t/usr/local/bin/docker-entrypoint.sh"
+        {{- toYaml .Values.esData.esData.command | nindent 8}}
         env:
         - name: NAMESPACE
           valueFrom:
@@ -228,7 +206,7 @@ spec:
           value: {{ quote .Values.esData.esData.env.disableSecurityPlugin }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
-        {{- toYaml .Values.esData.extraEnv | nindent 8 }}
+        {{- toYaml .Values.esData.esData.env.extraEnv | nindent 8 }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
@@ -338,18 +316,7 @@ spec:
             weight: 100
       containers:
       - command:
-        - sh
-        - -c
-        - "#!/usr/bin/env bash -e\n\t# Updating opensearch keystore with keys\n\t# required
-          for the repository-s3 plugin\n\tif [ \"${OBJECT_STORE_ACCESS_KEY_ID:-}\" ]; then\n\t\techo
-          \"Updating object store access key...\"\n\t\techo $OBJECT_STORE_ACCESS_KEY_ID
-          | /usr/share/opensearch/bin/opensearch-keystore add --stdin --force s3.client.default.access_key;\n\tfi\n\tif
-          [ \"${OBJECT_STORE_SECRET_KEY_ID:-}\" ]; then\n\t\techo \"Updating object store
-          secret key...\"\n\t\techo $OBJECT_STORE_SECRET_KEY_ID | /usr/share/opensearch/bin/opensearch-keystore
-          add --stdin --force s3.client.default.secret_key;\n\tfi\n\t\n\t\n\t# Disable the
-          jvm heap settings in jvm.options\n\techo \"Commenting out java heap settings in
-          jvm.options...\"\n\tsed -i -e /^-Xms/s/^/#/g -e /^-Xmx/s/^/#/g config/jvm.options\n\t\n\n
-          \    \n\t\n\t/usr/local/bin/docker-entrypoint.sh"
+        {{- toYaml .Values.esData.esData.command | nindent 8}}
         env:
         - name: NAMESPACE
           valueFrom:
@@ -377,7 +344,7 @@ spec:
           value: {{ quote .Values.esData.esData.env.disableSecurityPlugin }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
-        {{- toYaml .Values.esData.extraEnv | nindent 8 }}
+        {{- toYaml .Values.esData.esData.env.extraEnv | nindent 8 }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
