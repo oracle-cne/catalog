@@ -59,6 +59,10 @@ spec:
           value: {{ quote .Values.esMaster.esMaster.env.discoverySeedHosts }}
         - name: cluster.initial_master_nodes
           value: {{ quote .Values.esMaster.esMaster.env.clusterInitialMasterNodes }}
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
         {{- toYaml .Values.esMaster.esMaster.env.additionalEnv | nindent 8 }}
