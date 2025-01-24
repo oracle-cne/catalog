@@ -1,4 +1,5 @@
-{{- range $i := until .Values.esData.numDeployments | int }}
+{{ $count := (.Values.esData.numDeployments | int) }}
+{{- range $i := until $count }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
