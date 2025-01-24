@@ -1,4 +1,4 @@
-{{- range $i, $e := until int .Values.esData.deploymentCount }}
+{{- range $i, $e := until (int .Values.esData.deploymentCount) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
