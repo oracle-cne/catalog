@@ -3,8 +3,8 @@ kind: Deployment
 metadata:
   name: {{ include "mychart.fullname" . }}-es-data-0
   labels:
-  {{- toYaml .Values.esData.extraLabels | nindent 4 }}
   {{- include "mychart.labels" . | nindent 4 }}
+  {{- toYaml .Values.esData.extraLabels | nindent 4 }}
   annotations:
     deployment.kubernetes.io/revision: "1"
 spec:
