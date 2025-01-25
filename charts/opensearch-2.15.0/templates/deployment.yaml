@@ -452,10 +452,7 @@ spec:
             weight: 100
       containers:
       - command:
-        - sh
-        - -c
-        - "#!/usr/bin/env bash -e\n\tset -euo pipefail\n    \n\t/usr/local/bin/docker-entrypoint.sh\n
-          \   "
+        {{- toYaml .Values.esIngest.esIngest.command | nindent 8}}
         env:
         - name: NAMESPACE
           valueFrom:
