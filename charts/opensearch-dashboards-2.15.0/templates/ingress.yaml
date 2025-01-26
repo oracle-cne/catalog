@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: {{ include "mychart.fullname" . }}-vmi-system-osd
   labels:
-  {{ toYaml .Values.ingress.extraLabels | nindent 4 }}
+  {{- .Values.ingress.extraLabels | toYaml | nindent 4 }}
   {{- include "mychart.labels" . | nindent 4 }}
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: 6M
