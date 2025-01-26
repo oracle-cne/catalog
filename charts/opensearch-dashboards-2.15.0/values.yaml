@@ -32,7 +32,7 @@ deployment:
 service:
   extraLabels:
 ingress:
-  extraLabels:
+  extraLabels: {}
   extraAnnotations:
   spec:
     ingressClassName:
