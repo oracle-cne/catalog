@@ -46,6 +46,7 @@ esData:
       nodeAttrAvailabilityDomain: None
       nodeRoles: data
       opensearchJavaOpts: -Xms3687m -Xmx3687m
+      extraEnv: []
     command: []
     resources:
       requests:
@@ -87,7 +88,6 @@ esIngest:
       networkHost: 0.0.0.0
       nodeRoles: ingest
       opensearchJavaOpts: -Xms1920m -Xmx1920m
-      extraEnv: []
     command: []
     resources:
       requests:
