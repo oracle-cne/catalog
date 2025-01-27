@@ -1,6 +1,6 @@
 image:
-  repository: olcne/opensearch
-  tag: v2.15.0
+  repository: ghcr.io/verrazzano/opensearch
+  tag: 2.3.0-20230914055551-b6247ad8ac8
   pullPolicy: IfNotPresent
 esData:
   ports:
