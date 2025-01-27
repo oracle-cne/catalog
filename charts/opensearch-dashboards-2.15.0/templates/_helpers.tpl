@@ -44,10 +44,10 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 
 {{/*
 Selector labels
-*/}}
-{{- define "mychart.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "mychart.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+*/}}
+{{- define "mychart.selectorLabels" -}}
 {{- end }}
 
 {{/*
