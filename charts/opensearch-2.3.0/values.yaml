@@ -46,7 +46,6 @@ esData:
       nodeAttrAvailabilityDomain: None
       nodeRoles: data
       opensearchJavaOpts: -Xms3687m -Xmx3687m
-      extraEnv: []
     command: []
     resources:
       requests:
