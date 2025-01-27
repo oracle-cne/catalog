@@ -3,7 +3,9 @@ kind: Deployment
 metadata:
   name: {{ include "mychart.fullname" . }}-es-data-0
   labels:
+  {{- if .Values.esData.extraLabels }}
   {{- toYaml .Values.esData.extraLabels | nindent 4 }}
+  {{- end }}
   {{- include "mychart.labels" . | nindent 4 }}
   annotations:
     deployment.kubernetes.io/revision: "1"
@@ -22,7 +24,9 @@ spec:
         app: system-es-data
         index: "0"
         node-group: es-data
+        {{- if .Values.esData.extraTemplateLabels }}
         {{- toYaml .Values.esData.extraTemplateLabels | nindent 8 }}
+        {{- end }}
       {{- include "mychart.selectorLabels" . | nindent 8 }}
       annotations:
         proxy.istio.io/config: '{ ''holdApplicationUntilProxyStarts'': true }'
@@ -40,7 +44,9 @@ spec:
             weight: 100
       containers:
       - command:
+        {{- if .Values.esData.esData.command }}
         {{- toYaml .Values.esData.esData.command | nindent 8}}
+        {{- end }}
         env:
         - name: NAMESPACE
           valueFrom:
@@ -68,7 +74,9 @@ spec:
           value: {{ quote .Values.esData.esData.env.disableSecurityPlugin }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
+        {{- if .Values.esData.esData.env.extraEnv }}
         {{- toYaml .Values.esData.esData.env.extraEnv | nindent 8 }}
+        {{- end }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
@@ -141,7 +149,9 @@ kind: Deployment
 metadata:
   name: {{ include "mychart.fullname" . }}-es-data-1
   labels:
+  {{- if .Values.esData.extraLabels }}
   {{- toYaml .Values.esData.extraLabels | nindent 4 }}
+  {{- end }}
   {{- include "mychart.labels" . | nindent 4 }}
   annotations:
     deployment.kubernetes.io/revision: "1"
@@ -160,7 +170,9 @@ spec:
         app: system-es-data
         index: "1"
         node-group: es-data
+        {{- if .Values.esData.extraTemplateLabels }}
         {{- toYaml .Values.esData.extraTemplateLabels | nindent 8 }}
+        {{- end }}
       {{- include "mychart.selectorLabels" . | nindent 8 }}
       annotations:
         proxy.istio.io/config: '{ ''holdApplicationUntilProxyStarts'': true }'
@@ -178,7 +190,9 @@ spec:
             weight: 100
       containers:
       - command:
+        {{- if .Values.esData.esData.command }}
         {{- toYaml .Values.esData.esData.command | nindent 8}}
+        {{- end }}
         env:
         - name: NAMESPACE
           valueFrom:
@@ -206,7 +220,9 @@ spec:
           value: {{ quote .Values.esData.esData.env.disableSecurityPlugin }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
+        {{- if .Values.esData.esData.env.extraEnv }}
         {{- toYaml .Values.esData.esData.env.extraEnv | nindent 8 }}
+        {{- end }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
@@ -279,7 +295,9 @@ kind: Deployment
 metadata:
   name: {{ include "mychart.fullname" . }}-es-data-2
   labels:
+  {{- if .Values.esData.extraLabels }}
   {{- toYaml .Values.esData.extraLabels | nindent 4 }}
+  {{- end }}
   {{- include "mychart.labels" . | nindent 4 }}
   annotations:
     deployment.kubernetes.io/revision: "1"
@@ -298,7 +316,9 @@ spec:
         app: system-es-data
         index: "2"
         node-group: es-data
+        {{- if .Values.esData.extraTemplateLabels }}
         {{- toYaml .Values.esData.extraTemplateLabels | nindent 8 }}
+        {{- end }}
       {{- include "mychart.selectorLabels" . | nindent 8 }}
       annotations:
         proxy.istio.io/config: '{ ''holdApplicationUntilProxyStarts'': true }'
@@ -316,7 +336,9 @@ spec:
             weight: 100
       containers:
       - command:
+        {{- if .Values.esData.esData.command }}
         {{- toYaml .Values.esData.esData.command | nindent 8}}
+        {{- end }}
         env:
         - name: NAMESPACE
           valueFrom:
@@ -344,7 +366,9 @@ spec:
           value: {{ quote .Values.esData.esData.env.disableSecurityPlugin }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
+        {{- if .Values.esData.esData.env.extraEnv }}
         {{- toYaml .Values.esData.esData.env.extraEnv | nindent 8 }}
+        {{- end }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
@@ -417,7 +441,9 @@ kind: Deployment
 metadata:
   name: {{ include "mychart.fullname" . }}-es-ingest
   labels:
+  {{- if .Values.esIngest.extraLabels }}
   {{- toYaml .Values.esIngest.extraLabels | nindent 4 }}
+  {{- end }}
   {{- include "mychart.labels" . | nindent 4 }}
   annotations:
     deployment.kubernetes.io/revision: "1"
@@ -434,7 +460,9 @@ spec:
       labels:
         app: system-es-ingest
         node-group: es-ingest
+      {{- if .Values.esIngest.extraTemplateLabels }}
       {{- toYaml .Values.esIngest.extraTemplateLabels | nindent 8 }}
+      {{- end }}
       {{- include "mychart.selectorLabels" . | nindent 8 }}
       annotations:
         proxy.istio.io/config: '{ ''holdApplicationUntilProxyStarts'': true }'
@@ -452,7 +480,9 @@ spec:
             weight: 100
       containers:
       - command:
+        {{- if .Values.esIngest.esIngest.command }}
         {{- toYaml .Values.esIngest.esIngest.command | nindent 8}}
+        {{- end }}
         env:
         - name: NAMESPACE
           valueFrom:

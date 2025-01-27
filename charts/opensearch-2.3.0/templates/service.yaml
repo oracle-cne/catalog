@@ -3,7 +3,9 @@ kind: Service
 metadata:
   name: {{ include "mychart.fullname" . }}-es-data
   labels:
+  {{- if .Values.esData.service.extraLabels }}
   {{- .Values.esData.service.extraLabels | toYaml | nindent 4 }}
+  {{- end }}
   {{- include "mychart.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.esData.type }}
@@ -18,7 +20,9 @@ kind: Service
 metadata:
   name: {{ include "mychart.fullname" . }}-es-master
   labels:
+  {{- if .Values.esMaster.service.extraLabels }}
   {{- .Values.esMaster.service.extraLabels | toYaml | nindent 4 }}
+  {{- end }}
   {{- include "mychart.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.esMaster.type }}
@@ -33,7 +37,9 @@ kind: Service
 metadata:
   name: {{ include "mychart.fullname" . }}-es-master-http
   labels:
+  {{- if .Values.esMasterHttp.service.extraLabels }}
   {{- .Values.esMasterHttp.service.extraLabels | toYaml | nindent 4 }}
+  {{- end }}
   {{- include "mychart.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.esMasterHttp.type }}
@@ -48,7 +54,9 @@ kind: Service
 metadata:
   name: {{ include "mychart.fullname" . }}-os-ingest
   labels:
+  {{- if .Values.osIngest.service.extraLabels }}
   {{- .Values.osIngest.service.extraLabels | toYaml | nindent 4 }}
+  {{- end }}
   {{- include "mychart.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.osIngest.type }}

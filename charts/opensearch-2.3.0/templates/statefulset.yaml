@@ -3,7 +3,9 @@ kind: StatefulSet
 metadata:
   name: {{ include "mychart.fullname" . }}-es-master
   labels:
+  {{- if .Values.esMaster.extraMetadataLabels }}
   {{- toYaml .Values.esMaster.extraMetadataLabels | nindent 4 }}
+  {{- end }}
   {{- include "mychart.labels" . | nindent 4 }}
 spec:
   podManagementPolicy: Parallel
@@ -23,7 +25,9 @@ spec:
       labels:
         app: system-es-master
         node-group: es-master
+        {{- if .Values.esMaster.extraTemplateLabels }}
         {{- toYaml .Values.esMaster.extraTemplateLabels | nindent 8 }}
+        {{- end }}
     spec:
       affinity:
         podAntiAffinity:
@@ -36,7 +40,9 @@ spec:
             weight: 100
       containers:
       - command:
+        {{- if .Values.esMaster.esMaster.command }}
         {{- toYaml .Values.esMaster.esMaster.command | nindent 8}}
+        {{- end }}
         env:
         - name: node.name
           valueFrom:
@@ -61,7 +67,9 @@ spec:
           value: {{ quote .Values.esMaster.esMaster.env.clusterInitialMasterNodes }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
+        {{- if .Values.esMaster.esMaster.env.extraEnv }}
         {{- toYaml .Values.esMaster.esMaster.env.extraEnv | nindent 8 }}
+        {{- end }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
