@@ -1,0 +1,51 @@
+kubernetesClusterDomain: cluster.local
+deployment:
+  extraLabels:
+  extraTemplateLabels:
+  extraTemplateAnnotations:
+  serviceAccount:
+  osd:
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      privileged: false
+    env:
+      disableSecurityDashboardsPlugin: "false"
+      opensearchHosts:
+    image:
+      repository: ghcr.io/verrazzano/opensearch-dashboards
+      tag: 2.3.0-20230918052256-cc04b43c2b
+    imagePullPolicy: IfNotPresent
+    resources:
+      requests:
+        memory: 192Mi
+  ports:
+  - name: http-osd
+    port: 5601
+    protocol: TCP
+    targetPort: 5601
+  replicas: 1
+  revisionHistoryLimit: 10
+  type: ClusterIP
+service:
+  extraLabels:
+ingress:
+  extraLabels: {}
+  extraAnnotations:
+  spec:
+    ingressClassName:
+    rules:
+      host:
+      service:
+        name:
+        port:
+          number:
+    tls:
+      secretName:
+fullnameOverride:
+nameOverride:
+serviceAccount:
+  create:
+  name:
