@@ -39,7 +39,7 @@ installing the `ocne-catalog` chart.
 | MetalLB | metallb | 0.13.10 |
 | Multus | multus | 4.0.2 |
 | OCI Cloud Controller Manager | oci-ccm | 1.28.0 |
-| OpenSearch Dashboards | opensearch-dashboards | 2.15.0 |
+| OpenSearch Dashboards | opensearch-dashboards | 2.3.0 |
 | Oracle Cloud Native Environment Application Catalog | ocne-catalog | 2.0.0 |
 | Prometheus | prometheus | 2.31.1 |
 | Prometheus Adapter | prometheus-adapter | 0.10.0 |
