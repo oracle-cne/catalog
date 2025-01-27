@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "mychart.fullname" . }}-vmi-system-osd
+  name: {{ include "mychart.fullname" . }}-osd
   labels:
   {{- .Values.ingress.extraLabels | toYaml | nindent 4 }}
   {{- include "mychart.labels" . | nindent 4 }}

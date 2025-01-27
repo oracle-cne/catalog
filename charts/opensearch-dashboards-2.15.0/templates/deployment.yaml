@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "mychart.fullname" . }}-vmi-system-osd
+  name: {{ include "mychart.fullname" . }}-osd
   labels:
   {{- .Values.deployment.extraLabels | toYaml | nindent 4 }}
   {{- include "mychart.labels" . | nindent 4 }}
