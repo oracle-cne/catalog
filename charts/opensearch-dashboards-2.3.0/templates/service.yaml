@@ -3,7 +3,9 @@ kind: Service
 metadata:
   name: {{ include "mychart.fullname" . }}-osd
   labels:
+  {{- if .Values.service.extraLabels }}
   {{- .Values.service.extraLabels | toYaml | nindent 4 }}
+  {{- end }}
   {{- include "mychart.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.deployment.type }}

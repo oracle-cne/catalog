@@ -3,7 +3,9 @@ kind: Deployment
 metadata:
   name: {{ include "mychart.fullname" . }}-osd
   labels:
+  {{- if .Values.deployment.extraLabels }}
   {{- .Values.deployment.extraLabels | toYaml | nindent 4 }}
+  {{- end }}
   {{- include "mychart.labels" . | nindent 4 }}
   annotations:
     deployment.kubernetes.io/revision: "15"
@@ -18,7 +20,9 @@ spec:
     metadata:
       labels:
         app: system-osd
+      {{- if .Values.deployment.extraTemplateLabels }}
       {{- .Values.deployment.extraTemplateLabels | toYaml | nindent 8 }}
+      {{- end }}
       {{- include "mychart.selectorLabels" . | nindent 8 }}
       annotations:
       {{- .Values.deployment.extraTemplateAnnotations | toYaml | nindent 8 }}
