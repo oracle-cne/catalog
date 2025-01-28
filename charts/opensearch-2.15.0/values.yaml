@@ -1,5 +1,5 @@
 image:
-  repository: container-registry.oracle.com/olcne/opensearch
+  repository: olcne/opensearch
   tag: v2.15.0
   pullPolicy: IfNotPresent
 esData:
