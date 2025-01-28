@@ -15,8 +15,8 @@ deployment:
       disableSecurityDashboardsPlugin: "false"
       opensearchHosts:
     image:
-      repository: ghcr.io/verrazzano/opensearch-dashboards
-      tag: 2.3.0-20230918052256-cc04b43c2b
+      repository: olcne/opensearch-dashboards
+      tag: v2.15.0
     imagePullPolicy: IfNotPresent
     resources:
       requests:
