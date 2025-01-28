@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "mychart.fullname" $ }}-es-data-{{ $i }}
+  name: {{ include "mychart.fullname" $ }}-es-data-{{ . }}
   labels:
   {{- if $.Values.esData.extraLabels }}
   {{- toYaml $.Values.esData.extraLabels | nindent 4 }}
@@ -16,14 +16,14 @@ spec:
   selector:
     matchLabels:
       app: system-es-data
-      index: "{{ $i }}"
+      index: "{{ . }}"
       node-group: es-data
     {{- include "mychart.selectorLabels" $ | nindent 6 }}
   template:
     metadata:
       labels:
         app: system-es-data
-        index: "{{ $i }}"
+        index: "{{ . }}"
         node-group: es-data
         {{- if $.Values.esData.extraTemplateLabels }}
         {{- toYaml $.Values.esData.extraTemplateLabels | nindent 8 }}
@@ -143,7 +143,12 @@ spec:
       volumes:
       - name: storage-volume
         persistentVolumeClaim:
+          {{- if eq . "0"  }}
           claimName: {{ include "mychart.fullname" $ }}-es-data
+          {{- end }}
+          {{- if ne . "0"  }}
+          claimName: {{ include "mychart.fullname" $ }}-es-data-{{ . }}
+          {{- end }}
 ---
 {{- end }}
 apiVersion: apps/v1

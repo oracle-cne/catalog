@@ -4,9 +4,9 @@ image:
   pullPolicy: IfNotPresent
 esData:
   deploymentSuffixes:
-    - 0
-    - 1
-    - 2
+    - "0"
+    - "1"
+    - "2"
   ports:
   - name: http-es-data
     port: 9200
