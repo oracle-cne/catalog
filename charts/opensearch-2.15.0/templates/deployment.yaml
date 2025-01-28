@@ -191,7 +191,7 @@ spec:
       containers:
       - command:
         {{- if .Values.esIngest.esIngest.command }}
-        {{- toYaml .Values.esIngest.esIngest.command | nindent 8}}
+        {{- toYaml .Values.esIngest.esIngest.command | nindent 8 }}
         {{- end }}
         env:
         - name: NAMESPACE
@@ -220,6 +220,9 @@ spec:
           value: {{ quote .Values.esIngest.esIngest.env.disableSecurityPlugin }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
+        {{- if .Values.esIngest.esIngest.env.extraEnv }}
+        {{- toYaml .Values.esIngest.esIngest.env.extraEnv | nindent 8 }}
+        {{- end }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
