@@ -3,6 +3,10 @@ image:
   tag: v2.15.0
   pullPolicy: IfNotPresent
 esData:
+  deploymentSuffixes:
+    - 0
+    - 1
+    - 2
   ports:
   - name: http-es-data
     port: 9200

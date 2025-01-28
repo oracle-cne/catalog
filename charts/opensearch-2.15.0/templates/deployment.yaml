@@ -1,0 +1,280 @@
+{{- range $i := .Values.esData.deploymentSuffixes }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mychart.fullname" $ }}-es-data-{{ $i }}
+  labels:
+  {{- if $.Values.esData.extraLabels }}
+  {{- toYaml $.Values.esData.extraLabels | nindent 4 }}
+  {{- end }}
+  {{- include "mychart.labels" $ | nindent 4 }}
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+spec:
+  replicas: {{ $.Values.esData.replicas }}
+  revisionHistoryLimit: {{ $.Values.esData.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app: system-es-data
+      index: "0"
+      node-group: es-data
+    {{- include "mychart.selectorLabels" $ | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: system-es-data
+        index: "0"
+        node-group: es-data
+        {{- if $.Values.esData.extraTemplateLabels }}
+        {{- toYaml $.Values.esData.extraTemplateLabels | nindent 8 }}
+        {{- end }}
+      {{- include "mychart.selectorLabels" $ | nindent 8 }}
+      annotations:
+        proxy.istio.io/config: '{ ''holdApplicationUntilProxyStarts'': true }'
+        traffic.sidecar.istio.io/excludeInboundPorts: "9300"
+        traffic.sidecar.istio.io/excludeOutboundPorts: "9300"
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: system-es-data
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+      containers:
+      - command:
+        {{- if $.Values.esData.esData.command }}
+        {{- toYaml $.Values.esData.esData.command | nindent 8}}
+        {{- end }}
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: node.name
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: cluster.name
+          value: {{ quote $.Values.esData.esData.env.clusterName }}
+        - name: logger.org.opensearch
+          value: {{ quote $.Values.esData.esData.env.loggerOrgOpensearch }}
+        - name: discovery.seed_hosts
+          value: {{ quote $.Values.esData.esData.env.discoverySeedHosts }}
+        - name: node.attr.availability_domain
+          value: {{ quote $.Values.esData.esData.env.nodeAttrAvailabilityDomain }}
+        - name: node.roles
+          value: {{ quote $.Values.esData.esData.env.nodeRoles }}
+        - name: OPENSEARCH_JAVA_OPTS
+          value: {{ quote $.Values.esData.esData.env.opensearchJavaOpts }}
+        - name: DISABLE_SECURITY_PLUGIN
+          value: {{ quote $.Values.esData.esData.env.disableSecurityPlugin }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote $.Values.kubernetesClusterDomain }}
+        {{- if $.Values.esData.esData.env.extraEnv }}
+        {{- toYaml $.Values.esData.esData.env.extraEnv | nindent 8 }}
+        {{- end }}
+        image: {{ $.Values.image.repository }}:{{ $.Values.image.tag | default $.Chart.AppVersion }}
+        imagePullPolicy: {{ $.Values.image.pullPolicy }}
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /_cluster/health
+            port: 9200
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 20
+          successThreshold: 1
+          timeoutSeconds: 3
+        name: es-data
+        ports:
+        - containerPort: 9200
+          name: http
+          protocol: TCP
+        - containerPort: 9300
+          name: transport
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 10
+          httpGet:
+            path: /_cluster/health
+            port: 9200
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 3
+        resources: {{- toYaml $.Values.esData.esData.resources | nindent 10 }}
+        securityContext: {{- toYaml $.Values.esData.esData.containerSecurityContext | nindent
+          10 }}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /usr/share/opensearch/data
+          name: storage-volume
+      dnsPolicy: ClusterFirst
+      initContainers:
+      - args: {{- toYaml $.Values.esData.elasticsearchInit.args | nindent 8 }}
+        env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote $.Values.kubernetesClusterDomain }}
+        image: {{ $.Values.esData.elasticsearchInit.image.repository }}:{{ $.Values.esData.elasticsearchInit.image.tag
+          | default $.Chart.AppVersion }}
+        imagePullPolicy: {{ $.Values.esData.elasticsearchInit.imagePullPolicy }}
+        name: elasticsearch-init
+        resources: {}
+        securityContext: {{- toYaml $.Values.esData.elasticsearchInit.containerSecurityContext
+          | nindent 10 }}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccount: {{ $.Values.esData.serviceAccount }}
+      serviceAccountName: {{ $.Values.esData.serviceAccount }}
+      terminationGracePeriodSeconds: 1
+      volumes:
+      - name: storage-volume
+        persistentVolumeClaim:
+          claimName: {{ include "mychart.fullname" $ }}-es-data
+---
+{{- end }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mychart.fullname" . }}-es-ingest
+  labels:
+  {{- if .Values.esIngest.extraLabels }}
+  {{- toYaml .Values.esIngest.extraLabels | nindent 4 }}
+  {{- end }}
+  {{- include "mychart.labels" . | nindent 4 }}
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+spec:
+  replicas: {{ .Values.esIngest.replicas }}
+  revisionHistoryLimit: {{ .Values.esIngest.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app: system-es-ingest
+      node-group: es-ingest
+    {{- include "mychart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: system-es-ingest
+        node-group: es-ingest
+      {{- if .Values.esIngest.extraTemplateLabels }}
+      {{- toYaml .Values.esIngest.extraTemplateLabels | nindent 8 }}
+      {{- end }}
+      {{- include "mychart.selectorLabels" . | nindent 8 }}
+      annotations:
+        proxy.istio.io/config: '{ ''holdApplicationUntilProxyStarts'': true }'
+        traffic.sidecar.istio.io/excludeInboundPorts: "9300"
+        traffic.sidecar.istio.io/excludeOutboundPorts: "9300"
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: system-es-ingest
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+            weight: 100
+      containers:
+      - command:
+        {{- if .Values.esIngest.esIngest.command }}
+        {{- toYaml .Values.esIngest.esIngest.command | nindent 8}}
+        {{- end }}
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: node.name
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: cluster.name
+          value: {{ quote .Values.esIngest.esIngest.env.clusterName }}
+        - name: logger.org.opensearch
+          value: {{ quote .Values.esIngest.esIngest.env.loggerOrgOpensearch }}
+        - name: discovery.seed_hosts
+          value: {{ quote .Values.esIngest.esIngest.env.discoverySeedHosts }}
+        - name: NETWORK_HOST
+          value: {{ quote .Values.esIngest.esIngest.env.networkHost }}
+        - name: node.roles
+          value: {{ quote .Values.esIngest.esIngest.env.nodeRoles }}
+        - name: OPENSEARCH_JAVA_OPTS
+          value: {{ quote .Values.esIngest.esIngest.env.opensearchJavaOpts }}
+        - name: DISABLE_SECURITY_PLUGIN
+          value: {{ quote .Values.esIngest.esIngest.env.disableSecurityPlugin }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /_cluster/health
+            port: 9200
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 20
+          successThreshold: 1
+          timeoutSeconds: 3
+        name: es-ingest
+        ports:
+        - containerPort: 9200
+          name: http
+          protocol: TCP
+        - containerPort: 9300
+          name: transport
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 10
+          httpGet:
+            path: /_cluster/health
+            port: 9200
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 3
+        resources: {{- toYaml .Values.esIngest.esIngest.resources | nindent 10 }}
+        securityContext: {{- toYaml .Values.esIngest.esIngest.containerSecurityContext
+          | nindent 10 }}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      initContainers:
+      - args: {{- toYaml .Values.esIngest.elasticsearchInit.args | nindent 8 }}
+        env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.esIngest.elasticsearchInit.image.repository }}:{{ .Values.esIngest.elasticsearchInit.image.tag
+          | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.esIngest.elasticsearchInit.imagePullPolicy }}
+        name: elasticsearch-init
+        resources: {}
+        securityContext: {{- toYaml .Values.esIngest.elasticsearchInit.containerSecurityContext
+          | nindent 10 }}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccount: {{ .Values.esIngest.serviceAccount }}
+      serviceAccountName: {{ .Values.esIngest.serviceAccount }}
+      terminationGracePeriodSeconds: 1
