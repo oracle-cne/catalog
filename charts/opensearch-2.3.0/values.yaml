@@ -1,6 +1,6 @@
 image:
-  repository: ghcr.io/verrazzano/opensearch
-  tag: 2.3.0-20230914055551-b6247ad8ac8
+  repository: container-registry.oracle.com/olcne/opensearch
+  tag: v2.15.0
   pullPolicy: IfNotPresent
 esData:
   ports:
