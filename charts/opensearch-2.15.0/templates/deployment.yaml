@@ -16,14 +16,14 @@ spec:
   selector:
     matchLabels:
       app: system-es-data
-      index: "0"
+      index: "{{ $i }}"
       node-group: es-data
     {{- include "mychart.selectorLabels" $ | nindent 6 }}
   template:
     metadata:
       labels:
         app: system-es-data
-        index: "0"
+        index: "{{ $i }}"
         node-group: es-data
         {{- if $.Values.esData.extraTemplateLabels }}
         {{- toYaml $.Values.esData.extraTemplateLabels | nindent 8 }}
