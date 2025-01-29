@@ -7,7 +7,7 @@
 
 Name:		%{_name}-container-image
 Version:	2.0.0
-Release:	8%{?dist}
+Release:	9%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,10 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
+* Wed Jan 29 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-9
+- Add CoreDNS
+- Add Kube-Proxy
+
 * Wed Nov 20 2024 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-8
 - Improved some documentation
 
