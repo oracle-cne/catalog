@@ -19,7 +19,7 @@ installing the `ocne-catalog` chart.
 | Cluster API Kubeadm Control Plane Controller        | control-plane-capi       | 1.7.1    |
 | Cluster API Kubeadm Bootstrap Controller            | bootstrap-capi           | 1.7.1    |
 | Cluster API for Oracle Cloud Infrastructure         | oci-capi                 | 0.15.0   |
-| Cert Manager                                        | cert-manager             | 1.14.5   |
+| Cert Manager                                        | cert-manager             | 1.16.3   |
 | Cert Manager OCI Webhook                            | cert-manager-webhook-oci | 1.1.0    |
 | Dex                                                 | dex                      | 2.39.1   |
 | ExternalIP Webhook                                  | externalip-webhook       | 1.0.0    |
