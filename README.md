@@ -13,7 +13,6 @@ installing the `ocne-catalog` chart.
 
 ### Supported for Oracle Cloud Native Environment 2.0
 
-=======
 | Application                                         | Chart                    | Versions |
 |-----------------------------------------------------|--------------------------|----------|
 | Cluster API Core Controller                         | core-capi                | 1.7.1    |
