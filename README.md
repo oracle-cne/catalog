@@ -21,6 +21,7 @@ installing the `ocne-catalog` chart.
 | Cluster API for Oracle Cloud Infrastructure | oci-capi | 0.15.0 |
 | Cert Manager | cert-manager | 1.14.5 |
 | Cert Manager OCI Webhook | cert-manager-webhook-oci | 1.1.0 |
+| CoreDNS | coredns | 2.0.0 |
 | Dex | dex | 2.39.1 |
 | ExternalIP Webhook | externalip-webhook | 1.0.0 |
 | Flannel | flannel | 0.22.3 |
