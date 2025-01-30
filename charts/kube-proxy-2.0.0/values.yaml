@@ -1,0 +1,97 @@
+image:
+  repository: container-registry.oracle.com/olcne/kube-proxy
+  pullPolicy: IfNotPresent
+  tag: "current"
+
+# The endpoint for the kube-apiserver.
+apiServer:
+  host:
+  port: 6443
+
+kubeconfig: {}
+config:
+  apiVersion: kubeproxy.config.k8s.io/v1alpha1
+  kind: KubeProxyConfiguration
+  bindAddress: 0.0.0.0
+  bindAddressHardFail: false
+  clientConnection:
+    acceptContentTypes: ""
+    burst: 0
+    contentType: ""
+    kubeconfig: /var/lib/kube-proxy/kubeconfig.conf
+    qps: 0
+  clusterCIDR: "10.244.0.0/16"
+  configSyncPeriod: 0s
+  conntrack:
+    maxPerCore: null
+    min: null
+    tcpBeLiberal: false
+    tcpCloseWaitTimeout: null
+    tcpEstablishedTimeout: null
+    udpStreamTimeout: 0s
+    udpTimeout: 0s
+  detectLocal:
+    bridgeInterface: ""
+    interfaceNamePrefix: ""
+  detectLocalMode: ""
+  enableProfiling: false
+  healthzBindAddress: ""
+  hostnameOverride: ""
+  iptables:
+    localhostNodePorts: null
+    masqueradeAll: false
+    masqueradeBit: null
+    minSyncPeriod: 0s
+    syncPeriod: 0s
+  ipvs:
+    excludeCIDRs: null
+    minSyncPeriod: 0s
+    scheduler: ""
+    strictARP: false
+    syncPeriod: 0s
+    tcpFinTimeout: 0s
+    tcpTimeout: 0s
+    udpTimeout: 0s
+  logging:
+    flushFrequency: 0
+    options:
+      json:
+        infoBufferSize: "0"
+      text:
+        infoBufferSize: "0"
+    verbosity: 0
+  metricsBindAddress: "0.0.0.0:10249"
+  mode: iptables
+  nftables:
+    masqueradeAll: false
+    masqueradeBit: null
+    minSyncPeriod: 0s
+    syncPeriod: 0s
+  nodePortAddresses: null
+  oomScoreAdj: null
+  portRange: ""
+  showHiddenMetricsForVersion: ""
+  winkernel:
+    enableDSR: false
+    forwardHealthCheckVip: false
+    networkName: ""
+    rootHnsEndpointName: ""
+    sourceVip: ""
+
+imagePullSecrets: []
+
+podAnnotations: {}
+podLabels: {}
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
