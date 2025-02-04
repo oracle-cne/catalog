@@ -1,0 +1,105 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "oci-capi.fullname" . }}-controller-manager
+  namespace: {{ .Release.Namespace }}
+  labels:
+    cluster.x-k8s.io/provider: infrastructure-oci
+    clusterctl.cluster.x-k8s.io: ""
+    control-plane: controller-manager
+  {{- include "oci-capi.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.controllerManager.replicas }}
+  selector:
+    matchLabels:
+      cluster.x-k8s.io/provider: infrastructure-oci
+      control-plane: controller-manager
+    {{- include "oci-capi.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        cluster.x-k8s.io/provider: infrastructure-oci
+        control-plane: controller-manager
+      {{- include "oci-capi.selectorLabels" . | nindent 8 }}
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: node-role.kubernetes.io/control-plane
+                operator: Exists
+            weight: 10
+          - preference:
+              matchExpressions:
+              - key: node-role.kubernetes.io/master
+                operator: Exists
+            weight: 10
+      containers:
+      - args: {{- toYaml .Values.controllerManager.manager.args | nindent 8 }}
+        command:
+        - /manager
+        env:
+{{ if .Values.proxy.httpsProxy }}
+        - name: https_proxy
+          value: {{ quote .Values.proxy.httpsProxy }}
+{{ end }}
+{{ if .Values.proxy.httpProxy }}
+        - name: http_proxy
+          value: {{ quote .Values.proxy.httpProxy }}
+{{ end }}
+{{ if .Values.proxy.noProxy }}
+        - name: no_proxy
+          value: {{ quote .Values.proxy.noProxy }}
+{{ end }}
+        - name: AUTH_CONFIG_DIR
+          value: {{ quote .Values.controllerManager.manager.env.authConfigDir }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.controllerManager.manager.image.repository }}:{{ .Values.controllerManager.manager.image.tag
+          | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.controllerManager.manager.imagePullPolicy }}
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8081
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        name: manager
+        ports:
+        - containerPort: 9443
+          name: webhook-server
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8081
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources: {}
+        securityContext: {{- toYaml .Values.controllerManager.manager.containerSecurityContext
+          | nindent 10 }}
+        volumeMounts:
+        - mountPath: /tmp/k8s-webhook-server/serving-certs
+          name: cert
+          readOnly: true
+        - mountPath: /etc/oci
+          name: auth-config-dir
+          readOnly: true
+      securityContext: {{- toYaml .Values.controllerManager.podSecurityContext | nindent
+        8 }}
+      serviceAccountName: {{ include "oci-capi.fullname" . }}-controller-manager
+      terminationGracePeriodSeconds: 10
+      tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/control-plane
+      volumes:
+      - name: cert
+        secret:
+          defaultMode: 420
+          secretName: capoci-webhook-service-cert
+      - name: auth-config-dir
+        secret:
+          secretName: {{ include "oci-capi.fullname" . }}-auth-config
