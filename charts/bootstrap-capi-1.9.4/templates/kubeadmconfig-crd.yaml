@@ -1,23 +1,23 @@
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
+  name: kubeadmconfigs.bootstrap.cluster.x-k8s.io
   annotations:
-    cert-manager.io/inject-ca-from: capi-kubeadm-bootstrap-system/capi-kubeadm-bootstrap-serving-cert
-    controller-gen.kubebuilder.io/version: v0.16.1
-  creationTimestamp: null
+    cert-manager.io/inject-ca-from: '{{ .Release.Namespace }}/{{ include "bootstrap-capi.fullname"
+      . }}-serving-cert'
+    controller-gen.kubebuilder.io/version: v0.14.0
   labels:
     cluster.x-k8s.io/provider: bootstrap-kubeadm
     cluster.x-k8s.io/v1beta1: v1beta1
-    clusterctl.cluster.x-k8s.io: ""
-  name: kubeadmconfigs.bootstrap.cluster.x-k8s.io
+  {{- include "bootstrap-capi.labels" . | nindent 4 }}
 spec:
   conversion:
     strategy: Webhook
     webhook:
       clientConfig:
         service:
-          name: capi-kubeadm-bootstrap-webhook-service
-          namespace: capi-kubeadm-bootstrap-system
+          name: '{{ include "bootstrap-capi.fullname" . }}-webhook-service'
+          namespace: '{{ .Release.Namespace }}'
           path: /convert
       conversionReviewVersions:
       - v1
@@ -3037,6 +3037,14 @@ spec:
                           strictly parsed. If so, warnings are treated as errors.
                         type: boolean
                     type: object
+                  variant:
+                    description: Variant selects the Operating System variant to use
+                      for the generated configuration
+                    type: string
+                  version:
+                    description: Version selects the version of Butane to use for generated
+                      configuration
+                    type: string
                 type: object
               initConfiguration:
                 description: initConfiguration along with ClusterConfiguration are

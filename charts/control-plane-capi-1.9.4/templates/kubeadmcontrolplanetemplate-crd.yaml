@@ -8,7 +8,6 @@ metadata:
   labels:
     cluster.x-k8s.io/provider: control-plane-kubeadm
     cluster.x-k8s.io/v1beta1: v1beta1
-    clusterctl.cluster.x-k8s.io: ""
   name: kubeadmcontrolplanetemplates.controlplane.cluster.x-k8s.io
 spec:
   conversion:
@@ -2950,7 +2949,7 @@ spec:
                           template:
                             description: |-
                               Template defines the template to use for generating the names of the Machine objects.
-                              If not defined, it will fallback to `{{ .kubeadmControlPlane.name }}-{{ .random }}`.
+                              If not defined, it will fallback to `{{"{{ .kubeadmControlPlane.name }}-{{ .random }}"}}`.
                               If the generated name string exceeds 63 characters, it will be trimmed to 58 characters and will
                               get concatenated with a random suffix of length 5.
                               Length of the template string must not exceed 256 characters.

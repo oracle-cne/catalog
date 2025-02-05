@@ -1,23 +1,22 @@
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
+  name: kubeadmcontrolplanes.controlplane.cluster.x-k8s.io
   annotations:
-    cert-manager.io/inject-ca-from: capi-kubeadm-control-plane-system/capi-kubeadm-control-plane-serving-cert
-    controller-gen.kubebuilder.io/version: v0.16.1
-  creationTimestamp: null
+    cert-manager.io/inject-ca-from: '{{ .Release.Namespace }}/{{ include "control-plane-capi.fullname"
+      . }}-serving-cert'
   labels:
     cluster.x-k8s.io/provider: control-plane-kubeadm
     cluster.x-k8s.io/v1beta1: v1beta1
-    clusterctl.cluster.x-k8s.io: ""
-  name: kubeadmcontrolplanes.controlplane.cluster.x-k8s.io
+  {{- include "control-plane-capi.labels" . | nindent 4 }}
 spec:
   conversion:
     strategy: Webhook
     webhook:
       clientConfig:
         service:
-          name: capi-kubeadm-control-plane-webhook-service
-          namespace: capi-kubeadm-control-plane-system
+          name: '{{ include "control-plane-capi.fullname" . }}-webhook-service'
+          namespace: '{{ .Release.Namespace }}'
           path: /convert
       conversionReviewVersions:
       - v1
@@ -3516,6 +3515,14 @@ spec:
                               be strictly parsed. If so, warnings are treated as errors.
                             type: boolean
                         type: object
+                      variant:
+                        description: Variant selects the Operating System variant to
+                          use for the generated configuration
+                        type: string
+                      version:
+                        description: Version selects the version of Butane to use for
+                          generated configuration
+                        type: string
                     type: object
                   initConfiguration:
                     description: initConfiguration along with ClusterConfiguration
@@ -4209,7 +4216,7 @@ spec:
                   template:
                     description: |-
                       Template defines the template to use for generating the names of the Machine objects.
-                      If not defined, it will fallback to `{{ .kubeadmControlPlane.name }}-{{ .random }}`.
+                      If not defined, it will fallback to `{{"{{ .kubeadmControlPlane.name }}-{{ .random }}"}}`.
                       If the generated name string exceeds 63 characters, it will be trimmed to 58 characters and will
                       get concatenated with a random suffix of length 5.
                       Length of the template string must not exceed 256 characters.

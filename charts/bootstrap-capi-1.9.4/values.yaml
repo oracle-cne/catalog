@@ -4,7 +4,7 @@ controllerManager:
     - --leader-elect
     - --diagnostics-address=:8443
     - --insecure-diagnostics=false
-    - --feature-gates=MachinePool=true,KubeadmBootstrapFormatIgnition=false
+    - --feature-gates=MachinePool=true,KubeadmBootstrapFormatIgnition=true
     - --bootstrap-token-ttl=15m
     containerSecurityContext:
       allowPrivilegeEscalation: false
@@ -28,4 +28,7 @@ webhookService:
   - port: 443
     targetPort: webhook-server
   type: ClusterIP
-fullnameOverride: capi
+proxy:
+  httpsProxy:
+  httpProxy:
+  noProxy:

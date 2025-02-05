@@ -5,7 +5,6 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     cluster.x-k8s.io/provider: infrastructure-oci
-    clusterctl.cluster.x-k8s.io: ""
   {{- include "oci-capi.labels" . | nindent 4 }}
 data:
   controller_manager_config.yaml: {{ .Values.managerConfig.controllerManagerConfigYaml

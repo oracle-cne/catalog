@@ -4,7 +4,6 @@ metadata:
   name: {{ include "control-plane-capi.fullname" . }}-aggregated-manager-role
   labels:
     cluster.x-k8s.io/provider: control-plane-kubeadm
-    clusterctl.cluster.x-k8s.io: ""
   {{- include "control-plane-capi.labels" . | nindent 4 }}
 aggregationRule:
   clusterRoleSelectors:

@@ -4,7 +4,6 @@ metadata:
   name: {{ include "bootstrap-capi.fullname" . }}-manager-role
   labels:
     cluster.x-k8s.io/provider: bootstrap-kubeadm
-    clusterctl.cluster.x-k8s.io: ""
   {{- include "bootstrap-capi.labels" . | nindent 4 }}
 rules:
 - apiGroups:
@@ -74,7 +73,6 @@ metadata:
   name: {{ include "bootstrap-capi.fullname" . }}-manager-rolebinding
   labels:
     cluster.x-k8s.io/provider: bootstrap-kubeadm
-    clusterctl.cluster.x-k8s.io: ""
   {{- include "bootstrap-capi.labels" . | nindent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io

@@ -4,7 +4,6 @@ metadata:
   name: {{ include "oci-capi.fullname" . }}-metrics-reader
   labels:
     cluster.x-k8s.io/provider: infrastructure-oci
-    clusterctl.cluster.x-k8s.io: ""
   {{- include "oci-capi.labels" . | nindent 4 }}
 rules:
 - nonResourceURLs:
