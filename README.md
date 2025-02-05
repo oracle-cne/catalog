@@ -15,11 +15,11 @@ installing the `ocne-catalog` chart.
 
 | Application                                         | Chart                    | Versions |
 |-----------------------------------------------------|--------------------------|----------|
-| Cluster API Core Controller                         | core-capi                | 1.7.1    |
-| Cluster API Kubeadm Control Plane Controller        | control-plane-capi       | 1.7.1    |
-| Cluster API Kubeadm Bootstrap Controller            | bootstrap-capi           | 1.7.1    |
-| Cluster API for Oracle Cloud Infrastructure         | oci-capi                 | 0.15.0   |
 | Cert Manager                                        | cert-manager             | 1.16.3<br>1.14.5  |
+| Cluster API Core Controller                         | core-capi                | 1.9.4<br>1.7.1    |
+| Cluster API Kubeadm Control Plane Controller        | control-plane-capi       | 1.9.4<br>1.7.1    |
+| Cluster API Kubeadm Bootstrap Controller            | bootstrap-capi           | 1.9.4<br>1.7.1    |
+| Cluster API for Oracle Cloud Infrastructure         | oci-capi                 | 0.16.0<br>0.15.0   |
 | Cert Manager OCI Webhook                            | cert-manager-webhook-oci | 1.1.0    |
 | CoreDNS                                             | coredns                  | 2.0.0    |
 | Dex                                                 | dex                      | 2.39.1   |
@@ -40,7 +40,7 @@ installing the `ocne-catalog` chart.
 | MetalLB                                             | metallb                  | 0.13.10  |
 | Multus                                              | multus                   | 4.0.2    |
 | OAuth2 Proxy                                        | oauth2-proxy             | 7.8.0    |
-| OCI Cloud Controller Manager                        | oci-ccm                  | 1.28.0   |
+| OCI Cloud Controller Manager                        | oci-ccm                  | 1.30.0<br>1.28.0 |
 | Oracle Cloud Native Environment Application Catalog | ocne-catalog             | 2.0.0    |
 | Prometheus                                          | prometheus               | 2.31.1   |
 | Prometheus Adapter                                  | prometheus-adapter       | 0.10.0   |
