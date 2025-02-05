@@ -40,7 +40,7 @@ installing the `ocne-catalog` chart.
 | MetalLB                                             | metallb                  | 0.13.10  |
 | Multus                                              | multus                   | 4.0.2    |
 | OAuth2 Proxy                                        | oauth2-proxy             | 7.8.0    |
-| OCI Cloud Controller Manager                        | oci-ccm                  | 1.28.0   |
+| OCI Cloud Controller Manager                        | oci-ccm                  | 1.30.0<br>1.28.0 |
 | Oracle Cloud Native Environment Application Catalog | ocne-catalog             | 2.0.0    |
 | Prometheus                                          | prometheus               | 2.31.1   |
 | Prometheus Adapter                                  | prometheus-adapter       | 0.10.0   |
