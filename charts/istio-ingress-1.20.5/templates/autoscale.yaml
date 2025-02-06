@@ -17,7 +17,7 @@ spec:
   minReplicas: {{ $gateway.autoscaleMin }}
   scaleTargetRef:
     apiVersion: apps/v1
-    kind: Deployment
+    kind: {{ .Values.kind | default "Deployment" }}
     name: {{ $gateway.name }}
   metrics:
   - type: Resource
@@ -46,7 +46,7 @@ spec:
   minReplicas: {{ $gateway.autoscaleMin }}
   scaleTargetRef:
     apiVersion: apps/v1
-    kind: Deployment
+    kind: {{ .Values.kind | default "Deployment" }}
     name: {{ $gateway.name }}
   metrics:
   - type: Resource
