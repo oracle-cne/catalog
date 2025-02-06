@@ -20,10 +20,12 @@ spec:
   selector:
     matchLabels:
 {{ $gateway.labels | toYaml | indent 6 }}
+{{- if eq .Values.kind "Deployment" }}
   strategy:
     rollingUpdate:
       maxSurge: {{ $gateway.rollingMaxSurge }}
       maxUnavailable: {{ $gateway.rollingMaxUnavailable }}
+{{- end }}
   template:
     metadata:
       labels:
