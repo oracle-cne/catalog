@@ -1,6 +1,6 @@
 image:
   repository: olcne/opensearch
-  tag: v2.15.0
+  tag: 2.15.0
   pullPolicy: IfNotPresent
 esData:
   deploymentSuffixes:
