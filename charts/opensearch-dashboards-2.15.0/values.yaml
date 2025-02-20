@@ -16,7 +16,7 @@ deployment:
       opensearchHosts:
     image:
       repository: olcne/opensearch-dashboards
-      tag: v2.15.0
+      tag: 2.15.0
     imagePullPolicy: IfNotPresent
     resources:
       requests:
