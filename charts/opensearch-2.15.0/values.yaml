@@ -1,0 +1,183 @@
+image:
+  repository: olcne/opensearch
+  tag: 2.15.0
+  pullPolicy: IfNotPresent
+esData:
+  deploymentSuffixes:
+    - "0"
+    - "1"
+    - "2"
+  ports:
+  - name: http-es-data
+    port: 9200
+    protocol: TCP
+    targetPort: 9200
+  type: ClusterIP
+  service:
+    extraLabels:
+    extraSelectorLabels:
+  serviceAccount:
+  extraLabels:
+  extraTemplateLabels:
+  elasticsearchInit:
+    args:
+    - sysctl
+    - -w
+    - vm.max_map_count=262144
+    containerSecurityContext:
+      allowPrivilegeEscalation: true
+      privileged: true
+      runAsGroup: 0
+      runAsNonRoot: false
+      runAsUser: 0
+    image:
+      repository: container-registry.oracle.com/os/oraclelinux
+      tag: "8"
+    imagePullPolicy: IfNotPresent
+  esData:
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      privileged: false
+      runAsUser: 1000
+    env:
+      clusterName: system
+      disableSecurityPlugin: "true"
+      discoverySeedHosts: vmi-system-es-master
+      loggerOrgOpensearch: info
+      nodeAttrAvailabilityDomain: None
+      nodeRoles: data
+      opensearchJavaOpts: -Xms3687m -Xmx3687m
+      extraEnv: []
+    command: []
+    resources:
+      requests:
+        memory: 2560Mi
+  replicas: 1
+  revisionHistoryLimit: 10
+esIngest:
+  serviceAccount:
+  extraLabels:
+  extraTemplateLabels:
+  elasticsearchInit:
+    args:
+    - sysctl
+    - -w
+    - vm.max_map_count=262144
+    containerSecurityContext:
+      allowPrivilegeEscalation: true
+      privileged: true
+      runAsGroup: 0
+      runAsNonRoot: false
+      runAsUser: 0
+    image:
+      repository: container-registry.oracle.com/os/oraclelinux
+      tag: "8"
+    imagePullPolicy: IfNotPresent
+  esIngest:
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      privileged: false
+      runAsUser: 1000
+    env:
+      clusterName: system
+      disableSecurityPlugin: "true"
+      discoverySeedHosts: vmi-system-es-master
+      loggerOrgOpensearch: info
+      networkHost: 0.0.0.0
+      nodeRoles: ingest
+      opensearchJavaOpts: -Xms1920m -Xmx1920m
+      extraEnv: []
+    command: []
+    resources:
+      requests:
+        memory: 2560Mi
+  replicas: 1
+  revisionHistoryLimit: 10
+esMaster:
+  serviceAccount:
+  namespace:
+  extraMetadataLabels:
+  extraTemplateLabels:
+  elasticsearchInit:
+    containerSecurityContext:
+      allowPrivilegeEscalation: true
+      privileged: true
+      runAsGroup: 0
+      runAsNonRoot: false
+      runAsUser: 0
+    image:
+      repository: container-registry.oracle.com/os/oraclelinux
+      tag: "8"
+    imagePullPolicy: IfNotPresent
+  esMaster:
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      privileged: false
+      runAsUser: 1000
+    env:
+      clusterInitialMasterNodes: vmi-system-es-master-0,vmi-system-es-master-1,vmi-system-es-master-2
+      clusterName: system
+      disableSecurityPlugin: "true"
+      discoverySeedHosts: vmi-system-es-master
+      httpEnable: "true"
+      loggerOrgOpensearch: info
+      nodeRoles: master
+      opensearchJavaOpts: -Xms1076m -Xmx1076m
+      extraEnv: []
+    command: []
+    resources:
+      requests:
+        memory: 2560Mi
+  ports:
+  - name: http-es-master
+    port: 9300
+    protocol: TCP
+    targetPort: 9300
+  replicas: 3
+  type: ClusterIP
+  volumeClaims:
+    elasticsearchMaster:
+      requests:
+        storage: 50Gi
+  service:
+    extraLabels:
+    extraSelectorLabels:
+esMasterHttp:
+  ports:
+  - name: http-es-master
+    port: 9200
+    protocol: TCP
+    targetPort: 9200
+  type: ClusterIP
+  service:
+    extraLabels:
+    extraSelectorLabels:
+kubernetesClusterDomain: cluster.local
+osIngest:
+  ports:
+  - name: http-os-ingest
+    port: 9200
+    protocol: TCP
+    targetPort: 9200
+  type: ClusterIP
+  service:
+    extraLabels:
+    extraSelectorLabels:
+ingress:
+  host:
+  extraAnnotations: {}
+  extraLabels: {}
+  spec:
+    ingressClassName:
+    backend:
+      service:
+        name:
