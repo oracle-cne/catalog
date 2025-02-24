@@ -39,6 +39,9 @@ cp -ap olm/icons/* %{buildroot}/opt/icons
 %changelog
 * Sun Feb 23 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-10
 - Add Flannel with floating tag
+- Update Cluster API controllers
+- Update Cert Manager
+- Update OCI-CCM
 
 * Wed Jan 29 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-9
 - Add CoreDNS
