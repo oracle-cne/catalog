@@ -1,0 +1,23 @@
+apiVersion: v2
+name: keycloakx
+version: 21.1.2
+appVersion: 21.1.2
+description: Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
+keywords:
+  - sso
+  - idm
+  - openid connect
+  - saml
+  - kerberos
+  - oauth
+  - ldap
+  - keycloakx
+  - quarkus
+home: https://www.keycloak.org/
+icon: icons/keycloak_logo.svg
+sources:
+  - https://github.com/codecentric/helm-charts
+  - https://github.com/keycloak/keycloak/tree/main/quarkus/container
+maintainers:
+  - name: thomasdarimont
+    email: thomas.darimont+github@gmail.com
