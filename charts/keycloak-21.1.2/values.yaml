@@ -11,7 +11,7 @@ image:
   # The Keycloak image repository
   repository: olcne/keycloak
   # Overrides the Keycloak image tag whose default is the chart appVersion
-  tag: "21.1.2"
+  tag: "v21.1.2"
   # The Keycloak image pull policy
   pullPolicy: IfNotPresent
 
