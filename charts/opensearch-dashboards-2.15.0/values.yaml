@@ -49,3 +49,127 @@ nameOverride:
 serviceAccount:
   create:
   name:
+
+priorityClassName: ""
+
+podSecurityContext:
+  fsGroup: 1000
+  runAsGroup: 1000
+  runAsNonRoot: true
+  runAsUser: 1000
+  seccompProfile:
+    type: RuntimeDefault
+
+hostAliases: []
+# - ip: "127.0.0.1"
+#   hostnames:
+#   - "foo.local"
+#   - "bar.local"
+
+# A list of secrets and their paths to mount inside the pod
+# This is useful for mounting certificates for security and for mounting
+# the X-Pack license
+secretMounts: []
+#  - name: certs
+#    secretName: dashboard-certs
+#    path: /usr/share/dashboards/certs
+
+config: {}
+  # Default OpenSearch Dashboards configuration from docker image of Dashboards
+
+  #  opensearch_dashboards.yml: |
+  #   server:
+  #     name: dashboards
+  #     host: "{{ .Values.serverHost }}"
+
+  #  opensearch_dashboards.yml:
+  #   server:
+  #     name: dashboards
+  #     host: "{{ .Values.serverHost }}"
+
+
+  # Dashboards TLS Config (Ensure the cert files are present before enabling SSL
+  # ssl:
+  #   enabled: true
+  #   key: /usr/share/opensearch-dashboards/certs/dashboards-key.pem
+  #   certificate: /usr/share/opensearch-dashboards/certs/dashboards-crt.pem
+
+  # determines how dashboards will verify certificates (needs to be none for default opensearch certificates to work)
+  # opensearch:
+  #   ssl:
+  #     certificateAuthorities: /usr/share/opensearch-dashboards/certs/dashboards-root-ca.pem
+#     if utilizing custom CA certs for connection to opensearch, provide the CA here
+
+opensearchDashboardsYml:
+  defaultMode:
+  # value should be 0-0777
+
+extraVolumes: []
+  # - name: extras
+#   emptyDir: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+imagePullSecrets: []
+
+extraEnvs: []
+#  - name: "NODE_OPTIONS"
+#    value: "--max-old-space-size=1800"
+
+envFrom: []
+
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app: system-osd
+          topologyKey: failure-domain.beta.kubernetes.io/zone
+        weight: 100
+
+extraInitContainers: ""
+
+readinessProbe:
+  tcpSocket:
+    port: 5601
+  periodSeconds: 20
+  timeoutSeconds: 5
+  failureThreshold: 10
+  successThreshold: 1
+  initialDelaySeconds: 15
+
+livenessProbe:
+  tcpSocket:
+    port: 5601
+  periodSeconds: 20
+  timeoutSeconds: 5
+  failureThreshold: 10
+  successThreshold: 1
+  initialDelaySeconds: 120
+
+startupProbe:
+  tcpSocket:
+    port: 5601
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 20
+  successThreshold: 1
+  initialDelaySeconds: 10
+
+# pod lifecycle policies as outlined here:
+# https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks
+lifecycle: {}
+  # preStop:
+  #   exec:
+  #     command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /usr/share/message"]
+  # postStart:
+  #   exec:
+  #     command:
+  #       - bash
+  #       - -c
+  #       - |
+  #         #!/bin/bash
+#         curl -I "http://admin:admin@127.0.0.1:5601/status -H "kbn-xsrf: true" -H 'kbn-xsrf: true' -H "Content-Type: application/json"

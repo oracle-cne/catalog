@@ -27,71 +27,115 @@ spec:
       annotations:
       {{- .Values.deployment.extraTemplateAnnotations | toYaml | nindent 8 }}
     spec:
+{{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName }}
+{{- end }}
+      securityContext:
+{{ toYaml .Values.podSecurityContext | indent 8 }}
+      serviceAccountName: {{ .Values.deployment.serviceAccount }}
+      {{- if .Values.hostAliases }}
+      hostAliases: {{ toYaml .Values.hostAliases | nindent 6 }}
+      {{- end }}
+      volumes:
+        {{- range .Values.secretMounts }}
+        - name: {{ .name }}
+          secret:
+            secretName: {{ .secretName }}
+        {{- end }}
+        {{- if .Values.config }}
+        - name: config
+          configMap:
+            name: {{ template "opensearch-dashboards.fullname" . }}-config
+            {{- if .Values.opensearchDashboardsYml.defaultMode }}
+            defaultMode: {{ .Values.opensearchDashboardsYml.defaultMode }}
+            {{- end }}
+        {{- end }}
+        {{- if .Values.extraVolumes }}
+        # Currently some extra blocks accept strings
+        # to continue with backwards compatibility this is being kept
+        # whilst also allowing for yaml to be specified too.
+        {{- if eq "string" (printf "%T" .Values.extraVolumes) }}
+{{ tpl .Values.extraVolumes . | indent 8 }}
+        {{- else }}
+{{ toYaml .Values.extraVolumes | indent 8 }}
+        {{- end }}
+        {{- end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
       affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app: system-osd
-              topologyKey: failure-domain.beta.kubernetes.io/zone
-            weight: 100
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+    {{- end }}
+      {{- if .Values.extraInitContainers }}
+      # Currently, some extra blocks accept strings
+      # to continue with backwards compatibility this is being kept
+      # whilst also allowing for YAML to be specified too.
+      initContainers:
+      {{- if eq "string" (printf "%T" .Values.extraInitContainers) }}
+{{ tpl .Values.extraInitContainers . | indent 6 }}
+      {{- else }}
+{{ toYaml .Values.extraInitContainers | indent 6 }}
+      {{- end }}
+      {{- end }}
       containers:
-      - command:
+      - name: osd
+        securityContext: {{- toYaml .Values.deployment.osd.containerSecurityContext | nindent 10 }}
+        image: {{ .Values.deployment.osd.image.repository }}:{{ .Values.deployment.osd.image.tag| default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.deployment.osd.imagePullPolicy }}
+        {{- if .Values.readinessProbe }}
+        readinessProbe:
+{{ toYaml .Values.readinessProbe | indent 10 }}
+        {{- end }}
+        {{- if .Values.livenessProbe }}
+        livenessProbe:
+{{ toYaml .Values.livenessProbe | indent 10 }}
+        {{- end }}
+        {{- if semverCompare ">=1.16-0" .Capabilities.KubeVersion.Version }}
+        {{- if .Values.readinessProbe }}
+        startupProbe:
+{{ toYaml .Values.startupProbe | indent 10 }}
+        {{- end }}
+        {{- end }}
+        env:
+          - name: OPENSEARCH_HOSTS
+            value: "{{ .Values.deployment.osd.env.opensearchHosts }}"
+          - name: DISABLE_SECURITY_DASHBOARDS_PLUGIN
+            value: "{{ .Values.deployment.osd.env.disableSecurityDashboardsPlugin }}"
+          - name: KUBERNETES_CLUSTER_DOMAIN
+            value: "{{ .Values.kubernetesClusterDomain }}"
+{{- if .Values.extraEnvs }}
+{{ toYaml .Values.extraEnvs | indent 8 }}
+{{- end }}
+{{- if .Values.envFrom }}
+        envFrom:
+{{ toYaml .Values.envFrom | indent 10 }}
+{{- end }}
+        command:
         - sh
         - -c
         - "#!/usr/bin/env bash -e\n    \n\t./opensearch-dashboards-docker-entrypoint.sh"
-        env:
-        - name: OPENSEARCH_HOSTS
-          value: {{ quote .Values.deployment.osd.env.opensearchHosts }}
-        - name: DISABLE_SECURITY_DASHBOARDS_PLUGIN
-          value: {{ quote .Values.deployment.osd.env.disableSecurityDashboardsPlugin
-            }}
-        - name: KUBERNETES_CLUSTER_DOMAIN
-          value: {{ quote .Values.kubernetesClusterDomain }}
-        image: {{ .Values.deployment.osd.image.repository }}:{{ .Values.deployment.osd.image.tag
-          | default .Chart.AppVersion }}
-        imagePullPolicy: {{ .Values.deployment.osd.imagePullPolicy }}
-        livenessProbe:
-          failureThreshold: 10
-          httpGet:
-            path: /api/status
-            port: 5601
-            scheme: HTTP
-          initialDelaySeconds: 120
-          periodSeconds: 20
-          successThreshold: 1
-          timeoutSeconds: 3
-        name: osd
         ports:
         - containerPort: 5601
           name: osd
           protocol: TCP
-        readinessProbe:
-          failureThreshold: 5
-          httpGet:
-            path: /api/status
-            port: 5601
-            scheme: HTTP
-          initialDelaySeconds: 15
-          periodSeconds: 20
-          successThreshold: 1
-          timeoutSeconds: 3
+{{- if .Values.lifecycle }}
+        lifecycle:
+{{ toYaml .Values.lifecycle | indent 10 }}
+{{- end }}
         resources: {{- toYaml .Values.deployment.osd.resources | nindent 10 }}
-        securityContext: {{- toYaml .Values.deployment.osd.containerSecurityContext |
-          nindent 10 }}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
-      securityContext:
-        fsGroup: 1000
-        runAsGroup: 1000
-        runAsNonRoot: true
-        runAsUser: 1000
-        seccompProfile:
-          type: RuntimeDefault
-      serviceAccount: {{ .Values.deployment.serviceAccount }}
-      serviceAccountName: {{ .Values.deployment.serviceAccount }}
       terminationGracePeriodSeconds: 1
