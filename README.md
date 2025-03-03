@@ -24,7 +24,7 @@ installing the `ocne-catalog` chart.
 | CoreDNS                                             | coredns                  | 2.0.0            |
 | Dex                                                 | dex                      | 2.39.1           |
 | ExternalIP Webhook                                  | externalip-webhook       | 1.0.0            |
-| Flannel                                             | flannel                  | 0.22.3           |
+| Flannel                                             | flannel                  | 2.0.0<br>0.22.3           |
 | Fluent Operator                                     | fluent-operator          | 3.2.0            |
 | Fluentd                                             | fluentd                  | 1.14.5           |
 | Grafana                                             | grafana                  | 7.5.17           |
