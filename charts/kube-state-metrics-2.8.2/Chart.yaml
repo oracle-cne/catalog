@@ -4,19 +4,20 @@ description: Install kube-state-metrics to generate and expose cluster-level met
 icon: icons/kube-state-metrics-icon.svg
 home: https://github.com/kubernetes/kube-state-metrics/
 keywords:
-- metric
-- monitoring
-- prometheus
-- kubernetes
+  - metric
+  - monitoring
+  - prometheus
+  - kubernetes
 maintainers:
-- email: tariq.ibrahim@mulesoft.com
-  name: tariq1890
-- email: manuel@rueg.eu
-  name: mrueg
-- email: david@0xdc.me
-  name: dotdc
+  - email: tariq.ibrahim@mulesoft.com
+    name: tariq1890
+  - email: manuel@rueg.eu
+    name: mrueg
+  - email: david@0xdc.me
+    name: dotdc
 name: kube-state-metrics
 sources:
-- https://github.com/kubernetes/kube-state-metrics/
+  - https://github.com/kubernetes/kube-state-metrics/
 type: application
 version: 2.8.2
+kubeVersion: '>= 1.30.0 <= 1.32.0'
