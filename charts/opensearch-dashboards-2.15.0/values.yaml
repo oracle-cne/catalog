@@ -108,6 +108,11 @@ extraVolumes: []
   # - name: extras
 #   emptyDir: {}
 
+extraVolumeMounts: []
+  # - name: extras
+  #   mountPath: /usr/share/extras
+#   readOnly: true
+
 nodeSelector: {}
 
 tolerations: []
@@ -129,6 +134,8 @@ affinity:
               app: system-osd
           topologyKey: failure-domain.beta.kubernetes.io/zone
         weight: 100
+
+extraContainers: ""
 
 extraInitContainers: ""
 

@@ -133,9 +133,42 @@ spec:
 {{ toYaml .Values.lifecycle | indent 10 }}
 {{- end }}
         resources: {{- toYaml .Values.deployment.osd.resources | nindent 10 }}
+        volumeMounts:
+          {{- range .Values.secretMounts }}
+          - name: {{ .name }}
+            mountPath: {{ .path }}
+            {{- if .subPath }}
+            subPath: {{ .subPath }}
+            {{- end }}
+          {{- end }}
+          {{- range $path, $config := .Values.config }}
+          - name: config
+            mountPath: /usr/share/opensearch-dashboards/config/{{ $path }}
+            subPath: {{ $path }}
+          {{- end }}
+          {{- if .Values.extraVolumeMounts }}
+          # Currently some extra blocks accept strings
+          # to continue with backwards compatibility this is being kept
+          # whilst also allowing for yaml to be specified too.
+          {{- if eq "string" (printf "%T" .Values.extraVolumeMounts) }}
+{{ tpl .Values.extraVolumeMounts . | indent 10 }}
+         {{- else }}
+{{ toYaml .Values.extraVolumeMounts | indent 10 }}
+          {{- end }}
+          {{- end }}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       terminationGracePeriodSeconds: 1
+      {{- if .Values.extraContainers }}
+      # Currently some extra blocks accept strings
+      # to continue with backwards compatibility this is being kept
+      # whilst also allowing for yaml to be specified too.
+      {{- if eq "string" (printf "%T" .Values.extraContainers) }}
+{{ tpl .Values.extraContainers . | indent 6 }}
+      {{- else }}
+{{ toYaml .Values.extraContainers | indent 6 }}
+      {{- end }}
+      {{- end }}
