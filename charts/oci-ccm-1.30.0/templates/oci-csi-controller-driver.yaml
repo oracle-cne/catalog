@@ -1,0 +1,121 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deprecated.daemonset.template.generation: "1"
+  generation: 1
+  name: csi-oci-controller
+  namespace: {{ .Values.global.namespace }}
+spec:
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: csi-oci-controller
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: csi-oci-controller
+        role: csi-oci
+    spec:
+{{ if not .Values.global.compact }}
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: ""
+{{ end }}
+      containers:
+        - name: csi-volume-provisioner
+          image: {{ .Values.global.csi.registry }}/csi-provisioner:{{ index .Values "csi-provisioner" }}
+          args:
+            - --csi-address=/var/run/shared-tmpfs/csi.sock
+            - --volume-name-prefix=csi
+            - --feature-gates=Topology=true
+            - --timeout=120s
+            - --leader-election
+            - --leader-election-namespace={{ .Values.global.namespace }}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/oci/
+              readOnly: true
+            - mountPath: /var/run/shared-tmpfs
+              name: shared-tmpfs
+        - name: csi-fss-volume-provisioner
+          image: {{ .Values.global.csi.registry }}/csi-provisioner:{{ index .Values "csi-provisioner" }}
+          args:
+            - --csi-address=/var/run/shared-tmpfs/csi-fss.sock
+            - --volume-name-prefix=csi-fss
+            - --feature-gates=Topology=true
+            - --timeout=120s
+            - --leader-election
+            - --leader-election-namespace={{ .Values.global.namespace }}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/oci/
+              readOnly: true
+            - mountPath: /var/run/shared-tmpfs
+              name: shared-tmpfs
+        - name: csi-attacher
+          image: {{ .Values.global.csi.registry }}/csi-attacher:{{ index .Values "csi-attacher" }}
+          args:
+            - --csi-address=/var/run/shared-tmpfs/csi.sock
+            - --timeout=120s
+            - --leader-election=true
+            - --leader-election-namespace={{ .Values.global.namespace }}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/oci/
+              readOnly: true
+            - mountPath: /var/run/shared-tmpfs
+              name: shared-tmpfs
+        - name: csi-resizer
+          image: {{ .Values.global.csi.registry }}/csi-resizer:{{ index .Values "csi-resizer" }}
+          args:
+            - --csi-address=/var/run/shared-tmpfs/csi.sock
+            - --leader-election
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - mountPath: /var/run/shared-tmpfs
+              name: shared-tmpfs
+        - name: csi-snapshotter
+          image: {{ .Values.global.csi.registry }}/csi-snapshotter:{{ index .Values "csi-snapshotter" }}
+          args:
+            - --csi-address=/var/run/shared-tmpfs/csi.sock
+            - --leader-election
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - mountPath: /var/run/shared-tmpfs
+              name: shared-tmpfs
+        - name: oci-csi-controller-driver
+          args:
+            - --endpoint=unix://var/run/shared-tmpfs/csi.sock
+            - --fss-csi-endpoint=unix://var/run/shared-tmpfs/csi-fss.sock
+          command:
+            - /usr/local/bin/oci-csi-controller-driver
+          image: {{ .Values.global.oci.registry }}/cloud-provider-oci:{{ index .Values "cloud-provider-oci" }}
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: config
+              mountPath: /etc/oci/
+              readOnly: true
+            - name: kubernetes
+              mountPath: /etc/kubernetes
+              readOnly: true
+            - mountPath: /var/run/shared-tmpfs
+              name: shared-tmpfs
+      volumes:
+        - name: config
+          secret:
+            secretName: {{ .Values.volumeProvisionerConfig }}
+        - name: kubernetes
+          hostPath:
+            path: /etc/kubernetes
+        - name: shared-tmpfs
+          emptyDir: {}
+      dnsPolicy: ClusterFirst
+      hostNetwork: true
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      serviceAccount: csi-oci-node-sa
+      serviceAccountName: csi-oci-node-sa
+      terminationGracePeriodSeconds: 30
+      tolerations:
+        - operator: Exists

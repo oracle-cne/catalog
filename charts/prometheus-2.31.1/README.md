@@ -7,124 +7,21 @@ This chart bootstraps a [Prometheus](https://prometheus.io/) deployment on a [Ku
 ## Prerequisites
 
 - Kubernetes 1.16+
-- Helm 3+
 
-## Get Repo Info
-
-```console
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo update
-```
-
-_See [helm repo](https://helm.sh/docs/helm/helm_repo/) for command documentation._
-
-## Install Chart
+## Install The Application
 
 ```console
 helm install [RELEASE_NAME] prometheus-community/prometheus
+ocne application install --release [RELEASE_NAME] --name prometheus --namespace [NAMESPACE]
 ```
 
-_See [configuration](#configuration) below._
-
-_See [helm install](https://helm.sh/docs/helm/helm_install/) for command documentation._
-
-## Dependencies
-
-By default this chart installs additional, dependent charts:
-
-- [kube-state-metrics](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-state-metrics)
-
-To disable the dependency during installation, set `kubeStateMetrics.enabled` to `false`.
-
-_See [helm dependency](https://helm.sh/docs/helm/helm_dependency/) for command documentation._
-
-## Uninstall Chart
+## Uninstall The Application
 
 ```console
-helm uninstall [RELEASE_NAME]
+ocne application uninstall --release [RELEASE_NAME] --namespace [NAMESPACE]
 ```
 
-This removes all the Kubernetes components associated with the chart and deletes the release.
-
-_See [helm uninstall](https://helm.sh/docs/helm/helm_uninstall/) for command documentation._
-
-## Upgrading Chart
-
-```console
-helm upgrade [RELEASE_NAME] [CHART] --install
-```
-
-_See [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) for command documentation._
-
-### To 15.0
-
-Version 15.0.0 changes the relabeling config, aligning it with the [Prometheus community conventions](https://github.com/prometheus/prometheus/pull/9832). If you've made manual changes to the relabeling config, you have to adapt your changes.
-
-Before you update please execute the following command, to be able to update kube-state-metrics:
-
-```bash
-kubectl delete deployments.apps -l app.kubernetes.io/instance=prometheus,app.kubernetes.io/name=kube-state-metrics --cascade=orphan
-```
-
-### To 9.0
-
-Version 9.0 adds a new option to enable or disable the Prometheus Server. This supports the use case of running a Prometheus server in one k8s cluster and scraping exporters in another cluster while using the same chart for each deployment. To install the server `server.enabled` must be set to `true`.
-
-### To 5.0
-
-As of version 5.0, this chart uses Prometheus 2.x. This version of prometheus introduces a new data format and is not compatible with prometheus 1.x. It is recommended to install this as a new release, as updating existing releases will not work. See the [prometheus docs](https://prometheus.io/docs/prometheus/latest/migration/#storage) for instructions on retaining your old data.
-
-Prometheus version 2.x has made changes to alertmanager, storage and recording rules. Check out the migration guide [here](https://prometheus.io/docs/prometheus/2.0/migration/).
-
-Users of this chart will need to update their alerting rules to the new format before they can upgrade.
-
-### Example Migration
-
-Assuming you have an existing release of the prometheus chart, named `prometheus-old`. In order to update to prometheus 2.x while keeping your old data do the following:
-
-1. Update the `prometheus-old` release. Disable scraping on every component besides the prometheus server, similar to the configuration below:
-
-  ```yaml
-  alertmanager:
-    enabled: false
-  alertmanagerFiles:
-    alertmanager.yml: ""
-  kubeStateMetrics:
-    enabled: false
-  nodeExporter:
-    enabled: false
-  pushgateway:
-    enabled: false
-  server:
-    extraArgs:
-      storage.local.retention: 720h
-  serverFiles:
-    alerts: ""
-    prometheus.yml: ""
-    rules: ""
-  ```
-
-1. Deploy a new release of the chart with version 5.0+ using prometheus 2.x. In the values.yaml set the scrape config as usual, and also add the `prometheus-old` instance as a remote-read target.
-
-   ```yaml
-    prometheus.yml:
-      ...
-      remote_read:
-      - url: http://prometheus-old/api/v1/read
-      ...
-   ```
-
-   Old data will be available when you query the new prometheus instance.
-
-## Configuration
-
-See [Customizing the Chart Before Installing](https://helm.sh/docs/intro/using_helm/#customizing-the-chart-before-installing). To see all configurable options with detailed comments, visit the chart's [values.yaml](./values.yaml), or run these configuration commands:
-
-```console
-helm show values prometheus-community/prometheus
-```
-
-You may similarly use the above configuration commands on each chart [dependency](#dependencies) to see it's configurations.
+This removes all the Kubernetes components associated with the application and deletes the release.
 
 ### Scraping Pod Metrics via Annotations
 
@@ -143,8 +40,6 @@ metadata:
 You should adjust `prometheus.io/path` based on the URL that your pod serves metrics from. `prometheus.io/port` should be set to the port that your pod serves metrics from. Note that the values for `prometheus.io/scrape` and `prometheus.io/port` must be enclosed in double quotes.
 
 ### Sharing Alerts Between Services
-
-Note that when [installing](#install-chart) or [upgrading](#upgrading-chart) you may use multiple values override files. This is particularly useful when you have alerts belonging to multiple services in the cluster. For example,
 
 ```yaml
 # values.yaml
