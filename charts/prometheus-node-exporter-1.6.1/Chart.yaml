@@ -24,4 +24,4 @@ sources:
   - https://github.com/prometheus/node_exporter/
 type: application
 version: 1.6.1
-kubeVersion: '>= 1.30.0 <= 1.32.0'
+kubeVersion: '>= 1.30.0 < 1.32.0'

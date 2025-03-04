@@ -20,4 +20,4 @@ sources:
   - https://github.com/kubernetes/kube-state-metrics/
 type: application
 version: 2.8.2
-kubeVersion: '>= 1.30.0 <= 1.32.0'
+kubeVersion: '>= 1.30.0 < 1.32.0'

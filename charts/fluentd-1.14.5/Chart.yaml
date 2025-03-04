@@ -5,4 +5,4 @@ name: fluentd
 version: 1.14.5
 appVersion: 1.14.5
 icon: icons/fluentd-icon.svg
-kubeVersion: '>= 1.30.0 <= 1.32.0'
+kubeVersion: '>= 1.30.0 < 1.32.0'

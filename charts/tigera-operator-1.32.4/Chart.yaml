@@ -10,4 +10,4 @@ sources:
   - https://github.com/projectcalico/calico
 # version will be overridden at chart compilation time via args, but still must exist in chart.yaml
 version: 1.32.4
-kubeVersion: '>= 1.30.0 <= 1.32.0'
+kubeVersion: '>= 1.30.0 < 1.32.0'
