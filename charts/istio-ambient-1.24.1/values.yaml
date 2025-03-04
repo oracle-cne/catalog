@@ -1,5 +1,5 @@
 global:
-  variant: distroless
+  variant: ""
 
 # Overrides for the `istiod-remote` dep
 istiod:
