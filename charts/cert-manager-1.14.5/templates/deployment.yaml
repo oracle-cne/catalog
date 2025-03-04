@@ -1,3 +1,4 @@
+# extra-image: {{ .Values.acmesolver.image.repository }}:{{ .Values.acmesolver.image.tag }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:

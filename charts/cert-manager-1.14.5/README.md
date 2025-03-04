@@ -56,7 +56,7 @@ are documented in our full [upgrading guide](https://cert-manager.io/docs/instal
 To uninstall/delete the `my-release` deployment:
 
 ```console
-$ helm delete my-release
+$ ocne application uninstall -r my-release -n my-namespace
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -246,7 +246,7 @@ The container registry to pull the manager image from
 #### **image.repository** ~ `string`
 > Default value:
 > ```yaml
-> quay.io/jetstack/cert-manager-controller
+> container-registry.oracle.com/olcne/cert-manager-controller
 > ```
 
 The container image for the cert-manager controller
@@ -382,7 +382,7 @@ Forces cert-manager to only use the recursive nameservers for verification. Enab
 > []
 > ```
 
-Additional command line flags to pass to cert-manager controller binary. To see all available flags run docker run quay.io/jetstack/cert-manager-controller:<version> --help  
+Additional command line flags to pass to cert-manager controller binary. To see all available flags run podman run container-registry.oracle.com/olcne/cert-manager-controller:<version> --help  
   
 Use this flag to enable or disable arbitrary controllers, for example, disable the CertificiateRequests approver  
   
@@ -928,7 +928,7 @@ Configure spec.namespaceSelector for mutating webhooks.
 > []
 > ```
 
-Additional command line flags to pass to cert-manager webhook binary. To see all available flags run docker run quay.io/jetstack/cert-manager-webhook:<version> --help
+Additional command line flags to pass to cert-manager webhook binary. To see all available flags run podman run container-registy.oracle.com/olcne/cert-manager-webhook:<version> --help
 #### **webhook.featureGates** ~ `string`
 > Default value:
 > ```yaml
@@ -1068,7 +1068,7 @@ The container registry to pull the webhook image from
 #### **webhook.image.repository** ~ `string`
 > Default value:
 > ```yaml
-> quay.io/jetstack/cert-manager-webhook
+> container-registy.oracle.com/olcne/cert-manager-webhook
 > ```
 
 The container image for the cert-manager webhook
@@ -1332,7 +1332,7 @@ Optional additional annotations to add to the cainjector Pods
 > []
 > ```
 
-Additional command line flags to pass to cert-manager cainjector binary. To see all available flags run docker run quay.io/jetstack/cert-manager-cainjector:<version> --help
+Additional command line flags to pass to cert-manager cainjector binary. To see all available flags run podman run container-registy.oracle.com/olcne/cert-manager-cainjector:<version> --help
 #### **cainjector.featureGates** ~ `string`
 > Default value:
 > ```yaml
@@ -1439,7 +1439,7 @@ The container registry to pull the cainjector image from
 #### **cainjector.image.repository** ~ `string`
 > Default value:
 > ```yaml
-> quay.io/jetstack/cert-manager-cainjector
+> container-registy.oracle.com/olcne/cert-manager-cainjector
 > ```
 
 The container image for the cert-manager cainjector
@@ -1520,7 +1520,7 @@ The container registry to pull the acmesolver image from
 #### **acmesolver.image.repository** ~ `string`
 > Default value:
 > ```yaml
-> quay.io/jetstack/cert-manager-acmesolver
+> container-registy.oracle.com/olcne/cert-manager-acmesolver
 > ```
 
 The container image for the cert-manager acmesolver
@@ -1603,16 +1603,6 @@ Optional additional annotations to add to the startupapicheck Job
 
 Optional additional annotations to add to the startupapicheck Pods
 
-#### **startupapicheck.extraArgs** ~ `array`
-> Default value:
-> ```yaml
-> - -v
-> ```
-
-Additional command line flags to pass to startupapicheck binary. To see all available flags run docker run quay.io/jetstack/cert-manager-ctl:<version> --help  
-  
-We enable verbose logging by default so that if startupapicheck fails, users can know what exactly caused the failure. Verbose logs include details of the webhook URL, IP address and TCP connect errors for example.
-
 #### **startupapicheck.resources** ~ `object`
 > Default value:
 > ```yaml
@@ -1692,7 +1682,7 @@ The container registry to pull the startupapicheck image from
 #### **startupapicheck.image.repository** ~ `string`
 > Default value:
 > ```yaml
-> quay.io/jetstack/cert-manager-startupapicheck
+> container-registy.oracle.com/olcne/cert-manager-startupapicheck
 > ```
 
 The container image for the cert-manager startupapicheck

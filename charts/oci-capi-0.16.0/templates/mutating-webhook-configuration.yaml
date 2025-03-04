@@ -1,0 +1,114 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: {{ include "oci-capi.fullname" . }}-mutating-webhook-configuration
+  annotations:
+    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ include "oci-capi.fullname" . }}-serving-cert
+  labels:
+  {{- include "oci-capi.labels" . | nindent 4 }}
+webhooks:
+- admissionReviewVersions:
+  - v1beta1
+  clientConfig:
+    service:
+      name: '{{ include "oci-capi.fullname" . }}-webhook-service'
+      namespace: '{{ .Release.Namespace }}'
+      path: /mutate-infrastructure-cluster-x-k8s-io-v1beta2-ocicluster
+  failurePolicy: Fail
+  matchPolicy: Equivalent
+  name: default.ocicluster.infrastructure.cluster.x-k8s.io
+  rules:
+  - apiGroups:
+    - infrastructure.cluster.x-k8s.io
+    apiVersions:
+    - v1beta2
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - ociclusters
+  sideEffects: None
+- admissionReviewVersions:
+  - v1beta1
+  clientConfig:
+    service:
+      name: '{{ include "oci-capi.fullname" . }}-webhook-service'
+      namespace: '{{ .Release.Namespace }}'
+      path: /mutate-infrastructure-cluster-x-k8s-io-v1beta2-ocimanagedcluster
+  failurePolicy: Fail
+  matchPolicy: Equivalent
+  name: default.ocimanagedcluster.infrastructure.cluster.x-k8s.io
+  rules:
+  - apiGroups:
+    - infrastructure.cluster.x-k8s.io
+    apiVersions:
+    - v1beta2
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - ocimanagedclusters
+  sideEffects: None
+- admissionReviewVersions:
+  - v1beta1
+  clientConfig:
+    service:
+      name: '{{ include "oci-capi.fullname" . }}-webhook-service'
+      namespace: '{{ .Release.Namespace }}'
+      path: /mutate-infrastructure-cluster-x-k8s-io-v1beta2-ocimanagedcontrolplane
+  failurePolicy: Fail
+  matchPolicy: Equivalent
+  name: default.ocimanagedcontrolplane.infrastructure.cluster.x-k8s.io
+  rules:
+  - apiGroups:
+    - infrastructure.cluster.x-k8s.io
+    apiVersions:
+    - v1beta2
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - ocimanagedcontrolplanes
+  sideEffects: None
+- admissionReviewVersions:
+  - v1beta1
+  clientConfig:
+    service:
+      name: '{{ include "oci-capi.fullname" . }}-webhook-service'
+      namespace: '{{ .Release.Namespace }}'
+      path: /mutate-infrastructure-cluster-x-k8s-io-v1beta2-ocimanagedmachinepool
+  failurePolicy: Fail
+  matchPolicy: Equivalent
+  name: default.ocimanagedmachinepool.infrastructure.cluster.x-k8s.io
+  rules:
+  - apiGroups:
+    - infrastructure.cluster.x-k8s.io
+    apiVersions:
+    - v1beta2
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - ocimanagedmachinepools
+  sideEffects: None
+- admissionReviewVersions:
+  - v1beta1
+  clientConfig:
+    service:
+      name: '{{ include "oci-capi.fullname" . }}-webhook-service'
+      namespace: '{{ .Release.Namespace }}'
+      path: /mutate-infrastructure-cluster-x-k8s-io-v1beta2-ocivirtualmachinepool
+  failurePolicy: Fail
+  matchPolicy: Equivalent
+  name: default.ocivirtualmachinepool.infrastructure.cluster.x-k8s.io
+  rules:
+  - apiGroups:
+    - infrastructure.cluster.x-k8s.io
+    apiVersions:
+    - v1beta2
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - ocivirtualmachinepools
+  sideEffects: None

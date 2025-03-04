@@ -1,0 +1,177 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "mychart.fullname" . }}-es-master
+  labels:
+  {{- if .Values.esMaster.extraMetadataLabels }}
+  {{- toYaml .Values.esMaster.extraMetadataLabels | nindent 4 }}
+  {{- end }}
+  {{- include "mychart.labels" . | nindent 4 }}
+spec:
+  podManagementPolicy: Parallel
+  replicas: {{ .Values.esMaster.replicas }}
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: system-es-master
+      node-group: es-master
+  serviceName: {{ include "mychart.fullname" . }}-es-master
+  template:
+    metadata:
+      annotations:
+        proxy.istio.io/config: '{ ''holdApplicationUntilProxyStarts'': true }'
+        traffic.sidecar.istio.io/excludeInboundPorts: "9300"
+        traffic.sidecar.istio.io/excludeOutboundPorts: "9300"
+      labels:
+        app: system-es-master
+        node-group: es-master
+        {{- if .Values.esMaster.extraTemplateLabels }}
+        {{- toYaml .Values.esMaster.extraTemplateLabels | nindent 8 }}
+        {{- end }}
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: system-es-master
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+            weight: 100
+      containers:
+      - command:
+        {{- if .Values.esMaster.esMaster.command }}
+        {{- toYaml .Values.esMaster.esMaster.command | nindent 8}}
+        {{- end }}
+        env:
+        - name: node.name
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: cluster.name
+          value: {{ quote .Values.esMaster.esMaster.env.clusterName }}
+        - name: HTTP_ENABLE
+          value: {{ quote .Values.esMaster.esMaster.env.httpEnable }}
+        - name: logger.org.opensearch
+          value: {{ quote .Values.esMaster.esMaster.env.loggerOrgOpensearch }}
+        - name: DISABLE_SECURITY_PLUGIN
+          value: {{ quote .Values.esMaster.esMaster.env.disableSecurityPlugin }}
+        - name: OPENSEARCH_JAVA_OPTS
+          value: {{ quote .Values.esMaster.esMaster.env.opensearchJavaOpts }}
+        - name: node.roles
+          value: {{ quote .Values.esMaster.esMaster.env.nodeRoles }}
+        - name: discovery.seed_hosts
+          value: {{ quote .Values.esMaster.esMaster.env.discoverySeedHosts }}
+        - name: cluster.initial_master_nodes
+          value: {{ quote .Values.esMaster.esMaster.env.clusterInitialMasterNodes }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        {{- if .Values.esMaster.esMaster.env.extraEnv }}
+        {{- toYaml .Values.esMaster.esMaster.env.extraEnv | nindent 8 }}
+        {{- end }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        livenessProbe:
+          failureThreshold: 5
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 9300
+          timeoutSeconds: 5
+        name: es-master
+        ports:
+        - containerPort: 9300
+          name: transport
+          protocol: TCP
+        - containerPort: 9200
+          name: http
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - |-
+              #!/usr/bin/env bash -e
+              # If the node is starting up wait for the cluster to be ready )
+              # Once it has started only check that the node itself is responding
+              START_FILE=/tmp/.es_start_file
+              http () {
+                  local path="${1}"
+                  curl -v -XGET -s -k  --fail http://127.0.0.1:9200${path}
+              }
+              if [ -f "${START_FILE}" ]; then
+                  echo OpenSearch is already running, lets check the node is healthy
+                  http ""
+              else
+                  echo Waiting for OpenSearch cluster to become cluster to be ready
+                  if http "" ; then
+                      touch ${START_FILE}
+                  elsekpo
+  
+                      echo Cluster is not yet ready
+                      exit 1
+  
+                  fi
+                  exit 0
+              fi
+          failureThreshold: 3
+          initialDelaySeconds: 90
+          periodSeconds: 5
+          successThreshold: 3
+          timeoutSeconds: 5
+        resources: {{- toYaml .Values.esMaster.esMaster.resources | nindent 10 }}
+        securityContext: {{- toYaml .Values.esMaster.esMaster.containerSecurityContext
+          | nindent 10 }}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /usr/share/opensearch/data
+          name: elasticsearch-master
+      dnsPolicy: ClusterFirst
+      initContainers:
+      - command:
+        - sh
+        - -c
+        - chown -R 1000:1000 /usr/share/opensearch/data; sysctl -w vm.max_map_count=262144
+        env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.esMaster.elasticsearchInit.image.repository }}:{{ .Values.esMaster.elasticsearchInit.image.tag
+          | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.esMaster.elasticsearchInit.imagePullPolicy }}
+        name: elasticsearch-init
+        resources: {}
+        securityContext: {{- toYaml .Values.esMaster.elasticsearchInit.containerSecurityContext
+          | nindent 10 }}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /usr/share/opensearch/data
+          name: elasticsearch-master
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccount: {{ .Values.esMaster.serviceAccount }}
+      serviceAccountName: {{ .Values.esMaster.serviceAccount }}
+      terminationGracePeriodSeconds: 1
+  updateStrategy:
+    rollingUpdate:
+      partition: 0
+    type: RollingUpdate
+  volumeClaimTemplates:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: elasticsearch-master
+      namespace: {{ .Values.esMaster.namespace }}
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources: {{ .Values.esMaster.volumeClaims.elasticsearchMaster | toYaml | nindent
+        8 }}
+      volumeMode: Filesystem

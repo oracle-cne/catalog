@@ -18,7 +18,7 @@ A network load-balancer implementation for Kubernetes using standard routing pro
 | controller.affinity | object | `{}` |  |
 | controller.enabled | bool | `true` |  |
 | controller.image.pullPolicy | string | `nil` |  |
-| controller.image.repository | string | `"quay.io/metallb/controller"` |  |
+| controller.image.repository | string | `"olcne/controller"` |  |
 | controller.image.tag | string | `nil` |  |
 | controller.livenessProbe.enabled | bool | `true` |  |
 | controller.livenessProbe.failureThreshold | int | `3` |  |
@@ -78,7 +78,7 @@ A network load-balancer implementation for Kubernetes using standard routing pro
 | speaker.affinity | object | `{}` |  |
 | speaker.enabled | bool | `true` |  |
 | speaker.image.pullPolicy | string | `nil` |  |
-| speaker.image.repository | string | `"quay.io/metallb/speaker"` |  |
+| speaker.image.repository | string | `"olcne/speaker"` |  |
 | speaker.image.tag | string | `nil` |  |
 | speaker.livenessProbe.enabled | bool | `true` |  |
 | speaker.livenessProbe.failureThreshold | int | `3` |  |

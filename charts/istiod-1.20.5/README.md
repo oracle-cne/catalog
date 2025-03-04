@@ -2,40 +2,22 @@
 
 This chart installs an Istiod deployment.
 
-## Setup Repo Info
+## Installing The Application
+
+Before installing, ensure CRDs are installed in the cluster (from the `istio-base` application).
+
+To install the application with the release name `istiod`:
 
 ```console
-helm repo add istio https://istio-release.storage.googleapis.com/charts
-helm repo update
+ocne application install --release istiod --name istiod --namespace istio-system
 ```
 
-_See [helm repo](https://helm.sh/docs/helm/helm_repo/) for command documentation._
-
-## Installing the Chart
-
-Before installing, ensure CRDs are installed in the cluster (from the `istio/base` chart).
-
-To install the chart with the release name `istiod`:
-
-```console
-kubectl create namespace istio-system
-helm install istiod istio/istiod --namespace istio-system
-```
-
-## Uninstalling the Chart
+## Uninstalling The Application
 
 To uninstall/delete the `istiod` deployment:
 
 ```console
-helm delete istiod --namespace istio-system
-```
-
-## Configuration
-
-To view support configuration options and documentation, run:
-
-```console
-helm show values istio/istiod
+ocne application uninstall --release istiod --namespace istio-system
 ```
 
 ### Examples

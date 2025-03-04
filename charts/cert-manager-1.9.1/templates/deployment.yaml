@@ -1,3 +1,4 @@
+# extra-image: ghcr.io/verrazzano/cert-manager-acmesolver:v1.9.1-20240724165802-4c06aea1
 apiVersion: apps/v1
 kind: Deployment
 metadata:

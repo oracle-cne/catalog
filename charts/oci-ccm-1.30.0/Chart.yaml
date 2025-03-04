@@ -1,0 +1,14 @@
+apiVersion: v1
+name: oci-ccm
+version: 1.30.0
+appVersion: 1.30.0
+kubeVersion: "^1.23.0-0"
+description: Oracle Cloud Infrastructure (OCI) cloud controller manager
+icon: icons/oracle.png
+maintainers:
+  - name: Thomas Tanaka
+    email: thomas.tanaka@oracle.com
+  - name: Shih-Chang Chen
+    email: shih-chang.chen@oracle.com
+engine: gotpl
+tillerVersion: ">=2.12.0"
