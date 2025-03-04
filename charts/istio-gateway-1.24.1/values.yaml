@@ -112,6 +112,13 @@ _internal_defaults_do_not_set:
   # If specified, the gateway will act as a network gateway for the given network.
   networkGateway: ""
 
+  # Default hub for Istio images.
+  hub: olcne
+  # Image name for the sidecar
+  image: proxyv2
+  # Default tag for Istio images.
+  tag: 1.24.1
+
   # Specify image pull policy if default behavior isn't desired.
   # Default behavior: latest images will be Always else IfNotPresent
   imagePullPolicy: ""
