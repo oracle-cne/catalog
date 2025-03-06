@@ -3,7 +3,7 @@
 
 Name:		ocne-catalog
 Version:	2.0.0
-Release:	10%{?dist}
+Release:	11%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ cp -ap olm/icons/* %{buildroot}/opt/icons
 /opt/icons
 
 %changelog
+* Thu Mar 06 2025 Prasad Shirodkar <prasad.shirodkar@oracle.com> - 2.0.0-11
+- Support DaemonSet for istio-ingress charts for 1.19.9 and 1.20.5
+
 * Sun Feb 23 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-10
 - Add Flannel with floating tag
 - Update Cluster API controllers
