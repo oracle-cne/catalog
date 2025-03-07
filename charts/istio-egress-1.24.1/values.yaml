@@ -145,10 +145,10 @@ _internal_defaults_do_not_set:
     # Default hub for Istio images.
     # Releases are published to docker hub under 'istio' project.
     # Dev builds from prow are on gcr.io
-    hub: gcr.io/istio-testing
+    hub: olcne
 
     # Default tag for Istio images.
-    tag: latest
+    tag: 1.24.1
 
     # Specify image pull policy if default behavior isn't desired.
     # Default behavior: latest images will be Always else IfNotPresent.
