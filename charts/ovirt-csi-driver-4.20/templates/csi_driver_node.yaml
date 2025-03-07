@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: {{ include "mychart.fullname" . }}-csi-ovirtplugin-node
+  name: {{ include "mychart.fullname" . }}-node
   labels:
     app.kubernetes.io/component: plugin
     app.kubernetes.io/part-of: csi-driver-ovirt

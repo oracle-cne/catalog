@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "mychart.fullname" . }}-csi-ovirtplugin
+  name: {{ include "mychart.fullname" . }}-plugin
   labels:
     app.kubernetes.io/component: plugin
     app.kubernetes.io/part-of: csi-driver-ovirt
