@@ -1,0 +1,173 @@
+csiOvirtplugin:
+  csiAttacher:
+    args:
+    - --csi-address=/csi/csi.sock
+    - --v=5
+    containerSecurityContext:
+      privileged: true
+    image:
+      repository: registry.k8s.io/sig-storage/csi-attacher
+      tag: v3.5.0
+    resources:
+      limits:
+        cpu: 160m
+        memory: 128Mi
+      requests:
+        cpu: 80m
+        memory: 64Mi
+  csiProvisioner:
+    args:
+    - --csi-address=/csi/csi.sock
+    - --feature-gates=Topology=true
+    - -v=5
+    containerSecurityContext:
+      privileged: true
+    image:
+      repository: registry.k8s.io/sig-storage/csi-provisioner
+      tag: v3.2.0
+    resources:
+      limits:
+        cpu: 160m
+        memory: 128Mi
+      requests:
+        cpu: 80m
+        memory: 64Mi
+  csiResizer:
+    args:
+    - -csi-address=/csi/csi.sock
+    - -v=5
+    containerSecurityContext:
+      privileged: true
+    image:
+      repository: registry.k8s.io/sig-storage/csi-resizer
+      tag: v1.5.0
+    resources:
+      limits:
+        cpu: 160m
+        memory: 128Mi
+      requests:
+        cpu: 80m
+        memory: 64Mi
+  livenessProbe:
+    args:
+    - --csi-address=/csi/csi.sock
+    - --health-port=9898
+    image:
+      repository: registry.k8s.io/sig-storage/livenessprobe
+      tag: v2.7.0
+    resources:
+      limits:
+        cpu: 160m
+        memory: 128Mi
+      requests:
+        cpu: 80m
+        memory: 64Mi
+  ovirt:
+    args:
+    - --endpoint=$(CSI_ENDPOINT)
+    containerSecurityContext:
+      privileged: true
+    env:
+      csiEndpoint: unix:///csi/csi.sock
+      ovirtConfig: /tmp/config/ovirt-config.yaml
+    image:
+      repository: quay.io/openshift/origin-ovirt-csi-driver
+      tag: latest
+    imagePullPolicy: IfNotPresent
+    resources:
+      limits:
+        cpu: 160m
+        memory: 128Mi
+      requests:
+        cpu: 80m
+        memory: 64Mi
+  prepareOvirtConfig:
+    env:
+      ovirtCafile: /tmp/config/ovirt-engine-ca.pem
+    image:
+      repository: quay.io/openshift/origin-ovirt-csi-driver
+      tag: latest
+    imagePullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 160m
+        memory: 128Mi
+  replicas: 1
+csiOvirtpluginNode:
+  csiDriverRegistrar:
+    args:
+    - --v=5
+    - --csi-address=/csi/csi.sock
+    - --kubelet-registration-path=/var/lib/kubelet/plugins/csi.ovirt.org/csi.sock
+    image:
+      repository: k8s.gcr.io/sig-storage/csi-node-driver-registrar
+      tag: v2.5.0
+    resources:
+      limits:
+        cpu: 160m
+        memory: 128Mi
+      requests:
+        cpu: 80m
+        memory: 64Mi
+  livenessProbe:
+    args:
+    - --csi-address=/csi/csi.sock
+    - --health-port=9898
+    image:
+      repository: registry.k8s.io/sig-storage/livenessprobe
+      tag: v2.7.0
+    resources:
+      limits:
+        cpu: 160m
+        memory: 128Mi
+      requests:
+        cpu: 80m
+        memory: 64Mi
+  ovirt:
+    args:
+    - --endpoint=$(CSI_ENDPOINT)
+    - --node-name=$(KUBE_NODE_NAME)
+    containerSecurityContext:
+      privileged: true
+    env:
+      csiEndpoint: unix:///csi/csi.sock
+      ovirtConfig: /tmp/config/ovirt-config.yaml
+    image:
+      repository: quay.io/openshift/origin-ovirt-csi-driver
+      tag: latest
+    imagePullPolicy: IfNotPresent
+    resources:
+      limits:
+        cpu: 160m
+        memory: 128Mi
+      requests:
+        cpu: 80m
+        memory: 64Mi
+  prepareOvirtConfig:
+    env:
+      ovirtCafile: /tmp/config/ovirt-engine-ca.pem
+    image:
+      repository: quay.io/openshift/origin-ovirt-csi-driver
+      tag: latest
+    imagePullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 10m
+        memory: 50Mi
+kubernetesClusterDomain: cluster.local
+ovirtCredentials:
+  ovirtCaBundle: ""
+  ovirtInsecure: ""
+  ovirtPassword: ""
+  ovirtUrl: ""
+  ovirtUsername: ""
+ovirtCsiDriverControllerSa:
+  serviceAccount:
+    annotations: {}
+ovirtCsiDriverNodeSa:
+  serviceAccount:
+    annotations: {}
+pvc:
+  1GOvirtCowDisk:
+    storageClass: ovirt-csi-sc
+    storageRequest: 1Gi
