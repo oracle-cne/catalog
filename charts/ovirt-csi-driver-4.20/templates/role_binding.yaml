@@ -12,7 +12,7 @@ roleRef:
   name: '{{ include "mychart.fullname" . }}-external-attacher-runner'
 subjects:
 - kind: ServiceAccount
-  name: '{{ include "mychart.fullname" . }}-ovirt-csi-driver-controller-sa'
+  name: '{{ include "mychart.fullname" . }}-controller-sa'
   namespace: '{{ .Release.Namespace }}'
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -29,7 +29,7 @@ roleRef:
   name: '{{ include "mychart.fullname" . }}-external-health-monitor-controller-runner'
 subjects:
 - kind: ServiceAccount
-  name: '{{ include "mychart.fullname" . }}-ovirt-csi-driver-controller-sa'
+  name: '{{ include "mychart.fullname" . }}-controller-sa'
   namespace: '{{ .Release.Namespace }}'
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -46,7 +46,7 @@ roleRef:
   name: '{{ include "mychart.fullname" . }}-external-provisioner-runner'
 subjects:
 - kind: ServiceAccount
-  name: '{{ include "mychart.fullname" . }}-ovirt-csi-driver-controller-sa'
+  name: '{{ include "mychart.fullname" . }}-controller-sa'
   namespace: '{{ .Release.Namespace }}'
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -63,7 +63,7 @@ roleRef:
   name: '{{ include "mychart.fullname" . }}-external-resizer-runner'
 subjects:
 - kind: ServiceAccount
-  name: '{{ include "mychart.fullname" . }}-ovirt-csi-driver-controller-sa'
+  name: '{{ include "mychart.fullname" . }}-controller-sa'
   namespace: '{{ .Release.Namespace }}'
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -80,7 +80,7 @@ roleRef:
   name: '{{ include "mychart.fullname" . }}-external-attacher-cfg'
 subjects:
 - kind: ServiceAccount
-  name: '{{ include "mychart.fullname" . }}-ovirt-csi-driver-controller-sa'
+  name: '{{ include "mychart.fullname" . }}-controller-sa'
   namespace: '{{ .Release.Namespace }}'
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -97,7 +97,7 @@ roleRef:
   name: '{{ include "mychart.fullname" . }}-external-health-monitor-controller-cfg'
 subjects:
 - kind: ServiceAccount
-  name: '{{ include "mychart.fullname" . }}-ovirt-csi-driver-controller-sa'
+  name: '{{ include "mychart.fullname" . }}-controller-sa'
   namespace: '{{ .Release.Namespace }}'
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -114,7 +114,7 @@ roleRef:
   name: '{{ include "mychart.fullname" . }}-external-provisioner-cfg'
 subjects:
 - kind: ServiceAccount
-  name: '{{ include "mychart.fullname" . }}-ovirt-csi-driver-controller-sa'
+  name: '{{ include "mychart.fullname" . }}-controller-sa'
   namespace: '{{ .Release.Namespace }}'
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -131,7 +131,7 @@ roleRef:
   name: '{{ include "mychart.fullname" . }}-external-resizer-cfg'
 subjects:
 - kind: ServiceAccount
-  name: '{{ include "mychart.fullname" . }}-ovirt-csi-driver-controller-sa'
+  name: '{{ include "mychart.fullname" . }}-controller-sa'
   namespace: '{{ .Release.Namespace }}'
 ---
 apiVersion: rbac.authorization.k8s.io/v1

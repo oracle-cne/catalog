@@ -170,7 +170,7 @@ spec:
         volumeMounts:
         - mountPath: /tmp/config
           name: config
-      serviceAccountName: {{ include "mychart.fullname" . }}-ovirt-csi-driver-controller-sa
+      serviceAccountName: {{ include "mychart.fullname" . }}-controller-sa
       volumes:
       - hostPath:
           path: /var/lib/kubelet/plugins/csi.ovirt.org
