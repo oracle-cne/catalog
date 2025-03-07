@@ -19,6 +19,7 @@ controllerManager:
     imagePullPolicy: Always
   replicas: 1
 kubernetesClusterDomain: cluster.local
+legacyControlPlaneAnnotation: false
 manager:
   serviceAccount:
     annotations: {}
