@@ -24,3 +24,5 @@ csi-resizer: "v1.8.0"
 csi-node-driver-registrar: "v2.8.0"
 
 csi-snapshotter: "v6.2.2"
+
+legacyControlPlaneAnnotation: true
