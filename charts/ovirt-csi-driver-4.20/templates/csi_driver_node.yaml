@@ -122,17 +122,17 @@ spec:
           valueFrom:
             secretKeyRef:
               key: ovirt_url
-              name: {{ include "mychart.fullname" . }}-ovirt-credentials
+              name: {{ include "mychart.fullname" . }}
         - name: OVIRT_USERNAME
           valueFrom:
             secretKeyRef:
               key: ovirt_username
-              name: {{ include "mychart.fullname" . }}-ovirt-credentials
+              name: {{ include "mychart.fullname" . }}
         - name: OVIRT_PASSWORD
           valueFrom:
             secretKeyRef:
               key: ovirt_password
-              name: {{ include "mychart.fullname" . }}-ovirt-credentials
+              name: {{ include "mychart.fullname" . }}
         - name: OVIRT_CAFILE
           value: {{ quote .Values.csiOvirtpluginNode.prepareOvirtConfig.env.ovirtCafile
             }}
@@ -140,12 +140,12 @@ spec:
           valueFrom:
             secretKeyRef:
               key: ovirt_insecure
-              name: {{ include "mychart.fullname" . }}-ovirt-credentials
+              name: {{ include "mychart.fullname" . }}
         - name: OVIRT_CA_BUNDLE
           valueFrom:
             secretKeyRef:
               key: ovirt_ca_bundle
-              name: {{ include "mychart.fullname" . }}-ovirt-credentials
+              name: {{ include "mychart.fullname" . }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
         image: {{ .Values.csiOvirtpluginNode.prepareOvirtConfig.image.repository }}:{{
