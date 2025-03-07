@@ -148,7 +148,7 @@ roleRef:
   name: '{{ include "mychart.fullname" . }}-external-health-monitor-controller-runner'
 subjects:
 - kind: ServiceAccount
-  name: '{{ include "mychart.fullname" . }}-ovirt-csi-driver-node-sa'
+  name: '{{ include "mychart.fullname" . }}-node-sa'
   namespace: '{{ .Release.Namespace }}'
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -165,7 +165,7 @@ roleRef:
   name: '{{ include "mychart.fullname" . }}-external-health-monitor-controller-cfg'
 subjects:
 - kind: ServiceAccount
-  name: '{{ include "mychart.fullname" . }}-ovirt-csi-driver-node-sa'
+  name: '{{ include "mychart.fullname" . }}-node-sa'
   namespace: '{{ .Release.Namespace }}'
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -180,5 +180,5 @@ roleRef:
   name: '{{ include "mychart.fullname" . }}-ovirt-privileged-role'
 subjects:
 - kind: ServiceAccount
-  name: '{{ include "mychart.fullname" . }}-ovirt-csi-driver-node-sa'
+  name: '{{ include "mychart.fullname" . }}-node-sa'
   namespace: '{{ .Release.Namespace }}'
