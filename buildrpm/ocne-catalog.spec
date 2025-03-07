@@ -3,7 +3,7 @@
 
 Name:		ocne-catalog
 Version:	2.0.0
-Release:	8%{?dist}
+Release:	9%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ cp -ap olm/icons/* %{buildroot}/opt/icons
 /opt/icons
 
 %changelog
+* Thu Mar 06 2025 Prasad Shirodkar <prasad.shirodkar@oracle.com> - 2.0.0-9
+- Added Kubernetes Gateway API CRDs 1.2.1
+
 * Wed Nov 20 2024 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-8
 - Improved some documentation
 
