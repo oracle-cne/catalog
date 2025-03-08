@@ -1,5 +1,5 @@
 {{ $gateway := index .Values "gateways" "istio-ingressgateway" }}
-{{- if and $gateway.autoscaleEnabled $gateway.autoscaleMin $gateway.autoscaleMax }}
+{{- if and ($gateway.autoscaleEnabled) ($gateway.autoscaleMin) ($gateway.autoscaleMax) (eq .Values.kind "Deployment") }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -18,7 +18,7 @@ spec:
   minReplicas: {{ $gateway.autoscaleMin }}
   scaleTargetRef:
     apiVersion: apps/v1
-    kind: Deployment
+    kind: {{ .Values.kind | default "Deployment" }}
     name: {{ $gateway.name }}
   metrics:
   - type: Resource

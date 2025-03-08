@@ -308,3 +308,5 @@ _internal_defaults_do_not_set:
       #        sni:               # example: tracer.somedomain
       #        subjectAltNames: []
       # - tracer.somedomain
+
+kind: Deployment
