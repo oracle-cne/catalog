@@ -38,7 +38,6 @@ installing the `ocne-catalog` chart.
 | Istio Egress Gateway                                | istio-egress             | 1.24.1           |
 | Istio Ingress Gateway                               | istio-ingress            | 1.24.1           |
 | Istio Gateway                                       | istio-gateway            | 1.24.1           |
-| Istio Ambient                                       | istio-ambient            | 1.24.1           |
 | Istio Ztunnel                                       | istio-ztunnel            | 1.24.1           |
 | Istio CNI                                           | istio-cni                | 1.24.1           |
 | Kube Prometheus Stack                               | kube-prometheus-stack    | 0.63.0           |
