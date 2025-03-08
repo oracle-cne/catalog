@@ -319,3 +319,5 @@ defaults:
       #        sni:               # example: tracer.somedomain
       #        subjectAltNames: []
       # - tracer.somedomain
+
+kind: Deployment
