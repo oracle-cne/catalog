@@ -24,7 +24,7 @@ installing the `ocne-catalog` chart.
 | CoreDNS                                             | coredns                  | 2.0.0            |
 | Dex                                                 | dex                      | 2.39.1           |
 | ExternalIP Webhook                                  | externalip-webhook       | 1.0.0            |
-| Flannel                                             | flannel                  | 2.0.0<br>0.22.3           |
+| Flannel                                             | flannel                  | 2.0.0<br>0.22.3  |
 | Fluent Operator                                     | fluent-operator          | 3.2.0            |
 | Fluentd                                             | fluentd                  | 1.14.5           |
 | Grafana                                             | grafana                  | 7.5.17           |
@@ -33,6 +33,11 @@ installing the `ocne-catalog` chart.
 | Istiod                                              | istiod                   | 1.20.5           |
 | Istio Egress Gateway                                | istio-egress             | 1.20.5           |
 | Istio Ingress Gateway                               | istio-ingress            | 1.20.5           |
+| Istio CRDs                                          | istio-base               | 1.22.6           |
+| Istiod                                              | istiod                   | 1.22.6           |
+| Istio Egress Gateway                                | istio-egress             | 1.22.6           |
+| Istio Ingress Gateway                               | istio-ingress            | 1.22.6           |
+| Istio Gateway                                       | istio-gateway            | 1.22.6           |
 | Kube Prometheus Stack                               | kube-prometheus-stack    | 0.63.0           |
 | Kube Proxy                                          | kube-proxy               | 2.0.0            |
 | Kube State Metrics                                  | kube-state-metrics       | 2.8.2            |
