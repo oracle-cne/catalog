@@ -8,3 +8,5 @@ sources:
 - https://github.com/flannel-io/flannel
 version: 2.0.0
 icon: icons/flannel-icon.svg
+annotations:
+  ocne.oracle.com/mirror: false
