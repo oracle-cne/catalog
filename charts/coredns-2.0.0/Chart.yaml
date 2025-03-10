@@ -17,3 +17,5 @@ maintainers:
   - name: hagaibarel
   - name: shubham-cmyk
 type: application
+annotations:
+  ocne.oracle.com/mirror: false
