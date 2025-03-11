@@ -9,7 +9,7 @@ flannel:
   # kube-flannel image
   image:
     repository: container-registry.oracle.com/olcne/flannel
-    tag: v0.22.3-1
+    tag: current
   image_cni:
     repository:
     tag:

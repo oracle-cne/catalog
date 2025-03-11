@@ -33,9 +33,11 @@ spec:
       - key: node-role.kubernetes.io/control-plane
         operator: Exists
         effect: NoSchedule
+{{ if .Values.legacyControlPlaneAnnotation }}
       - key: node-role.kubernetes.io/master
         operator: Exists
         effect: NoSchedule
+{{ end }}
 {{ end }}
       volumes:
         - name: cfg

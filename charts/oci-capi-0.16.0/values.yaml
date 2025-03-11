@@ -62,6 +62,7 @@ webhookService:
     targetPort: webhook-server
   type: ClusterIP
 fullnameOverride: capoci
+legacyControlPlaneAnnotation: false
 proxy:
   httpsProxy:
   httpProxy:
