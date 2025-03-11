@@ -53,8 +53,8 @@ csiOvirtplugin:
     - --csi-address=/csi/csi.sock
     - --health-port=9898
     image:
-      repository: registry.k8s.io/sig-storage/livenessprobe
-      tag: v2.7.0
+      repository: olcne/livenessprobe
+      tag: v2.15.0
     resources:
       limits:
         cpu: 160m
