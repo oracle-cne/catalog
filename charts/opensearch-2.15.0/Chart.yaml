@@ -1,0 +1,18 @@
+apiVersion: v2
+name: opensearch
+appVersion: 2.15.0
+version: 2.15.0
+description: A Helm chart for OpenSearch
+icon: icons/opensearch_logo_default.svg
+home: https://opensearch.org
+maintainers:
+- name: DandyDeveloper
+- name: bbarani
+- name: gaiksaya
+- name: peterzhuamazon
+- name: prudhvigodithi
+- name: TheAlgo
+sources:
+- https://github.com/opensearch-project/opensearch
+- https://github.com/opensearch-project/helm-charts
+type: application
