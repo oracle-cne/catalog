@@ -29,10 +29,10 @@ installing the `ocne-catalog` chart.
 | Fluentd                                             | fluentd                     | 1.14.5                     |
 | Grafana                                             | grafana                     | 7.5.17                     |
 | Ingress Nginx                                       | ingress-nginx               | 1.9.6                      |
-| Istio CRDs                                          | istio-base                  | 1.20.5<br>1.22.6<br>1.24.1 |
-| Istiod                                              | istiod                      | 1.20.5<br>1.22.6<br>1.24.1 |
-| Istio Egress Gateway                                | istio-egress                | 1.20.5<br>1.22.6<br>1.24.1 |
-| Istio Ingress Gateway                               | istio-ingress               | 1.20.5<br>1.22.6<br>1.24.1 |
+| Istio CRDs                                          | istio-base                  | 1.24.1<br>1.22.6<br>1.20.5 |
+| Istiod                                              | istiod                      | 1.24.1<br>1.22.6<br>1.20.5 |
+| Istio Egress Gateway                                | istio-egress                | 1.24.1<br>1.22.6<br>1.20.5 |
+| Istio Ingress Gateway                               | istio-ingress               | 1.24.1<br>1.22.6<br>1.20.5 |
 | Istio Gateway                                       | istio-gateway               | 1.22.6<br>1.24.1           |
 | Istio Ztunnel                                       | istio-ztunnel               | 1.24.1                     |
 | Istio CNI                                           | istio-cni                   | 1.24.1                     |
