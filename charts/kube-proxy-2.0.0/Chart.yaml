@@ -23,3 +23,5 @@ version: 2.0.0
 # It is recommended to use it with quotes.
 appVersion: "2.0.0"
 icon: icons/kubernetes-logo.svg 
+annotations:
+  ocne.oracle.com/mirror: false
