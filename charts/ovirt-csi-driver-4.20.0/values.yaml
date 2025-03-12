@@ -6,8 +6,8 @@ csiOvirtplugin:
     containerSecurityContext:
       privileged: true
     image:
-      repository: registry.k8s.io/sig-storage/csi-attacher
-      tag: v3.5.0
+      repository: olcne/external-attacher
+      tag: v4.8.1
     resources:
       limits:
         cpu: 160m
@@ -23,8 +23,8 @@ csiOvirtplugin:
     containerSecurityContext:
       privileged: true
     image:
-      repository: registry.k8s.io/sig-storage/csi-provisioner
-      tag: v3.2.0
+      repository: olcne/external-provisioner
+      tag: v1.13.2
     resources:
       limits:
         cpu: 160m
@@ -39,8 +39,8 @@ csiOvirtplugin:
     containerSecurityContext:
       privileged: true
     image:
-      repository: registry.k8s.io/sig-storage/csi-resizer
-      tag: v1.5.0
+      repository: olcne/external-resizer
+      tag: v1.13.2
     resources:
       limits:
         cpu: 160m
@@ -114,8 +114,8 @@ csiOvirtpluginNode:
     - --csi-address=/csi/csi.sock
     - --health-port=9898
     image:
-      repository: registry.k8s.io/sig-storage/livenessprobe
-      tag: v2.7.0
+      repository: olcne/livenessprobe
+      tag: v2.15.0
     resources:
       limits:
         cpu: 160m
