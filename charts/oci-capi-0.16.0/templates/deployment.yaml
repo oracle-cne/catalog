@@ -29,11 +29,13 @@ spec:
               - key: node-role.kubernetes.io/control-plane
                 operator: Exists
             weight: 10
+{{ if .Values.legacyControlPlaneAnnotation }}
           - preference:
               matchExpressions:
               - key: node-role.kubernetes.io/master
                 operator: Exists
             weight: 10
+{{ end }}
       containers:
       - args: {{- toYaml .Values.controllerManager.manager.args | nindent 8 }}
         command:
@@ -90,8 +92,10 @@ spec:
       serviceAccountName: {{ include "oci-capi.fullname" . }}-controller-manager
       terminationGracePeriodSeconds: 10
       tolerations:
+{{ if .Values.legacyControlPlaneAnnotation }}
       - effect: NoSchedule
         key: node-role.kubernetes.io/master
+{{ end }}
       - effect: NoSchedule
         key: node-role.kubernetes.io/control-plane
       volumes:

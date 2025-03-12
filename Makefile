@@ -18,6 +18,7 @@ ifeq (${SUPPORT_MATRIX_CHECKS},true)
 	[ "$$(yq '.version' $(CHART_DIR)/$(basename $(notdir $@))/Chart.yaml)" = "$$(yq '.appVersion' $(CHART_DIR)/$(basename $(notdir $@))/Chart.yaml)" ]
 	grep "$$(yq '.name' $(CHART_DIR)/$(basename $(notdir $@))/Chart.yaml)[[:space:]]*|[[:space:]].*$$(yq '.version' $(CHART_DIR)/$(basename $(notdir $@))/Chart.yaml).*|$$" README.md
 endif
+	stat $(CHART_DIR)/$(basename $(notdir $@))/values.yaml
 	$$(yq '.icon != null' $(CHART_DIR)/$(basename $(notdir $@))/Chart.yaml)
 	stat ./olm/$(shell yq '.icon' $(CHART_DIR)/$(basename $(notdir $@))/Chart.yaml)
 	helm package $(CHART_DIR)/$(basename $(notdir $@)) -d $(REPO_DIR) --dependency-update
