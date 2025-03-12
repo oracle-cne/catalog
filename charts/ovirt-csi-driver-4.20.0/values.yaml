@@ -100,8 +100,8 @@ csiOvirtpluginNode:
     - --csi-address=/csi/csi.sock
     - --kubelet-registration-path=/var/lib/kubelet/plugins/csi.ovirt.org/csi.sock
     image:
-      repository: k8s.gcr.io/sig-storage/csi-node-driver-registrar
-      tag: v2.5.0
+      repository: olcne/node-driver-registrar
+      tag: v2.13.0
     resources:
       limits:
         cpu: 160m
