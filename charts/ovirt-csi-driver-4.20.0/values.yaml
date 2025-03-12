@@ -71,8 +71,8 @@ csiOvirtplugin:
       csiEndpoint: unix:///csi/csi.sock
       ovirtConfig: /tmp/config/ovirt-config.yaml
     image:
-      repository: quay.io/openshift/origin-ovirt-csi-driver
-      tag: latest
+      repository: olcne/ovirt-csi-driver
+      tag: v4.20.0
     imagePullPolicy: IfNotPresent
     resources:
       limits:
@@ -85,8 +85,8 @@ csiOvirtplugin:
     env:
       ovirtCafile: /tmp/config/ovirt-engine-ca.pem
     image:
-      repository: quay.io/openshift/origin-ovirt-csi-driver
-      tag: latest
+      repository: olcne/ovirt-csi-driver
+      tag: v4.20.0
     imagePullPolicy: IfNotPresent
     resources:
       requests:
@@ -133,8 +133,8 @@ csiOvirtpluginNode:
       csiEndpoint: unix:///csi/csi.sock
       ovirtConfig: /tmp/config/ovirt-config.yaml
     image:
-      repository: quay.io/openshift/origin-ovirt-csi-driver
-      tag: latest
+      repository: olcne/ovirt-csi-driver
+      tag: v4.20.0
     imagePullPolicy: IfNotPresent
     resources:
       limits:
@@ -147,8 +147,8 @@ csiOvirtpluginNode:
     env:
       ovirtCafile: /tmp/config/ovirt-engine-ca.pem
     image:
-      repository: quay.io/openshift/origin-ovirt-csi-driver
-      tag: latest
+      repository: olcne/ovirt-csi-driver
+      tag: v4.20.0
     imagePullPolicy: IfNotPresent
     resources:
       requests:
