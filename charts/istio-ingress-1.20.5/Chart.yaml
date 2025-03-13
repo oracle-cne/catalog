@@ -14,4 +14,4 @@ sources:
   - http://github.com/istio/istio
 engine: gotpl
 icon: icons/android-192x192.png
-kubeVersion: '>= 1.30.0 < 1.32.0'
+kubeVersion: '>= 1.29.0 < 1.32.0'

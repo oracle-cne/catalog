@@ -1,7 +1,7 @@
 apiVersion: v2
 appVersion: 7.5.17
 description: The leading tool for querying and visualizing time series and metrics.
-kubeVersion: '>= 1.30.0 < 1.32.0'
+kubeVersion: '>= 1.26.0 < 1.32.0'
 maintainers:
   - email: murali.annamneni@oracle.com
     name: Murali Annamneni

@@ -6,7 +6,7 @@ icon: icons/500px-Nginx_logo.svg.png
 keywords:
   - ingress
   - nginx
-kubeVersion: '>= 1.30.0 < 1.32.0'
+kubeVersion: '>= 1.26.0 < 1.32.0'
 maintainers:
   - name: mannamne
 name: ingress-nginx

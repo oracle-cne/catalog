@@ -1,0 +1,10 @@
+apiVersion: v1
+name: kubernetes-gateway-api-crds
+version: 1.2.1
+appVersion: 1.2.1
+description: Kubernetes Gateway API
+keywords:
+  - Kubernetes Gateway API
+sources:
+  - https://github.com/kubernetes-sigs/gateway-api
+icon: icons/android-192x192.png

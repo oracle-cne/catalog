@@ -23,7 +23,7 @@ sources:
   - https://github.com/prometheus-operator/kube-prometheus
 version: 0.63.0
 appVersion: 0.63.0
-kubeVersion: ">= 1.30.0 < 1.32.0"
+kubeVersion: ">= 1.29.0 < 1.32.0"
 home: https://github.com/prometheus-operator/kube-prometheus
 keywords:
   - operator

@@ -21,3 +21,5 @@ version: 2.0.0
 appVersion: "2.0.0"
 kubeVersion: ">= 1.26.0"
 icon: icons/kubernetes-logo.svg
+annotations:
+  ocne.oracle.com/mirror: false
