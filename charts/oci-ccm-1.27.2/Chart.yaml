@@ -2,7 +2,7 @@ apiVersion: v1
 name: oci-ccm
 version: 1.27.2
 appVersion: 1.27.2
-kubeVersion: "^1.23.0-0"
+kubeVersion: "<= 1.31.0"
 description: Oracle Cloud Infrastructure (OCI) cloud controller manager
 maintainers:
   - name: Thomas Tanaka

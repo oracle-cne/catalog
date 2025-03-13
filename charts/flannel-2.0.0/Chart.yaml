@@ -1,11 +1,12 @@
 apiVersion: v1
 appVersion: 2.0.0
+kubeVersion: ">= 1.26.0"
 description: Flannel CNI
 keywords:
-- Flannel
+  - Flannel
 name: flannel
 sources:
-- https://github.com/flannel-io/flannel
+  - https://github.com/flannel-io/flannel
 version: 2.0.0
 icon: icons/flannel-icon.svg
 annotations:

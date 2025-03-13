@@ -23,7 +23,7 @@ sources:
   - https://github.com/prometheus-operator/kube-prometheus
 version: 0.63.0
 appVersion: 0.63.0
-kubeVersion: ">=1.16.0-0"
+kubeVersion: ">= 1.26.0 < 1.32.0"
 home: https://github.com/prometheus-operator/kube-prometheus
 keywords:
   - operator
@@ -37,7 +37,6 @@ annotations:
       url: https://github.com/prometheus-community/helm-charts
     - name: Upstream Project
       url: https://github.com/prometheus-operator/kube-prometheus
-
 dependencies:
   - name: kube-state-metrics
     version: "2.8.*"

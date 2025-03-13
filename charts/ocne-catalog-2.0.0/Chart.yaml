@@ -5,3 +5,4 @@ icon: icons/oracle.png
 type: application
 version: 2.0.0
 appVersion: "2.0.0"
+kubeVersion: ">= 1.0.0"

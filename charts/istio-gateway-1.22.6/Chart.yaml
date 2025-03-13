@@ -10,3 +10,4 @@ sources:
 - https://github.com/istio/istio
 type: application
 version: 1.22.6
+kubeVersion: '>= 1.30.0 < 1.32.0'
