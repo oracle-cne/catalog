@@ -5,4 +5,4 @@ appVersion: 2.15.0
 description: A Helm chart for OpenSearch Dashboards
 type: application
 icon: icons/opensearch_logo_default.svg
-kubeVersion: '>= 1.30.0 < 1.32.0'
+kubeVersion: '>= 1.26.0 < 1.32.0'
