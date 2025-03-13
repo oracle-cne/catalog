@@ -4,12 +4,14 @@
 
 image:
   # -- Image
-  repository: rook/ceph
+  repository: olcne/ceph
   # -- Image tag
   # @default -- `v1.13.10`
   tag: v1.13.10
   # -- Image pull policy
   pullPolicy: IfNotPresent
+  # -- Default tag for the ceph container image
+  cephTag: v18.2.2
 
 crds:
   # -- Whether the helm chart should create and update the CRDs. If false, the CRDs must be
@@ -470,32 +472,32 @@ csi:
   cephcsi:
     # -- Ceph CSI image
     # @default -- `quay.io/cephcsi/cephcsi:v3.10.2`
-    image:
+    image: olcne/cephcsi:v3.10.2
 
   registrar:
     # -- Kubernetes CSI registrar image
     # @default -- `registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.10.0`
-    image:
+    image: olcne/csi-node-driver-registrar:v2.10.0
 
   provisioner:
     # -- Kubernetes CSI provisioner image
     # @default -- `registry.k8s.io/sig-storage/csi-provisioner:v4.0.0`
-    image:
+    image: olcne/csi-provisioner:v4.0.0
 
   snapshotter:
     # -- Kubernetes CSI snapshotter image
     # @default -- `registry.k8s.io/sig-storage/csi-snapshotter:v7.0.1`
-    image:
+    image: olcne/csi-snapshotter:v7.0.1
 
   attacher:
     # -- Kubernetes CSI Attacher image
     # @default -- `registry.k8s.io/sig-storage/csi-attacher:v4.5.0`
-    image:
+    image: olcne/csi-attacher:v4.5.0
 
   resizer:
     # -- Kubernetes CSI resizer image
     # @default -- `registry.k8s.io/sig-storage/csi-resizer:v1.10.0`
-    image:
+    image: olcne/csi-resizer:v1.10.0
 
   # -- Image pull policy
   imagePullPolicy: IfNotPresent
@@ -512,8 +514,6 @@ csi:
   csiAddons:
     # -- Enable CSIAddons
     enabled: false
-    # -- CSIAddons Sidecar image
-    image: "quay.io/csiaddons/k8s-sidecar:v0.8.0"
 
   nfs:
     # -- Enable the nfs csi driver

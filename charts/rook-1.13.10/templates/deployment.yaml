@@ -1,3 +1,10 @@
+# extra-image: {{ .Values.csi.cephcsi.image }}
+# extra-image: {{ .Values.csi.registrar.image }}
+# extra-image: {{ .Values.csi.provisioner.image }}
+# extra-image: {{ .Values.csi.snapshotter.image }}
+# extra-image: {{ .Values.csi.attacher.image }}
+# extra-image: {{ .Values.csi.resizer.image }}
+# extra-image: {{ .Values.image.repository }}:{{ .Values.image.cephTag }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
