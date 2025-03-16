@@ -155,12 +155,6 @@ csiOvirtpluginNode:
         cpu: 10m
         memory: 50Mi
 kubernetesClusterDomain: cluster.local
-ovirtCredentials:
-  ovirtCaBundle: ""
-  ovirtInsecure: ""
-  ovirtPassword: ""
-  ovirtUrl: ""
-  ovirtUsername: ""
 ovirtCsiDriverControllerSa:
   serviceAccount:
     annotations: {}
