@@ -20,21 +20,22 @@ description: Headlamp is an easy-to-use and extensible Kubernetes web UI.
 home: https://headlamp.dev/
 icon: icons/oracle.png
 keywords:
-- kubernetes
-- plugins
-- kinvolk
-- headlamp
-- dashboard
-- ui
-- web
-- monitoring
-- logging
+  - kubernetes
+  - plugins
+  - kinvolk
+  - headlamp
+  - dashboard
+  - ui
+  - web
+  - monitoring
+  - logging
 maintainers:
-- name: kinvolk
-  url: https://kinvolk.io/
+  - name: kinvolk
+    url: https://kinvolk.io/
 name: ui
 sources:
-- https://github.com/headlamp-k8s/headlamp/tree/main/charts/headlamp
-- https://github.com/headlamp-k8s/headlamp
+  - https://github.com/headlamp-k8s/headlamp/tree/main/charts/headlamp
+  - https://github.com/headlamp-k8s/headlamp
 type: application
 version: 2.0.0
+kubeVersion: ">= 1.0.0"
