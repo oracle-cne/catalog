@@ -11,16 +11,16 @@ description: A Helm chart for cert-manager
 home: https://cert-manager.io
 icon: icons/cert-manager-icon.svg
 keywords:
-- cert-manager
-- kube-lego
-- letsencrypt
-- tls
-kubeVersion: '>= 1.22.0-0'
+  - cert-manager
+  - kube-lego
+  - letsencrypt
+  - tls
+kubeVersion: '>= 1.30.0 < 1.32.0'
 maintainers:
-- email: cert-manager-maintainers@googlegroups.com
-  name: cert-manager-maintainers
-  url: https://cert-manager.io
+  - email: cert-manager-maintainers@googlegroups.com
+    name: cert-manager-maintainers
+    url: https://cert-manager.io
 name: cert-manager
 sources:
-- https://github.com/cert-manager/cert-manager
+  - https://github.com/cert-manager/cert-manager
 version: 1.16.3
