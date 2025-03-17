@@ -6,7 +6,7 @@ csiOvirtplugin:
     containerSecurityContext:
       privileged: true
     image:
-      repository: olcne/external-attacher
+      repository: olcne/csi-attacher
       tag: v4.8.1
     resources:
       limits:
@@ -23,7 +23,7 @@ csiOvirtplugin:
     containerSecurityContext:
       privileged: true
     image:
-      repository: olcne/external-provisioner
+      repository: olcne/csi-provisioner
       tag: v1.13.2
     resources:
       limits:
@@ -39,7 +39,7 @@ csiOvirtplugin:
     containerSecurityContext:
       privileged: true
     image:
-      repository: olcne/external-resizer
+      repository: olcne/csi-resizer
       tag: v1.13.2
     resources:
       limits:
@@ -100,7 +100,7 @@ csiOvirtpluginNode:
     - --csi-address=/csi/csi.sock
     - --kubelet-registration-path=/var/lib/kubelet/plugins/csi.ovirt.org/csi.sock
     image:
-      repository: olcne/node-driver-registrar
+      repository: olcne/csi-node-driver-registrar
       tag: v2.13.0
     resources:
       limits:
