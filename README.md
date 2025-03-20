@@ -36,6 +36,7 @@ installing the `ocne-catalog` chart.
 | Istio Gateway                                       | istio-gateway               | 1.24.1<br>1.22.6           |
 | Istio Ztunnel                                       | istio-ztunnel               | 1.24.1                     |
 | Istio CNI                                           | istio-cni                   | 1.24.1                     |
+| Keycloak                                            | keycloak                 | 21.1.2           |
 | Kube Prometheus Stack                               | kube-prometheus-stack       | 0.63.0                     |
 | Kube Proxy                                          | kube-proxy                  | 2.0.0                      |
 | Kube State Metrics                                  | kube-state-metrics          | 2.8.2                      |
