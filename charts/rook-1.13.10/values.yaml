@@ -477,12 +477,12 @@ csi:
   registrar:
     # -- Kubernetes CSI registrar image
     # @default -- `registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.10.0`
-    image: olcne/csi-node-driver-registrar:v2.10.0
+    image: olcne/csi-node-driver-registrar:v2.13.0
 
   provisioner:
     # -- Kubernetes CSI provisioner image
     # @default -- `registry.k8s.io/sig-storage/csi-provisioner:v4.0.0`
-    image: olcne/csi-provisioner:v4.0.0
+    image: olcne/csi-provisioner:v5.2.0
 
   snapshotter:
     # -- Kubernetes CSI snapshotter image
@@ -492,12 +492,12 @@ csi:
   attacher:
     # -- Kubernetes CSI Attacher image
     # @default -- `registry.k8s.io/sig-storage/csi-attacher:v4.5.0`
-    image: olcne/csi-attacher:v4.5.0
+    image: olcne/csi-attacher:v4.8.1
 
   resizer:
     # -- Kubernetes CSI resizer image
     # @default -- `registry.k8s.io/sig-storage/csi-resizer:v1.10.0`
-    image: olcne/csi-resizer:v1.10.0
+    image: olcne/csi-resizer:v1.13.2
 
   # -- Image pull policy
   imagePullPolicy: IfNotPresent
