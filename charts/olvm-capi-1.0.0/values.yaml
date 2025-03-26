@@ -13,7 +13,7 @@ webhooksEnabled: false
 
 kubernetesClusterDomain: cluster.local
 
-operator:
+controllerManager:
   container:
     args:
     - -cert-dir=/etc/webhook/certs
