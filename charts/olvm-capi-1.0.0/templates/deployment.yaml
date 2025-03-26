@@ -74,7 +74,7 @@ spec:
         terminationMessagePolicy: FallbackToLogsOnError
       securityContext:
         {{- toYaml .Values.controllerManager.podSecurityContext | nindent 8 }}
-      serviceAccountName: {{ include "olvm-capi.fullname" . }}-operator
+      serviceAccountName: {{ include "olvm-capi.fullname" . }}-controller-manager
       terminationGracePeriodSeconds: 0
       {{- with .Values.controllerManager.tolerations }}
       tolerations:
