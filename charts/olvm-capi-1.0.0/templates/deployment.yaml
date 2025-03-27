@@ -16,7 +16,7 @@ spec:
   selector:
     matchLabels:
       cluster.x-k8s.io/provider: infrastructure-olvm
-      control-plane: operator
+      control-plane: controller-manager
     {{- include "olvm-capi.selectorLabels" . | nindent 6 }}
   {{- with .Values.controllerManager.strategy }}
   strategy:
