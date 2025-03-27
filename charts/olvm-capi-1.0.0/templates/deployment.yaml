@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
       - name: controller-manager
-        args: {{- toYaml .Values.operator.container.args | nindent 8 }}
+        args: {{- toYaml .Values.controllerManager.container.args | nindent 8 }}
         command:
         - /olvm-capi-controller-manager
         env:
