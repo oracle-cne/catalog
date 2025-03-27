@@ -13,7 +13,7 @@ webhooksEnabled: false
 
 kubernetesClusterDomain: cluster.local
 
-operator:
+controllerManager:
   container:
     args:
     - -cert-dir=/etc/webhook/certs
@@ -23,7 +23,7 @@ operator:
     - -zap-stacktrace-level=error
     - -zap-time-encoding=epoch
     image:
-      repository: ghcr.io/oracle-cne/cluster-api-olvm-operator
+      repository: ghcr.io/oracle-cne/cluster-api-olvm-controller-manager
       tag: v0.1.0
     imagePullPolicy: IfNotPresent
     containerSecurityContext:
