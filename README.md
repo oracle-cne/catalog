@@ -36,7 +36,7 @@ installing the `ocne-catalog` chart.
 | Istio Gateway                                       | istio-gateway               | 1.24.1<br>1.22.6           |
 | Istio Ztunnel                                       | istio-ztunnel               | 1.24.1                     |
 | Istio CNI                                           | istio-cni                   | 1.24.1                     |
-| Keycloak                                            | keycloak                 | 21.1.2           |
+| Keycloak                                            | keycloak                 | 21.1.2                     |
 | Kube Prometheus Stack                               | kube-prometheus-stack       | 0.63.0                     |
 | Kube Proxy                                          | kube-proxy                  | 2.0.0                      |
 | Kube State Metrics                                  | kube-state-metrics          | 2.8.2                      |
@@ -51,7 +51,7 @@ installing the `ocne-catalog` chart.
 | Prometheus                                          | prometheus                  | 2.31.1                     |
 | Prometheus Adapter                                  | prometheus-adapter          | 0.10.0                     |
 | Prometheus Node Exporter                            | prometheus-node-exporter    | 1.6.1                      |
-| Rook                                                | rook                        | 1.12.3                     |
+| Rook                                                | rook                        | 1.14.12<br>1.12.3          |
 | Tigera Operator with Calico 3.27                    | tigera-operator             | 1.32.4                     |
 | Oracle Cloud Native Environment Dashboard           | ui                          | 2.0.0                      |
 | Kubernetes Gateway API CRDs                         | kubernetes-gateway-api-crds | 1.2.1                      |
