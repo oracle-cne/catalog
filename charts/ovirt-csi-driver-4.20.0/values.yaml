@@ -1,8 +1,5 @@
-csiOvirtplugin:
+csiController:
   csiAttacher:
-    args:
-    - --csi-address=/csi/csi.sock
-    - --v=5
     containerSecurityContext:
       privileged: true
     image:
@@ -16,15 +13,11 @@ csiOvirtplugin:
         cpu: 80m
         memory: 64Mi
   csiProvisioner:
-    args:
-    - --csi-address=/csi/csi.sock
-    - --feature-gates=Topology=true
-    - -v=5
     containerSecurityContext:
       privileged: true
     image:
       repository: olcne/csi-provisioner
-      tag: v1.13.2
+      tag: v5.2.0
     resources:
       limits:
         cpu: 160m
@@ -33,9 +26,6 @@ csiOvirtplugin:
         cpu: 80m
         memory: 64Mi
   csiResizer:
-    args:
-    - -csi-address=/csi/csi.sock
-    - -v=5
     containerSecurityContext:
       privileged: true
     image:
@@ -49,9 +39,6 @@ csiOvirtplugin:
         cpu: 80m
         memory: 64Mi
   livenessProbe:
-    args:
-    - --csi-address=/csi/csi.sock
-    - --health-port=9898
     image:
       repository: olcne/livenessprobe
       tag: v2.15.0
@@ -62,13 +49,11 @@ csiOvirtplugin:
       requests:
         cpu: 80m
         memory: 64Mi
-  ovirt:
-    args:
-    - --endpoint=$(CSI_ENDPOINT)
+  ovirtController:
     containerSecurityContext:
       privileged: true
     env:
-      csiEndpoint: unix:///csi/csi.sock
+      csiEndpoint: unix:///csi-socket/csi.sock
       ovirtConfig: /tmp/config/ovirt-config.yaml
     image:
       repository: olcne/ovirt-csi-driver
@@ -93,12 +78,8 @@ csiOvirtplugin:
         cpu: 160m
         memory: 128Mi
   replicas: 1
-csiOvirtpluginNode:
+csiNode:
   csiDriverRegistrar:
-    args:
-    - --v=5
-    - --csi-address=/csi/csi.sock
-    - --kubelet-registration-path=/var/lib/kubelet/plugins/csi.ovirt.org/csi.sock
     image:
       repository: olcne/csi-node-driver-registrar
       tag: v2.13.0
@@ -110,9 +91,6 @@ csiOvirtpluginNode:
         cpu: 80m
         memory: 64Mi
   livenessProbe:
-    args:
-    - --csi-address=/csi/csi.sock
-    - --health-port=9898
     image:
       repository: olcne/livenessprobe
       tag: v2.15.0
@@ -123,14 +101,11 @@ csiOvirtpluginNode:
       requests:
         cpu: 80m
         memory: 64Mi
-  ovirt:
-    args:
-    - --endpoint=$(CSI_ENDPOINT)
-    - --node-name=$(KUBE_NODE_NAME)
+  ovirtNode:
     containerSecurityContext:
       privileged: true
     env:
-      csiEndpoint: unix:///csi/csi.sock
+      csiEndpoint: unix:///csi-socket/csi.sock
       ovirtConfig: /tmp/config/ovirt-config.yaml
     image:
       repository: olcne/ovirt-csi-driver
