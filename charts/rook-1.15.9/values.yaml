@@ -534,7 +534,7 @@ csi:
     # -- Enable CSIAddons
     enabled: false
     # -- CSIAddons sidecar image repository
-    repository: quay.io/csiaddons/k8s-sidecar
+    repository: olcne/csiaddons-k8s-sidecar
     # -- CSIAddons sidecar image tag
     tag: v0.9.1
 
