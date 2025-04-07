@@ -76,7 +76,7 @@ spec:
       containers:
         - name: {{ .Values.controller.containerName }}
           {{- with (merge .Values.controller.image .Values.global.image) }}
-          image: {{ if .repository }}{{ .repository }}{{ else }}{{ .registry }}/{{ include "ingress-nginx.image" . }}{{ end }}:{{ .tag }}{{ include "ingress-nginx.imageDigest" . }}
+          image: {{ if .repository }}{{ .repository }}{{ else }}{{ if .registry}}{{ .registry }}/{{end}}{{ include "ingress-nginx.image" . }}{{ end }}:{{ .tag }}{{ include "ingress-nginx.imageDigest" . }}
           {{- end }}
           imagePullPolicy: {{ .Values.controller.image.pullPolicy }}
         {{- if .Values.controller.lifecycle }}
