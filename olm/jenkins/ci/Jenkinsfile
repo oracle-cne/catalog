@@ -10,5 +10,9 @@ olcnePipeline(
     branchPattern: new BranchPattern(master: '(master|release/.*)', feature: '(?!^master$)(?!^release/.*$)(^.*$)'),
     containers: [(registry + '/ocne-catalog:' + imageTag) : container_registry_namespace + '/ocne-catalog:' + imageTag],
     architectures: ['x86_64', 'aarch64'],
-    platforms: ['ol8']
+    platforms: ['ol8'],
+    preBuildCommands: [
+	'podman pull container-registry.oracle.com/olcne/base:latest',
+	'podman tag container-registry.oracle.com/olcne/base:latest container-registry.oracle.com/os/oraclelinux:8',
+    ],
 )
