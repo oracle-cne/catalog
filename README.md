@@ -28,7 +28,7 @@ installing the `ocne-catalog` chart.
 | Fluent Operator                                     | fluent-operator             | 3.2.0                      |
 | Fluentd                                             | fluentd                     | 1.14.5                     |
 | Grafana                                             | grafana                     | 7.5.17                     |
-| Ingress Nginx                                       | ingress-nginx               | 1.9.6                      |
+| Ingress Nginx                                       | ingress-nginx               | 1.12.1<br>1.9.6            |
 | Istio CRDs                                          | istio-base                  | 1.24.1<br>1.22.6<br>1.20.5 |
 | Istiod                                              | istiod                      | 1.24.1<br>1.22.6<br>1.20.5 |
 | Istio Egress Gateway                                | istio-egress                | 1.24.1<br>1.22.6<br>1.20.5 |
@@ -36,7 +36,7 @@ installing the `ocne-catalog` chart.
 | Istio Gateway                                       | istio-gateway               | 1.24.1<br>1.22.6           |
 | Istio Ztunnel                                       | istio-ztunnel               | 1.24.1                     |
 | Istio CNI                                           | istio-cni                   | 1.24.1                     |
-| Keycloak                                            | keycloak                 | 21.1.2           |
+| Keycloak                                            | keycloak                 | 21.1.2                     |
 | Kube Prometheus Stack                               | kube-prometheus-stack       | 0.63.0                     |
 | Kube Proxy                                          | kube-proxy                  | 2.0.0                      |
 | Kube State Metrics                                  | kube-state-metrics          | 2.8.2                      |
