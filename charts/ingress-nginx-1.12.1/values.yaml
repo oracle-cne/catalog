@@ -5,7 +5,7 @@
 global:
   image:
     # -- Registry host to pull images from.
-    registry: olcne
+    registry:
 ## Overrides for generated resource names
 # See templates/_helpers.tpl
 # nameOverride:
@@ -25,8 +25,7 @@ controller:
   image:
     ## Keep false as default for now!
     chroot: false
-    registry: olcne
-    image: ingress-nginx-controller
+    image: olcne/ingress-nginx-controller
     ## for backwards compatibility consider setting the full image url via the repository value below
     ## use *either* current default registry/image or repository format or installing chart by providing the values.yaml will fail
     ## repository:
@@ -816,12 +815,11 @@ controller:
     patch:
       enabled: true
       image:
-        registry: olcne
-        image: kube-webhook-certgen
+        image: olcne/kube-webhook-certgen
         ## for backwards compatibility consider setting the full image url via the repository value below
         ## use *either* current default registry/image or repository format or installing chart by providing the values.yaml will fail
         ## repository:
-        tag: v1.12.1
+        tag: "v1.12.1"
         pullPolicy: IfNotPresent
       # -- Provide a priority class name to the webhook patching job
       ##
@@ -974,12 +972,11 @@ defaultBackend:
   enabled: false
   name: defaultbackend
   image:
-    registry: olcne
-    image: custom-error-pages
+    image: olcne/custom-error-pages
     ## for backwards compatibility consider setting the full image url via the repository value below
     ## use *either* current default registry/image or repository format or installing chart by providing the values.yaml will fail
     ## repository:
-    tag: "1.12.1"
+    tag: "v1.12.1"
     pullPolicy: IfNotPresent
     runAsNonRoot: true
     # nobody user -> uid 65534
