@@ -7,7 +7,7 @@
 
 Name:		%{_name}-container-image
 Version:	2.0.0
-Release:	12%{?dist}
+Release:	13%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -24,7 +24,7 @@ An on-disk Helm chart repository
 yum clean all
 yumdownloader --destdir=${PWD}/rpms %{rpm_name}
 
-docker build --pull --build-arg https_proxy=${https_proxy} \
+docker build --pull=never --squash --build-arg https_proxy=${https_proxy} \
 	-t %{docker_tag} -f ./olm/builds/Dockerfile .
 docker save -o %{_name}.tar %{docker_tag}
 
@@ -37,6 +37,8 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
+* Sat Apr 05 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-13
+- Use common base image
 
 * Thu Mar 06 2025 Prasad Shirodkar <prasad.shirodkar@oracle.com> - 2.0.0-12
 - Added Kubernetes Gateway API CRDs 1.2.1
