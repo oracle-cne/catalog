@@ -1,6 +1,6 @@
 customLabels: {}
 image:
-    baseRepo: registry.k8s.io
+    baseRepo:
     nfs:
         repository: olcne/nfsplugin
         tag: v4.11.0
