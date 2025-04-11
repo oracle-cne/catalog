@@ -14,7 +14,7 @@ image:
         tag: v1.13.2
         pullPolicy: IfNotPresent
     csiSnapshotter:
-        repository: registry.k8s.io/sig-storage/csi-snapshotter
+        repository: olcne/csi-snapshotter
         tag: v8.2.0
         pullPolicy: IfNotPresent
     livenessProbe:
