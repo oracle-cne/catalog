@@ -22,6 +22,7 @@ installing the `ocne-catalog` chart.
 | Cluster API for Oracle Cloud Infrastructure         | oci-capi                    | 0.16.0<br>0.15.0           |
 | Cert Manager OCI Webhook                            | cert-manager-webhook-oci    | 1.1.0                      |
 | CoreDNS                                             | coredns                     | 2.0.0                      |
+| CSI driver for oVirt                                | ovirt-csi-driver            | 4.20.0                     |
 | Dex                                                 | dex                         | 2.39.1                     |
 | ExternalIP Webhook                                  | externalip-webhook          | 1.0.0                      |
 | Flannel                                             | flannel                     | 2.0.0<br>0.22.3            |
@@ -36,7 +37,7 @@ installing the `ocne-catalog` chart.
 | Istio Gateway                                       | istio-gateway               | 1.24.1<br>1.22.6           |
 | Istio Ztunnel                                       | istio-ztunnel               | 1.24.1                     |
 | Istio CNI                                           | istio-cni                   | 1.24.1                     |
-| Keycloak                                            | keycloak                 | 21.1.2           |
+| Keycloak                                            | keycloak                    | 21.1.2                     |
 | Kube Prometheus Stack                               | kube-prometheus-stack       | 0.63.0                     |
 | Kube Proxy                                          | kube-proxy                  | 2.0.0                      |
 | Kube State Metrics                                  | kube-state-metrics          | 2.8.2                      |
