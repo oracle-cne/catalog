@@ -138,7 +138,7 @@ spec:
           ovirt_password: $OVIRT_PASSWORD
           # set a valid path only if ca bundle has content
           ovirt_cafile: ${OVIRT_CA_BUNDLE:+$OVIRT_CAFILE}
-          ovirt_insecure: $OVIRT_INSECURE
+          ovirt_insecure: {{ .Values.ovirt.insecure }}
           EOF
           if [[ -n "$OVIRT_CA_BUNDLE" ]]; then echo "$OVIRT_CA_BUNDLE" > $OVIRT_CAFILE ; fi
         env:
@@ -146,29 +146,26 @@ spec:
           valueFrom:
             secretKeyRef:
               key: ovirt_url
-              name: {{ include "mychart.fullname" . }}
+              name: {{ .Values.ovirt.secretName }}
         - name: OVIRT_USERNAME
           valueFrom:
             secretKeyRef:
               key: ovirt_username
-              name: {{ include "mychart.fullname" . }}
+              name: {{ .Values.ovirt.secretName }}
         - name: OVIRT_PASSWORD
           valueFrom:
             secretKeyRef:
               key: ovirt_password
-              name: {{ include "mychart.fullname" . }}
+              name: {{ .Values.ovirt.secretName }}
+{{ if .Values.ovirt.caProvided }}
         - name: OVIRT_CAFILE
           value: {{ quote .Values.csiController.prepareOvirtConfig.env.ovirtCafile }}
-        - name: OVIRT_INSECURE
-          valueFrom:
-            secretKeyRef:
-              key: ovirt_insecure
-              name: {{ include "mychart.fullname" . }}
         - name: OVIRT_CA_BUNDLE
           valueFrom:
-            secretKeyRef:
-              key: ovirt_ca_bundle
-              name: {{ include "mychart.fullname" . }}
+            configMapKeyRef:
+              key: ca.crt
+              name:  {{ .Values.ovirt.caConfigMapName }}
+{{ end }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
         image: {{ .Values.csiController.prepareOvirtConfig.image.repository }}:{{ .Values.csiController.prepareOvirtConfig.image.tag
