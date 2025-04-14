@@ -130,6 +130,11 @@ csiNode:
         cpu: 10m
         memory: 50Mi
 kubernetesClusterDomain: cluster.local
+ovirt:
+  caProvided: true
+  insecure: true
+  secretName: ovirt-csi-creds
+  caConfigMapName: ovirt-csi-ca
 ovirtCsiDriverControllerSa:
   serviceAccount:
     annotations: {}
