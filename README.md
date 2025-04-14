@@ -29,7 +29,7 @@ installing the `ocne-catalog` chart.
 | Fluent Operator                                     | fluent-operator             | 3.2.0                      |
 | Fluentd                                             | fluentd                     | 1.14.5                     |
 | Grafana                                             | grafana                     | 7.5.17                     |
-| Ingress Nginx                                       | ingress-nginx               | 1.9.6                      |
+| Ingress Nginx                                       | ingress-nginx               | 1.12.1<br>1.9.6            |
 | Istio CRDs                                          | istio-base                  | 1.24.1<br>1.22.6<br>1.20.5 |
 | Istiod                                              | istiod                      | 1.24.1<br>1.22.6<br>1.20.5 |
 | Istio Egress Gateway                                | istio-egress                | 1.24.1<br>1.22.6<br>1.20.5 |
