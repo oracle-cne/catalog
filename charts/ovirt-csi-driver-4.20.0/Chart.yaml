@@ -1,0 +1,8 @@
+apiVersion: v2
+name: ovirt-csi-driver
+description: Implementation of a CSI driver for oVirt.
+type: application
+version: 4.20.0
+appVersion: "4.20.0"
+icon: icons/KubeVirt_icon.png
+kubeVersion: '>= 1.30.0 < 1.32.0'
