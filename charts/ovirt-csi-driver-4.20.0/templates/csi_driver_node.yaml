@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: {{ .Values.csiNode.ovirtNode.name }}
-  namespace: '{{ .Release.Namespace }}'
+  namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/component: plugin
     app.kubernetes.io/part-of: csi-driver-ovirt

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.csiController.ovirtController.name }}
-  namespace: '{{ .Release.Namespace }}'
+  namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/component: plugin
     app.kubernetes.io/part-of: ovirt-csi-driver
