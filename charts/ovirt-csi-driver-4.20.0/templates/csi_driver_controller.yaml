@@ -1,7 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: csi-ovirt-controller
+  name: {{ .Values.csiController.ovirtController.name }}
+  namespace: '{{ .Release.Namespace }}'
   labels:
     app.kubernetes.io/component: plugin
     app.kubernetes.io/part-of: ovirt-csi-driver
@@ -146,17 +147,17 @@ spec:
           valueFrom:
             secretKeyRef:
               key: ovirt_url
-              name: {{ .Values.ovirt.secretName }}
+              name:  {{ .Values.ovirt.secretName }}
         - name: OVIRT_USERNAME
           valueFrom:
             secretKeyRef:
               key: ovirt_username
-              name: {{ .Values.ovirt.secretName }}
+              name:  {{ .Values.ovirt.secretName }}
         - name: OVIRT_PASSWORD
           valueFrom:
             secretKeyRef:
               key: ovirt_password
-              name: {{ .Values.ovirt.secretName }}
+              name:  {{ .Values.ovirt.secretName }}
 {{ if .Values.ovirt.caProvided }}
         - name: OVIRT_CAFILE
           value: {{ quote .Values.csiController.prepareOvirtConfig.env.ovirtCafile }}

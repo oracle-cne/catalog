@@ -50,6 +50,7 @@ csiController:
         cpu: 80m
         memory: 64Mi
   ovirtController:
+    name: ovirt-csi-controller-plugin
     containerSecurityContext:
       privileged: true
     env:
@@ -102,6 +103,7 @@ csiNode:
         cpu: 80m
         memory: 64Mi
   ovirtNode:
+    name: ovirt-csi-node-plugin
     containerSecurityContext:
       privileged: true
     env:
@@ -132,9 +134,9 @@ csiNode:
 kubernetesClusterDomain: cluster.local
 ovirt:
   caProvided: true
-  insecure: true
+  insecure: false
   secretName: ovirt-csi-creds
-  caConfigMapName: ovirt-csi-ca
+  caConfigMapName: ovirt-csi-ca.crt
 ovirtCsiDriverControllerSa:
   serviceAccount:
     annotations: {}
@@ -145,3 +147,7 @@ pvc:
   1GOvirtCowDisk:
     storageClass: ovirt-csi-sc
     storageRequest: 1Gi
+
+driver:
+  name: csi.ovirt.org
+
