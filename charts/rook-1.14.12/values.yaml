@@ -490,7 +490,7 @@ csi:
     # -- Ceph CSI image repository
     repository: olcne/cephcsi
     # -- Ceph CSI image tag
-    tag: v3.11.0
+    tag: v3.12.3
 
   registrar:
     # -- Kubernetes CSI registrar image repository
