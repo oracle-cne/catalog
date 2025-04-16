@@ -472,7 +472,7 @@ csi:
   cephcsi:
     # -- Ceph CSI image
     # @default -- `quay.io/cephcsi/cephcsi:v3.10.2`
-    image: olcne/cephcsi:v3.10.2
+    image: olcne/cephcsi:v3.12.3
 
   registrar:
     # -- Kubernetes CSI registrar image
