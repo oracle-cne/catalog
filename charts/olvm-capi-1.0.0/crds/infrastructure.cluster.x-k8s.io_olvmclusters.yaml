@@ -1,6 +1,5 @@
-# Copyright (c) 2024, Oracle and/or its affiliates.
+# Copyright (c) 2024, 2025, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
-
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -9,7 +8,7 @@ metadata:
     controller-gen.kubebuilder.io/version: v0.16.4
   labels:
     cluster.x-k8s.io/provider: infrastructure-olvm
-    cluster.x-k8s.io/v1beta1: v1beta1
+    cluster.x-k8s.io/v1: v1
   name: olvmclusters.infrastructure.cluster.x-k8s.io
 spec:
   group: infrastructure.cluster.x-k8s.io
@@ -25,27 +24,27 @@ spec:
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
-    - description: True if the OLVMCluster is ready
+    - description: True if the OlvmCluster is ready
       jsonPath: .status.ready
       name: Ready
       type: string
-    - description: The oVirt Data Center that contains the oVirt Cluster
-      jsonPath: .status.ovirt.dataCenterName
+    - description: The OLVM Data Center that contains the OLVM Cluster
+      jsonPath: .status.olvm.dataCenterName
       name: DataCenter
       type: string
-    - description: The age of the OLVMCluster
+    - description: The age of the OlvmCluster
       jsonPath: .metadata.creationTimestamp
       name: Age
       type: date
-    - description: The URL of the oVirt API server
-      jsonPath: .spec.ovirtAPI.apiServerURL
+    - description: The URL of the OLVM API server
+      jsonPath: .spec.olvmAPI.apiServerURL
       name: OvirtServerURL
       priority: 2
       type: string
-    name: v1beta1
+    name: v1
     schema:
       openAPIV3Schema:
-        description: OLVMCluster specifies am OLVMCluster instance.
+        description: OLVMCluster specifies am  OLVMCluster instance.
         properties:
           apiVersion:
             description: |-
@@ -73,81 +72,72 @@ spec:
                   plane endpoint.
                 properties:
                   host:
+                    description: Host is the endpoint host name or IP address.
                     type: string
                   port:
+                    description: Port is the endpoint port.
                     format: int32
                     type: integer
                 required:
                 - host
                 - port
                 type: object
-              ovirtAPI:
-                description: OVirtAPI contains the information needed to use the oVirst
-                  REST API
+              olvmDatacenterName:
+                description: OlvmDatacenterName is the datacenter where the Kubernetes
+                  cluster will be created.
+                type: string
+              olvmOvirtAPI:
+                description: OlvmOvirtAPI contains the information needed to use the
+                  OLVM oVirt REST API.
                 properties:
                   apiServerURL:
-                    description: ApiServerURL is the oVirt REST API endpoint
+                    description: ApiServerURL is the OLVM oVirt REST API endpoint
+                      URL.
                     type: string
-                  caConfigMapName:
-                    description: CAConfigMapName is the name of the configmap that
-                      has the CA needed to for the oVirt REST API
-                    type: string
-                  credentialsSecretName:
-                    description: CredentialsSecretName is the name of the secret which
-                      has the credentials
-                    type: string
+                  caConfigMap:
+                    description: |-
+                      CAConfigMap is the namespaced name of the ConfigMap which has the CA.CRT for the OLVM endpoint.
+                      For example: https://example.com/ovirt-engine
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  credentialsSecret:
+                    description: CredentialsSecretName is the namespaced name of the
+                      Secret which has the credentials needed to access the OLVM endpoint.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  insecureSkipTLSVerify:
+                    description: InsecureSkipTLSVerify skips OLVM TLS certificate
+                      verification.
+                    type: boolean
                 required:
                 - apiServerURL
-                - caConfigMapName
-                - credentialsSecretName
+                - credentialsSecret
                 type: object
-              ovirtDatacenterName:
-                description: OVirtDatacenterName is the datacenter where the Kubernetes
-                  cluster will be created
-                type: string
-              vmIpProfiles:
-                description: VmIpProfiles is the list IP profiles available to machines
-                items:
-                  properties:
-                    device:
-                      description: Device is the network device, such as enp1s0
-                      type: string
-                    gateway:
-                      description: Gateway is the VM gateway
-                      type: string
-                    name:
-                      description: Name is the profile name
-                      type: string
-                    netmask:
-                      description: Netmask is the IpAddress netmask
-                      type: string
-                    startingIpAddress:
-                      description: |-
-                        StartingIpAddress is the lowest IP address to use.  All machines will coordinate to
-                        allocate an IP address starting with this one
-                      type: string
-                  required:
-                  - device
-                  - gateway
-                  - name
-                  - netmask
-                  - startingIpAddress
-                  type: object
-                type: array
             required:
             - controlPlaneEndpoint
-            - ovirtAPI
-            - ovirtDatacenterName
-            - vmIpProfiles
+            - olvmDatacenterName
+            - olvmOvirtAPI
             type: object
           status:
-            description: OLVMClusterStatus defines the status OLVMCluster resource.
+            description: OLVMClusterStatus defines the status OlvmCluster resource.
             properties:
               conditions:
-                description: Conditions are the list of conditions for the OLVMCluster.
+                description: Conditions are the list of conditions for the OlvmCluster.
                 items:
                   description: ClusterCondition describes the current condition of
-                    the OLVMCluster.
+                    the OlvmCluster.
                   properties:
                     lastTransitionTime:
                       description: LastTransitionTime is the last time the condition
@@ -208,26 +198,32 @@ spec:
                 type: string
               lastObservedGeneration:
                 description: |-
-                  LastObservedGeneration is the latest generation of the OLVMCluster
+                  LastObservedGeneration is the latest generation of the OlvmCluster
                   that the controller_foundation has seen, but not necessarily reconciled.
                 format: int64
                 type: integer
               lastSuccessfulGeneration:
                 description: LastSuccessfulGeneration is the last generation of the
-                  OLVMCluster that was successfully reconciled.
+                  OlvmCluster that was successfully reconciled.
                 format: int64
                 type: integer
-              ovirt:
+              olvmDatacenter:
+                description: OlvmDatacenter describes the OLVM datacenter.
                 properties:
                   dataCenterID:
+                    description: DataCenterID is the datacenter ID.
                     type: string
                   dataCenterName:
+                    description: DataCenterName is the datacenter name.
                     type: string
                   system:
+                    description: Release describes the OLVM Release.
                     properties:
                       name:
+                        description: Name is the name of the OLVM product.
                         type: string
                       version:
+                        description: Version is the OLVM version.
                         type: string
                     type: object
                 type: object
@@ -236,7 +232,6 @@ spec:
                   has been provisioned and is ready
                 type: boolean
             required:
-            - ovirt
             - ready
             type: object
         required:

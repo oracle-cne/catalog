@@ -1,6 +1,5 @@
-# Copyright (c) 2024, Oracle and/or its affiliates.
+# Copyright (c) 2024, 2025, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
-
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -9,7 +8,7 @@ metadata:
     controller-gen.kubebuilder.io/version: v0.16.4
   labels:
     cluster.x-k8s.io/provider: infrastructure-olvm
-    cluster.x-k8s.io/v1beta1: v1beta1
+    cluster.x-k8s.io/v1: v1
   name: olvmmachinetemplates.infrastructure.cluster.x-k8s.io
 spec:
   group: infrastructure.cluster.x-k8s.io
@@ -24,7 +23,7 @@ spec:
     singular: olvmmachinetemplate
   scope: Namespaced
   versions:
-  - name: v1beta1
+  - name: v1
     schema:
       openAPIV3Schema:
         description: OLVMMachineTemplate is the Schema for the OLVMMachineTemplates
@@ -63,84 +62,38 @@ spec:
                     description: OLVMMachineSpec defines the specification for a OLVMMachine
                       resource.
                     properties:
-                      olvmClusterName:
-                        description: OLVMClusterName is the CAPI OLVMCluster resource
-                          name
-                        type: string
-                      olvmVmIpProfileName:
-                        description: OLVMVmIpProfileName is the OLVM VmIpProfile name
-                          specified in the OLVM cluster
-                        type: string
-                      ovirt:
-                        description: OVirtSpecInfo specifies the ovirt info used by
-                          the OLVM spec
+                      olvm:
+                        description: OlvmSpec is the OLVM configuration.
                         properties:
-                          cpu:
-                            description: Cpu is the vm CPU
-                            properties:
-                              architecture:
-                                description: Architecture specifies the CPU topology.  The
-                                  default is x86_64/
-                                type: string
-                              topology:
-                                description: Topology specifies the CPU topology.
-                                properties:
-                                  cores:
-                                    description: Cores specifies the number of CPU
-                                      cores.  The default is 2.
-                                    format: int32
-                                    type: integer
-                                  sockets:
-                                    description: Sockets specifies the number of CPU
-                                      sockets.  The default is 2.
-                                    format: int32
-                                    type: integer
-                                  threads:
-                                    description: Threads specifies the number of CPU
-                                      Threads.  The default is 1.
-                                    format: int32
-                                    type: integer
-                                type: object
-                            type: object
-                          memory:
-                            description: Memory is the memory size of the VM
-                            type: string
                           network:
-                            description: OVirtNetwork specifies the ovirt network
-                              information required to create a VM
+                            description: Network is the OLVM network configuration.
                             properties:
-                              interfaceType:
-                                description: |-
-                                  InterfaceType is the optional interface.  The default is virtio.
-                                  See https://www.ovirt.org/documentation/virtual_machine_management_guide/#Virtual_Machine_Network_Interface_dialogue_entries
-                                type: string
                               networkName:
                                 description: NetworkName is the name of an existing
-                                  network. Required
+                                  OLVM network.
                                 type: string
                               vnicName:
-                                description: VnicName is the name of vm vnic.  Default
-                                  is nic1
+                                description: VnicName is the name of OLVM vnic. Default
+                                  is nic1.
                                 type: string
                               vnicProfileName:
                                 description: VnicProfileName is the name of an existing
-                                  vnic profile. Required
+                                  OLVM vnic profile.
                                 type: string
                             required:
                             - networkName
                             - vnicProfileName
                             type: object
-                          ovirtClusterName:
-                            description: OVirtClusterName is the name of the cluster
-                              where the VM will be created
+                          olvmClusterName:
+                            description: OlvmClusterName is the OLVM cluster name.
                             type: string
                           vmTemplateName:
-                            description: VMTemplateName is the name of the template
-                              used to create a VM
+                            description: VMTemplateName is the name of the OLVM template
+                              used to create a VM.
                             type: string
                         required:
-                        - memory
                         - network
+                        - vmTemplateName
                         type: object
                       providerID:
                         description: |-
@@ -150,10 +103,97 @@ spec:
                           The Machine controller bubbles it up to the Machine CR, and it’s used to find the matching Node.
                           Any other consumers can use the providerID as the source of truth to match both Machines and Nodes.
                         type: string
+                      virtualMachine:
+                        description: VMSpec is the VM configuration.
+                        properties:
+                          cpu:
+                            description: Cpu is the VM CPU configuration.
+                            properties:
+                              architecture:
+                                description: Architecture is the CPU architecture.
+                                  Default is x86_64.
+                                type: string
+                              topology:
+                                description: Topology is the CPU topology.
+                                properties:
+                                  cores:
+                                    description: Cores is the number of CPU cores.
+                                      Default is 2.
+                                    format: int32
+                                    type: integer
+                                  sockets:
+                                    description: Sockets is the number of CPU sockets.
+                                      Default is 2.
+                                    format: int32
+                                    type: integer
+                                  threads:
+                                    description: Threads is the number of CPU threads.
+                                      Default is 1.
+                                    format: int32
+                                    type: integer
+                                type: object
+                            type: object
+                          memory:
+                            description: 'Memory is the memory size of the VM.  For
+                              example: 7GB.'
+                            type: string
+                          network:
+                            description: VMNetwork is the VM network configuration.
+                            properties:
+                              gateway:
+                                description: Gateway is the VM gateway. Default is
+                                  the .1 address of the subnet.
+                                type: string
+                              interface:
+                                description: Interface is the network interface. Default
+                                  is enp1s0.
+                                type: string
+                              interfaceType:
+                                description: InterfaceType is the network interface
+                                  type. Default is virtio.
+                                type: string
+                              ipv4:
+                                description: IPV4 is the IPV4 configuration. Required
+                                  if IPV6 is nil
+                                properties:
+                                  cidrBlocks:
+                                    description: CIDRBlocks is a list of CIDR blocks
+                                      used by the VMs
+                                    items:
+                                      type: string
+                                    type: array
+                                  subnet:
+                                    description: subnet CIDR.
+                                    type: string
+                                required:
+                                - cidrBlocks
+                                - subnet
+                                type: object
+                              ipv6:
+                                description: IPV6 is the IPV6 configuration. Required
+                                  if IPV4 is nil
+                                properties:
+                                  cidrBlocks:
+                                    description: CIDRBlocks is a list of CIDR blocks
+                                      used by the VMs
+                                    items:
+                                      type: string
+                                    type: array
+                                  subnet:
+                                    description: subnet CIDR.
+                                    type: string
+                                required:
+                                - cidrBlocks
+                                - subnet
+                                type: object
+                            type: object
+                        required:
+                        - memory
+                        - network
+                        type: object
                     required:
-                    - olvmClusterName
-                    - olvmVmIpProfileName
-                    - ovirt
+                    - olvm
+                    - virtualMachine
                     type: object
                 required:
                 - spec
