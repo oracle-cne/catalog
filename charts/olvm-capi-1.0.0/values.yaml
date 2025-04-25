@@ -24,7 +24,7 @@ controllerManager:
     - -zap-time-encoding=epoch
     image:
       repository: ghcr.io/oracle-cne/cluster-api-olvm-controller-manager
-      tag: v0.1.0
+      tag: v1.0.0
     imagePullPolicy: IfNotPresent
     containerSecurityContext:
       privileged: false
