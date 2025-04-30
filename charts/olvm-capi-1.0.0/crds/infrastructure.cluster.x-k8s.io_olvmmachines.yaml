@@ -87,38 +87,26 @@ spec:
             description: OLVMMachineSpec defines the specification for a OLVMMachine
               resource.
             properties:
-              olvm:
-                description: OlvmSpec is the OLVM configuration.
+              olvmNetwork:
+                description: Network is the OLVM network configuration.
                 properties:
-                  network:
-                    description: Network is the OLVM network configuration.
-                    properties:
-                      networkName:
-                        description: NetworkName is the name of an existing OLVM network.
-                        type: string
-                      vnicName:
-                        description: VnicName is the name of OLVM vnic. Default is
-                          nic1.
-                        type: string
-                      vnicProfileName:
-                        description: VnicProfileName is the name of an existing OLVM
-                          vnic profile.
-                        type: string
-                    required:
-                    - networkName
-                    - vnicProfileName
-                    type: object
-                  olvmClusterName:
-                    description: OlvmClusterName is the OLVM cluster name.
+                  networkName:
+                    description: NetworkName is the name of an existing OLVM network.
                     type: string
-                  vmTemplateName:
-                    description: VMTemplateName is the name of the OLVM template used
-                      to create a VM.
+                  vnicName:
+                    description: VnicName is the name of OLVM vnic. Default is nic1.
+                    type: string
+                  vnicProfileName:
+                    description: VnicProfileName is the name of an existing OLVM vnic
+                      profile.
                     type: string
                 required:
-                - network
-                - vmTemplateName
+                - networkName
+                - vnicProfileName
                 type: object
+              olvmOvirtClusterName:
+                description: OlvmOvirtClusterName is the OLVM cluster name.
+                type: string
               providerID:
                 description: |-
                   ProviderID is the identifier for the provider’s machine instance.
@@ -180,9 +168,13 @@ spec:
                         description: IPV4 is the IPV4 configuration. Required if IPV6
                           is nil
                         properties:
-                          cidrBlocks:
-                            description: CIDRBlocks is a list of CIDR blocks used
-                              by the VMs
+                          ipAddresses:
+                            description: |-
+                              IpAddresses is a list of addresses used by the VMs.  These can be CIDR blocks, individual addresses, or a range.
+                              The following are valid. Ranges are inclusive:
+                                10.1.2.0/30
+                                10.1.2.10-10.1.2.20
+                                10.1.2.27
                             items:
                               type: string
                             type: array
@@ -190,16 +182,20 @@ spec:
                             description: subnet CIDR.
                             type: string
                         required:
-                        - cidrBlocks
+                        - ipAddresses
                         - subnet
                         type: object
                       ipv6:
                         description: IPV6 is the IPV6 configuration. Required if IPV4
                           is nil
                         properties:
-                          cidrBlocks:
-                            description: CIDRBlocks is a list of CIDR blocks used
-                              by the VMs
+                          ipAddresses:
+                            description: |-
+                              IpAddresses is a list of addresses used by the VMs.  These can be CIDR blocks, individual addresses, or a range.
+                              The following are valid. Ranges are inclusive:
+                                10.1.2.0/30
+                                10.1.2.10-10.1.2.20
+                                10.1.2.27
                             items:
                               type: string
                             type: array
@@ -207,7 +203,7 @@ spec:
                             description: subnet CIDR.
                             type: string
                         required:
-                        - cidrBlocks
+                        - ipAddresses
                         - subnet
                         type: object
                     type: object
@@ -215,9 +211,14 @@ spec:
                 - memory
                 - network
                 type: object
+              vmTemplateName:
+                description: VMTemplateName is the name of the OLVM VM template used
+                  to create a VM.
+                type: string
             required:
-            - olvm
+            - olvmNetwork
             - virtualMachine
+            - vmTemplateName
             type: object
           status:
             description: OLVMMachineStatus defines the status OLVMMachine resource.

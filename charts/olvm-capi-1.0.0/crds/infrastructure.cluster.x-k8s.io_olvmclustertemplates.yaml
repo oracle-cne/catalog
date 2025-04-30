@@ -81,14 +81,10 @@ spec:
                         description: OlvmDatacenterName is the datacenter where the
                           Kubernetes cluster will be created.
                         type: string
-                      olvmOvirtAPI:
-                        description: OlvmOvirtAPI contains the information needed
-                          to use the OLVM oVirt REST API.
+                      olvmOvirtAPIServer:
+                        description: OlvmOvirtAPIServer contains the information needed
+                          to use the OLVM oVirt REST API server.
                         properties:
-                          apiServerURL:
-                            description: ApiServerURL is the OLVM oVirt REST API endpoint
-                              URL.
-                            type: string
                           caConfigMap:
                             description: |-
                               CAConfigMap is the namespaced name of the ConfigMap which has the CA.CRT for the OLVM endpoint.
@@ -117,14 +113,18 @@ spec:
                             description: InsecureSkipTLSVerify skips OLVM TLS certificate
                               verification.
                             type: boolean
+                          serverURL:
+                            description: ServerURL is the OLVM oVirt REST API endpoint
+                              URL.
+                            type: string
                         required:
-                        - apiServerURL
                         - credentialsSecret
+                        - serverURL
                         type: object
                     required:
                     - controlPlaneEndpoint
                     - olvmDatacenterName
-                    - olvmOvirtAPI
+                    - olvmOvirtAPIServer
                     type: object
                 required:
                 - spec
