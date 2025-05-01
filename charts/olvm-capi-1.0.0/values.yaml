@@ -23,7 +23,7 @@ controllerManager:
     - -zap-stacktrace-level=error
     - -zap-time-encoding=epoch
     image:
-      repository: olcne/cluster-api-olvm-controller-manager
+      repository: ghcr.io/oracle-cne/cluster-api-olvm-controller-manager
       tag: v1.0.0
     imagePullPolicy: IfNotPresent
     containerSecurityContext:
