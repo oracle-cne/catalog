@@ -37,6 +37,9 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
+* Thu May 1 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-8
+- Update OLVM CAPI CRDs
+
 * Thu Oct 31 2024 Michael Gianatassio <michael.gianatassio@oracle.com> - 2.0.0-7
 - Replace fluent-operator 2.5.0 with 3.2.0
 
