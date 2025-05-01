@@ -3,7 +3,7 @@
 
 Name:		ocne-catalog
 Version:	2.0.0
-Release:	13%{?dist}
+Release:	14%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ cp -ap olm/icons/* %{buildroot}/opt/icons
 /opt/icons
 
 %changelog
+* Thu May 1 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-14
+- Add olvm-capi-1.0.0 to the catalog
+
 * Sat Apr 05 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-13
 - Use common base image
 
