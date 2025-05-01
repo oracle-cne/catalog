@@ -3,7 +3,7 @@
 
 Name:		ocne-catalog-developer
 Version:	2.0.0
-Release:	8%{?dist}
+Release:	9%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ cp -ap olm/icons/* %{buildroot}/opt/icons
 /opt/icons
 
 %changelog
+* Thu May 1 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-9
+- Remove OLVM CAPI CRDs
+
 * Thu May 1 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-8
 - Update OLVM CAPI CRDs
 
