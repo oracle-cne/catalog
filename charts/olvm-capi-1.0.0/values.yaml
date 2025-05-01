@@ -1,0 +1,90 @@
+# Copyright (c) 2024, 2025, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+nameOverride:
+fullnameOverride: olvm-capi
+
+logLevel: info
+
+metricsPort: 8443
+
+# Temporary value
+webhooksEnabled: false
+
+kubernetesClusterDomain: cluster.local
+
+controllerManager:
+  container:
+    args:
+    - -cert-dir=/etc/webhook/certs
+    - -metrics-addr=127.0.0.1:8443
+    - -zap-log-level=info
+    - -zap-encoder=json
+    - -zap-stacktrace-level=error
+    - -zap-time-encoding=epoch
+    image:
+      repository: olcne/cluster-api-olvm-controller-manager
+      tag: v1.0.0
+    imagePullPolicy: IfNotPresent
+    containerSecurityContext:
+      privileged: false
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      runAsGroup: 65532
+      runAsUser: 65532
+    resources:
+      requests:
+        memory: 128Mi
+  replicas: 1
+  serviceAccount:
+    annotations: {}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  podSecurityContext:
+    runAsUser: 1000
+    runAsGroup: 999
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  tolerations:
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/master
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - preference:
+          matchExpressions:
+          - key: node-role.kubernetes.io/control-plane
+            operator: Exists
+        weight: 10
+      - preference:
+          matchExpressions:
+          - key: node-role.kubernetes.io/master
+            operator: Exists
+        weight: 10
+  imagePullSecrets: []
+
+metricsService:
+  ports:
+  - name: https
+    port: 8443
+    targetPort: https
+  type: ClusterIP
+
+webhookService:
+  ports:
+  - port: 443
+    targetPort: webhook-server
+  type: ClusterIP
+
+proxy:
+  httpsProxy:
+  httpProxy:
+  noProxy:
