@@ -38,7 +38,7 @@ cp -ap olm/icons/* %{buildroot}/opt/icons
 
 %changelog
 * Thu May 1 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-9
-- Remove OLVM CAPI CRDs
+- Remove OLVM CAPI chart
 
 * Thu May 1 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-8
 - Update OLVM CAPI CRDs
