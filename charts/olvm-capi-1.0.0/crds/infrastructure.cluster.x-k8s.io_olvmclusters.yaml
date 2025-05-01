@@ -215,7 +215,7 @@ spec:
                   dataCenterName:
                     description: DataCenterName is the datacenter name.
                     type: string
-                  system:
+                  release:
                     description: Release describes the OLVM Release.
                     properties:
                       name:
