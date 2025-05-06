@@ -37,6 +37,10 @@ spec:
                 operator: Exists
             weight: 10
 {{ end }}
+{{- if .Values.initContainers }}
+      initContainers:
+        {{ toYaml .Values.initContainers | nindent 8 }}
+{{- end }}
       containers:
       - args: {{- toYaml .Values.controllerManager.manager.args | nindent 8 }}
         command:
@@ -88,6 +92,9 @@ spec:
         - mountPath: /etc/oci
           name: auth-config-dir
           readOnly: true
+{{- if .Values.volumeMounts }}
+      {{ toYaml .Values.volumeMounts | nindent 8 }}
+{{- end }}
       securityContext:
         runAsNonRoot: true
         seccompProfile:
@@ -109,3 +116,6 @@ spec:
       - name: auth-config-dir
         secret:
           secretName: {{ include "oci-capi.fullname" . }}-auth-config
+{{- if .Values.volumes }}
+      {{ toYaml .Values.volumes | nindent 6 }}
+{{- end }}
