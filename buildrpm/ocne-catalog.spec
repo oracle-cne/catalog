@@ -3,7 +3,7 @@
 
 Name:		ocne-catalog
 Version:	2.0.0
-Release:	15%{?dist}
+Release:	16%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ cp -ap olm/icons/* %{buildroot}/opt/icons
 /opt/icons
 
 %changelog
+* Mon May 12 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-16
+- Update CRDs for olvm-capi chart
+
 * Thu May 1 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-15
 - Add kubernetes version to the Chart.yaml file for olvm-capi
 
