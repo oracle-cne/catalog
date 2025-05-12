@@ -169,7 +169,7 @@ spec:
                                 properties:
                                   autoConf:
                                     description: Attempt to allocate an IPV6 address
-                                      using Stateless Address Autoconfiguration (SLAAC).
+                                      using Stateless Address AutoConfiguration (SLAAC).
                                     type: boolean
                                   ipAddresses:
                                     description: IpAddresses is a list of IPV6 addresses
