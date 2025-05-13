@@ -7,7 +7,7 @@
 
 Name:		%{_name}-container-image
 Version:	2.0.0
-Release:	15%{?dist}
+Release:	16%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
+* Mon May 12 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-16
+- Update CRDs for olvm-capi chart
+
 * Thu May 1 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-15
 - Add kubernetes version to the Chart.yaml file for olvm-capi
 

@@ -86,9 +86,8 @@ spec:
                           to use the OLVM oVirt REST API server.
                         properties:
                           caConfigMap:
-                            description: |-
-                              CAConfigMap is the namespaced name of the ConfigMap which has the CA.CRT for the OLVM endpoint.
-                              For example: https://example.com/ovirt-engine
+                            description: CAConfigMap is the namespaced name of the
+                              ConfigMap which has the CA.CRT for the OLVM endpoint.
                             properties:
                               name:
                                 type: string
@@ -114,8 +113,9 @@ spec:
                               verification.
                             type: boolean
                           serverURL:
-                            description: ServerURL is the OLVM oVirt REST API endpoint
-                              URL.
+                            description: |-
+                              ServerURL is the OLVM oVirt REST API endpoint URL.
+                              For example: https://example.com/ovirt-engine
                             type: string
                         required:
                         - credentialsSecret
