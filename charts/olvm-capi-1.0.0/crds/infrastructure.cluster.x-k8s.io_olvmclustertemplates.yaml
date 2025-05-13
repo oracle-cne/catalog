@@ -1,0 +1,137 @@
+# Copyright (c) 2024, 2025, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.4
+  labels:
+    cluster.x-k8s.io/provider: infrastructure-olvm
+    cluster.x-k8s.io/v1beta1: v1
+  name: olvmclustertemplates.infrastructure.cluster.x-k8s.io
+spec:
+  group: infrastructure.cluster.x-k8s.io
+  names:
+    categories:
+    - cluster-api
+    kind: OLVMClusterTemplate
+    listKind: OLVMClusterTemplateList
+    plural: olvmclustertemplates
+    shortNames:
+    - olvmct
+    singular: olvmclustertemplate
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: OLVMClusterTemplate is the Schema for the OLVMClusterTemplates
+          API.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: OLVMClusterTemplateSpec defines the desired state of OLVMClusterTemplate.
+            properties:
+              template:
+                description: OLVMClusterTemplateResource specifies the resource that
+                  the template creates
+                properties:
+                  metadata:
+                    description: |-
+                      Standard object's metadata.
+                      More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+                    type: object
+                  spec:
+                    description: OLVMClusterSpec defines the specification for a OLVMCluster
+                      resource.
+                    properties:
+                      controlPlaneEndpoint:
+                        description: ControlPlaneEndpoint specifies the Kubernetes
+                          control plane endpoint.
+                        properties:
+                          host:
+                            description: Host is the endpoint host name or IP address.
+                            type: string
+                          port:
+                            description: Port is the endpoint port.
+                            format: int32
+                            type: integer
+                        required:
+                        - host
+                        - port
+                        type: object
+                      olvmDatacenterName:
+                        description: OlvmDatacenterName is the datacenter where the
+                          Kubernetes cluster will be created.
+                        type: string
+                      olvmOvirtAPIServer:
+                        description: OlvmOvirtAPIServer contains the information needed
+                          to use the OLVM oVirt REST API server.
+                        properties:
+                          caConfigMap:
+                            description: |-
+                              CAConfigMap is the namespaced name of the ConfigMap which has the CA.CRT for the OLVM endpoint.
+                              For example: https://example.com/ovirt-engine
+                            properties:
+                              name:
+                                type: string
+                              namespace:
+                                type: string
+                            required:
+                            - name
+                            type: object
+                          credentialsSecret:
+                            description: CredentialsSecretName is the namespaced name
+                              of the Secret which has the credentials needed to access
+                              the OLVM endpoint.
+                            properties:
+                              name:
+                                type: string
+                              namespace:
+                                type: string
+                            required:
+                            - name
+                            type: object
+                          insecureSkipTLSVerify:
+                            description: InsecureSkipTLSVerify skips OLVM TLS certificate
+                              verification.
+                            type: boolean
+                          serverURL:
+                            description: ServerURL is the OLVM oVirt REST API endpoint
+                              URL.
+                            type: string
+                        required:
+                        - credentialsSecret
+                        - serverURL
+                        type: object
+                    required:
+                    - controlPlaneEndpoint
+                    - olvmDatacenterName
+                    - olvmOvirtAPIServer
+                    type: object
+                required:
+                - spec
+                type: object
+            required:
+            - template
+            type: object
+        type: object
+    served: true
+    storage: true
