@@ -178,8 +178,6 @@ spec:
                                     items:
                                       type: string
                                     type: array
-                                required:
-                                - ipAddresses
                                 type: object
                             type: object
                         required:
