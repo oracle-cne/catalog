@@ -55,7 +55,7 @@ installing the `ocne-catalog` chart.
 | Prometheus Adapter                                  | prometheus-adapter          | 0.10.0                     |
 | Prometheus Node Exporter                            | prometheus-node-exporter    | 1.6.1                      |
 | Rook                                                | rook                        | 1.12.3                     |
-| Tigera Operator with Calico 3.27.5                  | tigera-operator             | 1.32.12                    |
+| Tigera Operator with Calico                         | tigera-operator             | 1.32.12<br>1.32.4          |
 | Oracle Cloud Native Environment Dashboard           | ui                          | 2.0.0                      |
 | Kubernetes Gateway API CRDs                         | kubernetes-gateway-api-crds | 1.2.1                      |
 
@@ -72,7 +72,7 @@ installing the `ocne-catalog` chart.
 | MetalLB | metallb | 0.12.1 |
 | OCI Cloud Controller Manager | oci-ccm | 1.27.2 |
 | Rook | rook | 1.11.6<br>1.10.9 |
-| Tigera Operator with Calico | tigera-operator | 1.32.4<br>1.29.3 |
+| Tigera Operator with Calico | tigera-operator | 1.32.12<br>1.32.4<br>1.29.3 |
 
 ## Documentation
 
