@@ -144,7 +144,7 @@ image:
 
   # The container image for the cert-manager controller.
   # +docs:property
-  repository: container-registy.oracle.com/olcne/cert-manager-controller
+  repository: olcne/cert-manager-controller
 
   # Override the image tag to deploy by setting this variable.
   # If no value is set, the chart's appVersion is used.
@@ -877,7 +877,7 @@ webhook:
 
     # The container image for the cert-manager webhook
     # +docs:property
-    repository: container-registy.oracle.com/olcne/cert-manager-webhook
+    repository: olcne/cert-manager-webhook
 
     # Override the image tag to deploy by setting this variable.
     # If no value is set, the chart's appVersion will be used.
@@ -1186,7 +1186,7 @@ cainjector:
 
     # The container image for the cert-manager cainjector
     # +docs:property
-    repository: container-registy.oracle.com/olcne/cert-manager-cainjector
+    repository: olcne/cert-manager-cainjector
 
     # Override the image tag to deploy by setting this variable.
     # If no value is set, the chart's appVersion will be used.
@@ -1245,7 +1245,7 @@ acmesolver:
 
     # The container image for the cert-manager acmesolver.
     # +docs:property
-    repository: container-registy.oracle.com/olcne/cert-manager-acmesolver
+    repository: olcne/cert-manager-acmesolver
 
     # Override the image tag to deploy by setting this variable.
     # If no value is set, the chart's appVersion is used.
@@ -1378,7 +1378,7 @@ startupapicheck:
 
     # The container image for the cert-manager startupapicheck.
     # +docs:property
-    repository: container-registy.oracle.com/olcne/cert-manager-startupapicheck
+    repository: olcne/cert-manager-startupapicheck
 
     # Override the image tag to deploy by setting this variable.
     # If no value is set, the chart's appVersion is used.
