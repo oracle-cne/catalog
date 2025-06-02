@@ -149,7 +149,7 @@ image:
   # Override the image tag to deploy by setting this variable.
   # If no value is set, the chart's appVersion is used.
   # +docs:property
-  # tag: vX.Y.Z
+  tag: v1.17.2
 
   # Setting a digest will override any tag.
   # +docs:property
@@ -882,7 +882,7 @@ webhook:
     # Override the image tag to deploy by setting this variable.
     # If no value is set, the chart's appVersion will be used.
     # +docs:property
-    # tag: vX.Y.Z
+    tag: v1.17.2
 
     # Setting a digest will override any tag
     # +docs:property
@@ -1191,7 +1191,7 @@ cainjector:
     # Override the image tag to deploy by setting this variable.
     # If no value is set, the chart's appVersion will be used.
     # +docs:property
-    # tag: vX.Y.Z
+    tag: v1.17.2
 
     # Setting a digest will override any tag.
     # +docs:property
@@ -1250,7 +1250,7 @@ acmesolver:
     # Override the image tag to deploy by setting this variable.
     # If no value is set, the chart's appVersion is used.
     # +docs:property
-    # tag: vX.Y.Z
+    tag: v1.17.2
 
     # Setting a digest will override any tag.
     # +docs:property
@@ -1383,7 +1383,7 @@ startupapicheck:
     # Override the image tag to deploy by setting this variable.
     # If no value is set, the chart's appVersion is used.
     # +docs:property
-    # tag: vX.Y.Z
+    tag: v1.17.2
 
     # Setting a digest will override any tag.
     # +docs:property
