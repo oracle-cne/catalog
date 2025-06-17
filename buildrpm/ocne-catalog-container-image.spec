@@ -7,7 +7,7 @@
 
 Name:		%{_name}-container-image
 Version:	2.0.0
-Release:	16%{?dist}
+Release:	17%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
+* Tue Jun 17 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-17
+- Update olvm-capi chart to use image in OCR
+
 * Mon May 12 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-16
 - Update CRDs for olvm-capi chart
 
