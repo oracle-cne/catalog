@@ -7,7 +7,7 @@
 
 Name:		%{_name}-container-image
 Version:	2.0.0
-Release:	13%{?dist}
+Release:	14%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
+* Wed Jun 18 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-14
+- Rebuild with latest Oracle Linux 8 base image
+
 * Sat Apr 05 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-13
 - Use common base image
 
