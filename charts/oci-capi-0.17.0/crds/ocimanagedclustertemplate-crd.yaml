@@ -655,6 +655,10 @@ spec:
                               serviceGatewayId:
                                 description: ID of Service Gateway.
                                 type: string
+                              skip:
+                                description: Skip specifies whether to skip creating
+                                  vcn
+                                type: boolean
                               subnets:
                                 description: Subnets is the configuration for subnets
                                   required in the VCN.
@@ -1076,6 +1080,10 @@ spec:
                                           description: SecurityList Name.
                                           type: string
                                       type: object
+                                    skip:
+                                      description: Skip specifies whether to skip
+                                        creating subnet
+                                      type: boolean
                                     type:
                                       description: Type defines the subnet type (e.g.
                                         public, private).
@@ -1992,6 +2000,10 @@ spec:
                                       Service gateway.
                                     type: boolean
                                 type: object
+                              skip:
+                                description: Skip specifies whether to skip creating
+                                  vcn
+                                type: boolean
                               subnets:
                                 description: Subnets is the configuration for subnets
                                   required in the VCN.
@@ -2420,6 +2432,10 @@ spec:
                                           description: SecurityList Name.
                                           type: string
                                       type: object
+                                    skip:
+                                      description: Skip specifies whether to skip
+                                        creating subnet
+                                      type: boolean
                                     type:
                                       description: Type defines the subnet type (e.g.
                                         public, private).

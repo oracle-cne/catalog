@@ -201,6 +201,10 @@ spec:
                       internetGatewayId:
                         description: ID of Internet Gateway.
                         type: string
+                      isIpv6Enabled:
+                        description: isIpv6Enabled enables the possibility to assign
+                          IPv6 to cluster nodes.
+                        type: boolean
                       name:
                         description: VCN Name.
                         type: string
@@ -590,6 +594,9 @@ spec:
                       serviceGatewayId:
                         description: ID of Service Gateway.
                         type: string
+                      skip:
+                        description: Skip specifies whether to skip creating vcn
+                        type: boolean
                       subnets:
                         description: Subnets is the configuration for subnets required
                           in the VCN.
@@ -608,6 +615,9 @@ spec:
                               type: string
                             id:
                               description: Subnet OCID.
+                              type: string
+                            ipv6CidrBlockHextet:
+                              description: Subnet IPv6 CIDR.
                               type: string
                             name:
                               description: Subnet Name.
@@ -956,6 +966,10 @@ spec:
                                   description: SecurityList Name.
                                   type: string
                               type: object
+                            skip:
+                              description: Skip specifies whether to skip creating
+                                subnet
+                              type: boolean
                             type:
                               description: Type defines the subnet type (e.g. public,
                                 private).
@@ -1425,6 +1439,10 @@ spec:
                               gateway even if any one Subnet is public.
                             type: boolean
                         type: object
+                      isIpv6Enabled:
+                        description: isIpv6Enabled enables the possibility to assign
+                          IPv6 to cluster nodes.
+                        type: boolean
                       name:
                         description: VCN Name.
                         type: string
@@ -1865,6 +1883,9 @@ spec:
                               gateway.
                             type: boolean
                         type: object
+                      skip:
+                        description: Skip specifies whether to skip creating vcn
+                        type: boolean
                       subnets:
                         description: Subnets is the configuration for subnets required
                           in the VCN.
@@ -1883,6 +1904,9 @@ spec:
                               type: string
                             id:
                               description: Subnet OCID.
+                              type: string
+                            ipv6CidrBlockHextet:
+                              description: Subnet IPv6 CIDR.
                               type: string
                             name:
                               description: Subnet Name.
@@ -2237,6 +2261,10 @@ spec:
                                   description: SecurityList Name.
                                   type: string
                               type: object
+                            skip:
+                              description: Skip specifies whether to skip creating
+                                subnet
+                              type: boolean
                             type:
                               description: Type defines the subnet type (e.g. public,
                                 private).

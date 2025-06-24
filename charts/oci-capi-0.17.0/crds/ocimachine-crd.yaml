@@ -424,6 +424,10 @@ spec:
                 description: NetworkDetails defines the configuration options for
                   the network
                 properties:
+                  assignIpv6Ip:
+                    description: assignIpv6Ip defines if the instance should have
+                      an IPv6
+                    type: boolean
                   assignPrivateDnsRecord:
                     description: AssignPrivateDnsRecord defines whether the VNIC should
                       be assigned a DNS record.
@@ -848,6 +852,10 @@ spec:
                   of VNICs scale proportionately with the number of OCPUs.
                 items:
                   properties:
+                    assignIpv6Ip:
+                      description: assignIpv6Ip defines whether the VNIC should be
+                        assigned a IPv6.
+                      type: boolean
                     assignPublicIp:
                       description: AssignPublicIp defines whether the vnic should
                         have a public IP address
@@ -1361,6 +1369,10 @@ spec:
                 description: NetworkDetails defines the configuration options for
                   the network
                 properties:
+                  assignIpv6Ip:
+                    description: assignIpv6Ip defines if the instance should have
+                      an IPv6
+                    type: boolean
                   assignPrivateDnsRecord:
                     description: AssignPrivateDnsRecord defines whether the VNIC should
                       be assigned a DNS record.
@@ -1779,6 +1791,10 @@ spec:
                   of VNICs scale proportionately with the number of OCPUs.
                 items:
                   properties:
+                    assignIpv6Ip:
+                      description: assignIpv6Ip defines whether the VNIC should be
+                        assigned a IPv6.
+                      type: boolean
                     assignPublicIp:
                       description: AssignPublicIp defines whether the vnic should
                         have a public IP address

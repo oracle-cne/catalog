@@ -453,6 +453,10 @@ spec:
                         description: NetworkDetails defines the configuration options
                           for the network
                         properties:
+                          assignIpv6Ip:
+                            description: assignIpv6Ip defines whether the VNIC should
+                              be assigned a IPv6.
+                            type: boolean
                           assignPrivateDnsRecord:
                             description: AssignPrivateDnsRecord defines whether the
                               VNIC should be assigned a DNS record.
@@ -914,6 +918,10 @@ spec:
                           of OCPUs.
                         items:
                           properties:
+                            assignIpv6Ip:
+                              description: assignIpv6Ip defines whether the VNIC should
+                                be assigned a IPv6.
+                              type: boolean
                             assignPublicIp:
                               description: AssignPublicIp defines whether the vnic
                                 should have a public IP address
@@ -1387,6 +1395,10 @@ spec:
                         description: NetworkDetails defines the configuration options
                           for the network
                         properties:
+                          assignIpv6Ip:
+                            description: assignIpv6Ip defines whether the VNIC should
+                              be assigned a IPv6.
+                            type: boolean
                           assignPrivateDnsRecord:
                             description: AssignPrivateDnsRecord defines whether the
                               VNIC should be assigned a DNS record.
@@ -1842,6 +1854,10 @@ spec:
                           of OCPUs.
                         items:
                           properties:
+                            assignIpv6Ip:
+                              description: assignIpv6Ip defines whether the VNIC should
+                                be assigned a IPv6.
+                              type: boolean
                             assignPublicIp:
                               description: AssignPublicIp defines whether the vnic
                                 should have a public IP address
