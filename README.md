@@ -43,7 +43,7 @@ installing the `ocne-catalog` chart.
 | Kube Proxy                                          | kube-proxy                  | 2.0.0                      |
 | Kube State Metrics                                  | kube-state-metrics          | 2.8.2                      |
 | KubeVirt                                            | kubevirt                    | 1.1.1                      |
-| MetalLB                                             | metallb                     | 0.13.10                    |
+| MetalLB                                             | metallb                     | 0.15.2<br>0.13.10                    |
 | Multus                                              | multus                      | 4.0.2                      |
 | OAuth2 Proxy                                        | oauth2-proxy                | 7.8.0                      |
 | OCI Cloud Controller Manager                        | oci-ccm                     | 1.30.0<br>1.28.0           |
