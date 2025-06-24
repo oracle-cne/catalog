@@ -38,7 +38,7 @@ spec:
         - name: no_proxy
           value: {{ quote .Values.proxy.noProxy }}
 {{ end }}
-        
+
         - name: POD_NAMESPACE
           valueFrom:
             fieldRef:
@@ -83,17 +83,13 @@ spec:
         - mountPath: /tmp/k8s-webhook-server/serving-certs
           name: cert
           readOnly: true
-      securityContext:
-        runAsNonRoot: true
-        seccompProfile:
-          type: RuntimeDefault
+      securityContext: {{- toYaml .Values.controllerManager.podSecurityContext | nindent
+        8 }}
       serviceAccountName: {{ include "control-plane-capi.fullname" . }}-manager
       terminationGracePeriodSeconds: 10
       tolerations:
-{{ if .Values.legacyControlPlaneAnnotation }}
       - effect: NoSchedule
         key: node-role.kubernetes.io/master
-{{ end }}
       - effect: NoSchedule
         key: node-role.kubernetes.io/control-plane
       volumes:

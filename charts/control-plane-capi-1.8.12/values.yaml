@@ -1,16 +1,15 @@
 controllerManager:
   manager:
     args:
-    - --leader-elect
-    - --diagnostics-address=:8443
-    - --insecure-diagnostics=false
-    - --use-deprecated-infra-machine-naming=false
-    - --feature-gates=MachinePool=true,ClusterTopology=false,KubeadmBootstrapFormatIgnition=true
+      - --leader-elect
+      - --diagnostics-address=:8443
+      - --insecure-diagnostics=false
+      - --feature-gates=MachinePool=true,ClusterTopology=false,KubeadmBootstrapFormatIgnition=false,PriorityQueue=false
     containerSecurityContext:
       allowPrivilegeEscalation: false
       capabilities:
         drop:
-        - ALL
+          - ALL
       privileged: false
       runAsGroup: 65532
       runAsUser: 65532
@@ -18,6 +17,10 @@ controllerManager:
       repository: olcne/kubeadm-control-plane-controller
       tag: v1.8.12
     imagePullPolicy: IfNotPresent
+  podSecurityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
   replicas: 1
 kubernetesClusterDomain: cluster.local
 manager:
@@ -25,10 +28,9 @@ manager:
     annotations: {}
 webhookService:
   ports:
-  - port: 443
-    targetPort: webhook-server
+    - port: 443
+      targetPort: webhook-server
   type: ClusterIP
-legacyControlPlaneAnnotation: false
 proxy:
   httpsProxy:
   httpProxy:
