@@ -11,6 +11,17 @@ metadata:
     cluster.x-k8s.io/v1beta1: v1beta1
   {{- include "control-plane-capi.labels" . | nindent 4 }}
 spec:
+  conversion:
+    strategy: Webhook
+    webhook:
+      clientConfig:
+        service:
+          name: '{{ include "control-plane-capi.fullname" . }}-webhook-service'
+          namespace: '{{ .Release.Namespace }}'
+          path: /convert
+      conversionReviewVersions:
+      - v1
+      - v1beta1
   group: controlplane.cluster.x-k8s.io
   names:
     categories:
