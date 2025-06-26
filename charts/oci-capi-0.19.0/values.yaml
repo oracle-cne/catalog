@@ -1,0 +1,64 @@
+authConfig:
+  fingerprint: ""
+  key: ""
+  passphrase: ""
+  region: ""
+  tenancy: ""
+  useInstancePrincipal: ""
+  user: ""
+controllerManager:
+  manager:
+    args:
+    - --leader-elect
+    - --feature-gates=MachinePool=true
+    - --metrics-bind-address=127.0.0.1:8080
+    - --logging-format=text
+    - --init-oci-clients-on-startup=true
+    - --enable-instance-metadata-service-lookup=false
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      privileged: false
+      runAsGroup: 65532
+      runAsUser: 65532
+    env:
+      authConfigDir: /etc/oci
+    image:
+      repository: ghcr.io/oracle/cluster-api-oci-controller
+      tag: v0.19.0
+    imagePullPolicy: IfNotPresent
+  replicas: 1
+  serviceAccount:
+    annotations: {}
+kubernetesClusterDomain: cluster.local
+managerConfig:
+  controllerManagerConfigYaml: |-
+    apiVersion: controller-runtime.sigs.k8s.io/v1alpha1
+    kind: ControllerManagerConfig
+    health:
+      healthProbeBindAddress: :8081
+    metrics:
+      bindAddress: 127.0.0.1:8080
+    webhook:
+      port: 9443
+    leaderElection:
+      leaderElect: true
+      resourceName: 237d8a8a.cluster.x-k8s.io
+metricsService:
+  ports:
+  - name: https
+    port: 8443
+    targetPort: https
+  type: ClusterIP
+webhookService:
+  ports:
+  - port: 443
+    targetPort: webhook-server
+  type: ClusterIP
+fullnameOverride: capoci
+proxy:
+  httpsProxy:
+  httpProxy:
+  noProxy:
