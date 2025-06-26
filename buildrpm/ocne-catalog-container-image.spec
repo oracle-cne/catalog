@@ -7,7 +7,7 @@
 
 Name:		%{_name}-container-image
 Version:	2.0.0
-Release:	12%{?dist}
+Release:	17%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -24,7 +24,7 @@ An on-disk Helm chart repository
 yum clean all
 yumdownloader --destdir=${PWD}/rpms %{rpm_name}
 
-docker build --pull --build-arg https_proxy=${https_proxy} \
+docker build --pull=never --squash --build-arg https_proxy=${https_proxy} \
 	-t %{docker_tag} -f ./olm/builds/Dockerfile .
 docker save -o %{_name}.tar %{docker_tag}
 
@@ -37,6 +37,20 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
+* Tue Jun 17 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-17
+- Update olvm-capi chart to use image in OCR
+
+* Mon May 12 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-16
+- Update CRDs for olvm-capi chart
+
+* Thu May 1 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-15
+- Add kubernetes version to the Chart.yaml file for olvm-capi
+
+* Thu May 1 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-14
+- Add olvm-capi-1.0.0 to the catalog
+
+* Sat Apr 05 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-13
+- Use common base image
 
 * Thu Mar 06 2025 Prasad Shirodkar <prasad.shirodkar@oracle.com> - 2.0.0-12
 - Added Kubernetes Gateway API CRDs 1.2.1
