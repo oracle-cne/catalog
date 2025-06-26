@@ -6,8 +6,8 @@
 %global docker_tag %{registry}/%{_name}:v%{version}
 
 Name:		%{_name}-container-image
-Version:	2.0.0
-Release:	18%{?dist}
+Version:	2.1.0
+Release:	1%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,7 +37,7 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
-* Thu Jun 26 2025 Murali Annamneni <murali.annamneni@oracle.com> - 2.0.0-18
+* Thu Jun 26 2025 Murali Annamneni <murali.annamneni@oracle.com> - 2.1.0-1
 - Update UI charts to 2.1.0(headlamp-0.31.1)
 
 * Tue Jun 17 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-17
