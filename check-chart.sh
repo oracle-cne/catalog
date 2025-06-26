@@ -39,11 +39,20 @@ BAD_FILES=
 REGISTRIES="
 docker.io
 quay.io
+registry.k8s.io
 "
 for registry in $REGISTRIES; do
 	echo "Checking for references to $registry"
 	# cat is to supress the non-zero exit code if grep has no matches
-	BAD_FILES="$BAD_FILES$(find "$CHART_DIR" -type f | xargs grep -l $registry | cat)"
+	FILES=$(find "$CHART_DIR" -type f)
+	for file in $FILES; do
+		# Ignore CRDs
+		if grep -v -q '^kind: CustomResourceDefinition$' "$file"; then
+			continue
+		fi
+		BAD_FILES="$BAD_FILES$(grep -l $registry "$file" | cat)"
+
+	done
 done
 
 echo "Checking that no references to any bad registries are present"
