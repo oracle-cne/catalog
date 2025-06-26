@@ -1,7 +1,6 @@
 REPO_DIR=repo
 CHART_DIR=charts
 CHARTS=$(shell cd $(CHART_DIR) && find . -maxdepth 1 -mindepth 1 -type d)
-SUPPORT_MATRIX_CHECKS?=true
 
 CHART_TARBALLS=$(CHARTS:%=$(REPO_DIR)/%.tgz)
 
