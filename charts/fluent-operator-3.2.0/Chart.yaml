@@ -12,4 +12,4 @@ icon: icons/fluent-operator-icon.svg
 home: https://www.fluentd.org/
 sources:
   - https://github.com/fluent/fluent-operator
-kubeVersion: '>= 1.26.0 < 1.32.0'
+kubeVersion: '>= 1.26.0 < 1.33.0'

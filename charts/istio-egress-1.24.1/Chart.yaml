@@ -12,4 +12,4 @@ keywords:
 sources:
   - https://github.com/istio/istio
 icon: icons/android-192x192.png
-kubeVersion: '>= 1.30.0 < 1.32.0'
+kubeVersion: '>= 1.30.0 < 1.33.0'
