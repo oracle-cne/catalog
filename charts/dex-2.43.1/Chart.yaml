@@ -1,0 +1,21 @@
+apiVersion: v2
+type: application
+name: dex
+version: "2.43.1"
+appVersion: "2.43.1"
+kubeVersion: ">= 1.30 < 1.32"
+description: OpenID Connect (OIDC) identity and OAuth 2.0 provider with pluggable connectors.
+icon: icons/dex-icon.svg
+keywords:
+  - oidc
+  - oauth
+  - identity-provider
+  - saml
+home: https://dexidp.io/
+sources:
+  - https://github.com/dexidp/dex
+  - https://github.com/dexidp/helm-charts/tree/master/charts/dex
+maintainers:
+  - name: sagikazarmark
+    email: mark.sagikazar@gmail.com
+    url: https://sagikazarmark.com
