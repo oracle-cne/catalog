@@ -478,32 +478,32 @@ csi:
 
   cephcsi:
     # -- Ceph CSI image
-    # @default -- `quay.io/cephcsi/cephcsi:v3.9.0`
+    # @default -- `olcne/cephcsi:v3.9.0`
     image: olcne/cephcsi:v3.9.0
 
   registrar:
     # -- Kubernetes CSI registrar image
-    # @default -- `registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.8.0`
+    # @default -- `olcne/csi-node-driver-registrar:v2.8.0`
     image: olcne/csi-node-driver-registrar:v2.8.0
 
   provisioner:
     # -- Kubernetes CSI provisioner image
-    # @default -- `registry.k8s.io/sig-storage/csi-provisioner:v3.5.0`
+    # @default -- `olcne/csi-provisioner:v3.5.0`
     image: olcne/csi-provisioner:v3.5.0
 
   snapshotter:
     # -- Kubernetes CSI snapshotter image
-    # @default -- `registry.k8s.io/sig-storage/csi-snapshotter:v6.2.2`
+    # @default -- `olcne/csi-snapshotter:v6.2.2`
     image: olcne/csi-snapshotter:v6.2.2
 
   attacher:
     # -- Kubernetes CSI Attacher image
-    # @default -- `registry.k8s.io/sig-storage/csi-attacher:v4.3.0`
+    # @default -- `olcne/csi-attacher:v4.3.0`
     image: olcne/csi-attacher:v4.3.0
 
   resizer:
     # -- Kubernetes CSI resizer image
-    # @default -- `registry.k8s.io/sig-storage/csi-resizer:v1.8.0`
+    # @default -- `olcne/csi-resizer:v1.8.0`
     image: olcne/csi-resizer:v1.8.0
 
   # -- Image pull policy
