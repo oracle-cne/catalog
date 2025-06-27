@@ -56,7 +56,7 @@ installing the `ocne-catalog` chart.
 | Prometheus Node Exporter                            | prometheus-node-exporter    | 1.6.1                                |
 | Rook                                                | rook                        | 1.12.3                               |
 | Tigera Operator with Calico                         | tigera-operator             | 1.32.12<br>1.32.4                    |
-| Oracle Cloud Native Environment Dashboard           | ui                          | 2.1.0<br>2.0.0                       |
+| Oracle Cloud Native Environment Dashboard           | ui                          | 2.2.0<br>2.0.0                       |
 | Kubernetes Gateway API CRDs                         | kubernetes-gateway-api-crds | 1.2.1                                |
 
 ### Supported While Upgrading From Oracle Cloud Native Environment 1.x
