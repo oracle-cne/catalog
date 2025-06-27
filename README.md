@@ -24,7 +24,7 @@ installing the `ocne-catalog` chart.
 | CoreDNS                                             | coredns                     | 2.0.0                                |
 | CSI Driver for oVirt                                | ovirt-csi-driver            | 4.20.0                               |
 | CSI NFS Driver for Kubernetes                       | csi-driver-nfs              | 4.11.0                               |
-| Dex                                                 | dex                         | 2.39.1                               |
+| Dex                                                 | dex                         | 2.43.1<br>2.39.1                     |
 | ExternalIP Webhook                                  | externalip-webhook          | 1.0.0                                |
 | Flannel                                             | flannel                     | 2.0.0<br>0.22.3                      |
 | Fluent Operator                                     | fluent-operator             | 3.2.0                                |
