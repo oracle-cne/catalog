@@ -103,7 +103,7 @@ spec:
             {{- end }}
             {{- with .Values.config.tlsKey }}
             - "-tls-key={{ . }}"
-            {{- end }}            
+            {{- end }}
           ports:
             - name: https
               containerPort: 4466
