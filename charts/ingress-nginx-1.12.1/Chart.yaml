@@ -7,7 +7,7 @@ icon: icons/500px-Nginx_logo.svg.png
 keywords:
   - ingress
   - nginx
-kubeVersion: '>= 1.26.0 < 1.32.0'
+kubeVersion: '>= 1.26.0 < 1.33.0'
 maintainers:
 - name: cpanato
 - name: Gacko

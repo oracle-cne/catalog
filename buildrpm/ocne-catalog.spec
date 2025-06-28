@@ -3,7 +3,7 @@
 
 Name:		ocne-catalog
 Version:	2.0.0
-Release:	18%{?dist}
+Release:	19%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,8 +37,11 @@ cp -ap olm/icons/* %{buildroot}/opt/icons
 /opt/icons
 
 %changelog
+* Fri Jun 27 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-19
+- Update supported Kubernetes version ranges to include 1.32
+
 * Thu Jun 26 2025 Murali Annamneni <murali.annamneni@oracle.com> - 2.0.0-18
-- Update UI charts to 2.2.0(headlamp-0.31.1)
+- Update UI charts to 2.2.0
 
 * Tue Jun 17 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-17
 - Update olvm-capi chart to use image in OCR
