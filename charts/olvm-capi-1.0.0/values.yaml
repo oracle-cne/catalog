@@ -53,8 +53,6 @@ controllerManager:
       type: RuntimeDefault
   tolerations:
     - effect: NoSchedule
-      key: node-role.kubernetes.io/master
-    - effect: NoSchedule
       key: node-role.kubernetes.io/control-plane
   affinity:
     nodeAffinity:
@@ -62,11 +60,6 @@ controllerManager:
       - preference:
           matchExpressions:
           - key: node-role.kubernetes.io/control-plane
-            operator: Exists
-        weight: 10
-      - preference:
-          matchExpressions:
-          - key: node-role.kubernetes.io/master
             operator: Exists
         weight: 10
   imagePullSecrets: []
