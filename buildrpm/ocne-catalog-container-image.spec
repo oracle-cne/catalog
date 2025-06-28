@@ -37,7 +37,6 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
-<<<<<<< HEAD
 * Fri Jun 27 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-19
 - Update supported Kubernetes version ranges to include 1.32
 
