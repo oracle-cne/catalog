@@ -56,7 +56,7 @@ spec:
         emptyDir: {}
       initContainers:
       - name: setenv
-        image: {{ template "fluent-operator.image" (tuple .Values.operator.initcontainer.image "") }}
+        image: {{ .Values.operator.initcontainer.repository }}:{{ .Values.operator.initcontainer.tag }}
         command:
         - /bin/sh
         - '-c'
@@ -73,7 +73,7 @@ spec:
           emptyDir: {}
       initContainers:
       - name: setenv
-        image: {{ template "fluent-operator.image" (tuple .Values.operator.initcontainer.image "") }}
+        image: {{ .Values.operator.initcontainer.repository }}:{{ .Values.operator.initcontainer.tag }}
         command:
         - /bin/sh
         - '-c'
@@ -87,7 +87,7 @@ spec:
       {{- end }}
       containers:
       - name: fluent-operator
-        image: {{ template "fluent-operator.image" (tuple .Values.operator.image $.Chart.AppVersion) }}
+        image: {{ .Values.operator.container.repository }}:{{ .Values.operator.container.tag }}
         {{- if .Values.operator.securityContext }}
         securityContext:
           {{- toYaml .Values.operator.securityContext | nindent 10 }}
