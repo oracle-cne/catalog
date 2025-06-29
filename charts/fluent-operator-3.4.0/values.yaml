@@ -9,6 +9,8 @@ containerRuntime: crio
 Kubernetes: true
 
 operator:
+  rbac:
+    create: false
   # The init container is to get the actual storage path of the docker log files so that it can be mounted to collect the logs.
   # see https://github.com/fluent/fluent-operator/blob/master/manifests/setup/fluent-operator-deployment.yaml#L26
   initcontainer:
