@@ -27,7 +27,7 @@ installing the `ocne-catalog` chart.
 | Dex                                                 | dex                         | 2.43.1<br>2.39.1                     |
 | ExternalIP Webhook                                  | externalip-webhook          | 1.0.0                                |
 | Flannel                                             | flannel                     | 2.0.0<br>0.22.3                      |
-| Fluent Operator                                     | fluent-operator             | 3.2.0                                |
+| Fluent Operator                                     | fluent-operator             | 3.4.0<br>3.2.0                       |
 | Fluentd                                             | fluentd                     | 1.14.5                               |
 | Grafana                                             | grafana                     | 7.5.17                               |
 | Ingress Nginx                                       | ingress-nginx               | 1.12.1<br>1.9.6                      |
