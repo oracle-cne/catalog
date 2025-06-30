@@ -147,9 +147,20 @@ fluentbit:
   # fluent-bit daemonset use host network
   hostNetwork: false
   # Pod security context for Fluent Bit pods. Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
-  podSecurityContext: {}
+  podSecurityContext:
+    seccompProfile:
+      type: RuntimeDefault
   # Security context for Fluent Bit container. Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
-  securityContext: {}
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      add:
+        - DAC_OVERRIDE
+      drop:
+        - ALL
+    privileged: false
+    seLinuxOptions:
+      type: spc_t
   # List of volumes that can be mounted by containers belonging to the pod.
   additionalVolumes: []
   # Additional rbac rules which will be applied to the fluent-bit clusterrole. Ref: https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding
@@ -209,6 +220,7 @@ fluentbit:
   #   - mountPath: /host/fluent-bit-buffer
   #     mountPropagation: HostToContainer
   #     name: hostBuffer
+
 
   namespaceFluentBitCfgSelector: {}
 
@@ -442,11 +454,8 @@ fluentd:
   mode: "collector"
   port: 24224
   image:
-    registry: ghcr.io
-    repository: fluent/fluent-operator/fluentd
-    # renovate: datasource=docker depName=ghcr.io/fluent/fluent-operator/fluentd
-    tag: v1.17.1
-
+    repository: ""
+    tag: ""
   # Numbers of the Fluentd instance
   # Applicable when the mode is "collector", and will be ignored when the mode is "agent"
   replicas: 1
