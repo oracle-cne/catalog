@@ -7,7 +7,7 @@ image:
   repository: olcne/ceph
   # -- Image tag
   # @default -- `v1.13.10`
-  tag: v1.13.10-1
+  tag: v1.13.10
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Default tag for the ceph container image
