@@ -3,7 +3,7 @@
 
 Name:		ocne-catalog
 Version:	2.0.0
-Release:	19%{?dist}
+Release:	20%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ cp -ap olm/icons/* %{buildroot}/opt/icons
 /opt/icons
 
 %changelog
+* Wed Jul 02 2025 Daniel Krasinski <daniel.krasinski@oraclelcom> - 2.0.0-20
+- Bump nginx to 1.24
+
 * Fri Jun 27 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-19
 - Update supported Kubernetes version ranges to include 1.32
 
