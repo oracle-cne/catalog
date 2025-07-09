@@ -176,7 +176,7 @@ csi:
   grpcTimeoutInSeconds: 150
 
   # -- Allow starting an unsupported ceph-csi image
-  allowUnsupportedVersion: false
+  allowUnsupportedVersion: true
 
   # -- The volume of the CephCSI RBD plugin DaemonSet
   csiRBDPluginVolume:
