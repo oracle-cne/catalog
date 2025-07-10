@@ -41,7 +41,7 @@ installing the `ocne-catalog` chart.
 | Keycloak                                            | keycloak                    | 21.1.2                               |
 | Kube Prometheus Stack                               | kube-prometheus-stack       | 0.83.0<br>0.63.0                     |
 | Kube Proxy                                          | kube-proxy                  | 2.0.0                                |
-| Kube State Metrics                                  | kube-state-metrics          | 2.8.2                                |
+| Kube State Metrics                                  | kube-state-metrics          | 2.16.0<br>2.8.2                      |
 | KubeVirt                                            | kubevirt                    | 1.1.1                                |
 | MetalLB                                             | metallb                     | 0.15.2<br>0.13.10                    |
 | Multus                                              | multus                      | 4.2.1<br>4.0.2                       |
