@@ -55,8 +55,8 @@ dependencies:
     version: "0.0.0"
     condition: crds.enabled
   - name: kube-state-metrics
-    version: "2.8.*"
-    repository: file://../kube-state-metrics-2.8.2
+    version: "2.16.*"
+    repository: file://../kube-state-metrics-2.16.0
     condition: kubeStateMetrics.enabled
   - name: prometheus-node-exporter
     version: "1.6.1"
@@ -67,10 +67,6 @@ dependencies:
     repository: file://../grafana-7.5.17
     condition: grafana.enabled
 
-#  - name: kube-state-metrics
-#    version: "6.1.0"
-#    repository: file://../kube-state-metrics-2.8.2
-#    condition: kubeStateMetrics.enabled
 #  - name: prometheus-node-exporter
 #    version: "4.47.1"
 #    repository: file://../prometheus-node-exporter-1.6.1
