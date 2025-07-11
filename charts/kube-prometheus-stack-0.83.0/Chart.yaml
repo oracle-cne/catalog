@@ -59,18 +59,14 @@ dependencies:
     repository: file://../kube-state-metrics-2.16.0
     condition: kubeStateMetrics.enabled
   - name: prometheus-node-exporter
-    version: "1.6.1"
-    repository: file://../prometheus-node-exporter-1.6.1
+    version: "1.9.1"
+    repository: file://../prometheus-node-exporter-1.9.1
     condition: nodeExporter.enabled
   - name: grafana
     version: "7.5.*"
     repository: file://../grafana-7.5.17
     condition: grafana.enabled
 
-#  - name: prometheus-node-exporter
-#    version: "4.47.1"
-#    repository: file://../prometheus-node-exporter-1.6.1
-#    condition: nodeExporter.enabled
 #  - name: grafana
 #    version: "9.2.10"
 #    repository: file://../grafana-7.5.17
