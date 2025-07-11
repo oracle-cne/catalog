@@ -41,9 +41,9 @@ crds:
     forceConflicts: false
     image:
       busybox:
-        registry: docker.io
-        repository: busybox
-        tag: "latest"
+        registry: os
+        repository: oraclelinux
+        tag: "9-slim"
         sha: ""
         pullPolicy: IfNotPresent
       kubectl:
