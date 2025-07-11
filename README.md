@@ -53,7 +53,7 @@ installing the `ocne-catalog` chart.
 | Oracle Cloud Native Environment Application Catalog | ocne-catalog                | 2.0.0                                |
 | Prometheus                                          | prometheus                  | 2.31.1                               |
 | Prometheus Adapter                                  | prometheus-adapter          | 0.10.0                               |
-| Prometheus Node Exporter                            | prometheus-node-exporter    | 1.6.1                                |
+| Prometheus Node Exporter                            | prometheus-node-exporter    | 1.9.1<br>1.6.1                       |
 | Rook                                                | rook                        | 1.12.3                               |
 | Tigera Operator with Calico                         | tigera-operator             | 1.32.12<br>1.32.4                    |
 | Oracle Cloud Native Environment Dashboard           | ui                          | 2.2.0<br>2.0.0                       |
