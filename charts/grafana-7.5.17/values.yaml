@@ -455,6 +455,8 @@ sidecar:
     enabled: false
   notifiers:
     enabled: false
+  image:
+    sha: ""
 
 ## Override the deployment namespace
 ##
