@@ -187,7 +187,7 @@ csi:
   grpcTimeoutInSeconds: 150
 
   # -- Allow starting an unsupported ceph-csi image
-  allowUnsupportedVersion: false
+  allowUnsupportedVersion: true
 
   # -- Burst to use while communicating with the kubernetes apiserver.
   kubeApiBurst:
