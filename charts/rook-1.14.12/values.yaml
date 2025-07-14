@@ -508,7 +508,7 @@ csi:
     # -- Kubernetes CSI snapshotter image repository
     repository: olcne/csi-snapshotter
     # -- Snapshotter image tag
-    tag: v7.0.2
+    tag: v8.2.0
 
   attacher:
     # -- Kubernetes CSI Attacher image repository
