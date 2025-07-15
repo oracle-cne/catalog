@@ -6,7 +6,7 @@ dependencies:
   version: 0.0.1
 description: File, Block, and Object Storage Services for your Cloud-Native Environment
 icon: icons/rook-logo.svg
-name: rook-ceph
+name: rook
 sources:
 - https://github.com/rook/rook
 version: 1.15.9
