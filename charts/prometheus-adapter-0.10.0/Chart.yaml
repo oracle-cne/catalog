@@ -19,4 +19,4 @@ maintainers:
   - name: steven-sheehy
   - name: hectorj2f
     email: hfernandez@mesosphere.com
-kubeVersion: '>= 1.26.0 < 1.32.0'
+kubeVersion: '>= 1.26.0 < 1.33.0'
