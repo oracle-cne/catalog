@@ -31,13 +31,13 @@ installing the `ocne-catalog` chart.
 | Fluentd                                             | fluentd                     | 1.14.5                               |
 | Grafana                                             | grafana                     | 7.5.17                               |
 | Ingress Nginx                                       | ingress-nginx               | 1.12.1<br>1.9.6                      |
-| Istio CRDs                                          | istio-base                  | 1.24.1<br>1.22.6<br>1.20.5           |
-| Istiod                                              | istiod                      | 1.24.1<br>1.22.6<br>1.20.5           |
-| Istio Egress Gateway                                | istio-egress                | 1.24.1<br>1.22.6<br>1.20.5           |
-| Istio Ingress Gateway                               | istio-ingress               | 1.24.1<br>1.22.6<br>1.20.5           |
-| Istio Gateway                                       | istio-gateway               | 1.24.1<br>1.22.6                     |
-| Istio Ztunnel                                       | istio-ztunnel               | 1.24.1                               |
-| Istio CNI                                           | istio-cni                   | 1.24.1                               |
+| Istio CRDs                                          | istio-base                  | 1.24.6<br>1.22.8<br>1.20.5           |
+| Istiod                                              | istiod                      | 1.24.6<br>1.22.8<br>1.20.5           |
+| Istio Egress Gateway                                | istio-egress                | 1.24.6<br>1.22.8<br>1.20.5           |
+| Istio Ingress Gateway                               | istio-ingress               | 1.24.6<br>1.22.8<br>1.20.5           |
+| Istio Gateway                                       | istio-gateway               | 1.24.6<br>1.22.8                     |
+| Istio Ztunnel                                       | istio-ztunnel               | 1.24.6                               |
+| Istio CNI                                           | istio-cni                   | 1.24.6                               |
 | Keycloak                                            | keycloak                    | 21.1.2                               |
 | Kube Prometheus Stack                               | kube-prometheus-stack       | 0.63.0                               |
 | Kube Proxy                                          | kube-proxy                  | 2.0.0                                |
