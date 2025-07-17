@@ -102,7 +102,7 @@ spec:
               path: /readyz
               port: 8000
           securityContext:
-            privileged: false
+            privileged: true
             runAsGroup: 0
             runAsUser: 0
             runAsNonRoot: false
