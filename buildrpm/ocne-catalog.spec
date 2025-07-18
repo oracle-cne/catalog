@@ -3,7 +3,7 @@
 
 Name:		ocne-catalog
 Version:	2.0.0
-Release:	21%{?dist}
+Release:	22%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ cp -ap olm/icons/* %{buildroot}/opt/icons
 /opt/icons
 
 %changelog
+* Fri Jul 18 2025 Thomas Tanaka <thomas.tanaka@oracle.com> - 2.0.0-22
+- Update Kubevirt charts to 1.5.2
+
 * Wed Jul 16 2025 Murali Annamneni <murali.annamneni@oracle.com> - 2.0.0-21
 - Add istio-1.22.8 and istio-1.24.6 helm charts
 
