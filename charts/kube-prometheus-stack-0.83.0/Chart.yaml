@@ -63,14 +63,10 @@ dependencies:
     repository: file://../prometheus-node-exporter-1.9.1
     condition: nodeExporter.enabled
   - name: grafana
-    version: "7.5.*"
-    repository: file://../grafana-7.5.17
+    version: "9.2.10"
+    repository: file://../grafana-9.2.10
     condition: grafana.enabled
 
-#  - name: grafana
-#    version: "9.2.10"
-#    repository: file://../grafana-7.5.17
-#    condition: grafana.enabled
 #  - name: prometheus-windows-exporter
 #    repository: https://prometheus-community.github.io/helm-charts
 #    version: "0.11.*"
