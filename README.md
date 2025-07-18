@@ -42,7 +42,7 @@ installing the `ocne-catalog` chart.
 | Kube Prometheus Stack                               | kube-prometheus-stack       | 0.63.0                                         |
 | Kube Proxy                                          | kube-proxy                  | 2.0.0                                          |
 | Kube State Metrics                                  | kube-state-metrics          | 2.8.2                                          |
-| KubeVirt                                            | kubevirt                    | 1.1.1                                          |
+| KubeVirt                                            | kubevirt                    | 1.5.2<br>1.4.1<br>1.3.1<br>1.2.2<br>1.1.1      |
 | MetalLB                                             | metallb                     | 0.15.2<br>0.13.10                              |
 | Multus                                              | multus                      | 4.2.1<br>4.0.2                                 |
 | OAuth2 Proxy                                        | oauth2-proxy                | 7.8.0                                          |
