@@ -8,3 +8,4 @@ maintainers:
 name: grafana
 type: application
 version: 7.5.17
+icon: icons/grafana-icon.svg
