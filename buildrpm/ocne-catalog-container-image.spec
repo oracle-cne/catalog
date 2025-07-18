@@ -7,7 +7,7 @@
 
 Name:		%{_name}-container-image
 Version:	2.0.0
-Release:	20%{?dist}
+Release:	21%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
+* Wed Jul 16 2025 Murali Annamneni <murali.annamneni@oracle.com> - 2.0.0-21
+- Add istio-1.22.8 and 1.24.6 helm charts
+
 * Wed Jul 02 2025 Daniel Krasinski <daniel.krasinski@oraclelcom> - 2.0.0-20
 - Bump nginx to 1.24
 
