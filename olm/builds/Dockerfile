@@ -2,7 +2,8 @@ FROM container-registry.oracle.com/os/oraclelinux:8
 
 COPY rpms /tmp/
 
-RUN dnf install -y /tmp/*.rpm nginx \
+RUN dnf module enable nginx:1.24 \
+    && dnf install -y /tmp/*.rpm nginx \
     && dnf clean all \
     && rm -rf /tmp/*.rpm /var/tmp/* /var/cache/dnf/*
 
