@@ -7,7 +7,7 @@
 
 Name:		%{_name}-container-image
 Version:	2.0.0
-Release:	20%{?dist}
+Release:	21%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,7 +37,10 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
-* Wed Jul 02 2025 Daniel Krasinski <daniel.krasinski@oraclelcom> - 2.0.0-20
+* Fri Jul 18 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-21
+- Rebuild with latest base image
+
+* Wed Jul 02 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-20
 - Bump nginx to 1.24
 
 * Fri Jun 27 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-19
