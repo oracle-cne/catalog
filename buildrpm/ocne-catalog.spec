@@ -37,8 +37,8 @@ cp -ap olm/icons/* %{buildroot}/opt/icons
 /opt/icons
 
 %changelog
-* Tue Jul 22 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-23
-- Add ovirt-csi-driver 4.21.0
+* Wed Jul 22 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-23
+- Add ovirt-csi-driver 4.21.0-alpha1
 
 * Fri Jul 18 2025 Thomas Tanaka <thomas.tanaka@oracle.com> - 2.0.0-22
 - Update Kubevirt charts to 1.5.2
