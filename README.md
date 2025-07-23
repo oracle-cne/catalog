@@ -23,6 +23,7 @@ installing the `ocne-catalog` chart.
 | Cert Manager OCI Webhook                            | cert-manager-webhook-oci    | 1.1.0                                          |
 | CoreDNS                                             | coredns                     | 2.0.0                                          |
 | CSI Driver for oVirt                                | ovirt-csi-driver            | 4.20.0                                         |
+| CSI Driver for oVirt                                | ovirt-csi-driver            | 4.21.0-alpha1                                  |
 | CSI NFS Driver for Kubernetes                       | csi-driver-nfs              | 4.11.0                                         |
 | Dex                                                 | dex                         | 2.43.1<br>2.39.1                               |
 | ExternalIP Webhook                                  | externalip-webhook          | 1.0.0                                          |
