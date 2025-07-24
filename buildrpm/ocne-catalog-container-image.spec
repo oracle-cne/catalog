@@ -38,7 +38,7 @@ docker save -o %{_name}.tar %{docker_tag}
 
 %changelog
 * Wed Jul 22 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-23
-- Add ovirt-csi-driver 4.21.0-alpha1
+- Add ovirt-csi-driver 4.21.0-alpha1.  Update ovirt-csi-driver logos
 
 * Fri Jul 18 2025 Thomas Tanaka <thomas.tanaka@oracle.com> - 2.0.0-22
 - Update Kubevirt charts to 1.5.2
