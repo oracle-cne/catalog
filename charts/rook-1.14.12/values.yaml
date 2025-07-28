@@ -11,7 +11,7 @@ image:
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Default tag for the ceph container image
-  cephTag: v18.2.2
+  cephTag: v18.2.2-1
 
 
 crds:
