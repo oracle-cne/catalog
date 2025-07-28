@@ -22,7 +22,7 @@ installing the `ocne-catalog` chart.
 | Cluster API for Oracle Cloud Infrastructure         | oci-capi                    | 0.19.0<br>0.17.0<br>0.16.0<br>0.15.0           |
 | Cert Manager OCI Webhook                            | cert-manager-webhook-oci    | 1.1.0                                          |
 | CoreDNS                                             | coredns                     | 2.0.0                                          |
-| CSI Driver for oVirt                                | ovirt-csi-driver            | 4.20.0                                         |
+| CSI Driver for oVirt                                | ovirt-csi-driver            | 4.21.0-alpha1<br>4.20.0                        |
 | CSI NFS Driver for Kubernetes                       | csi-driver-nfs              | 4.11.0                                         |
 | Dex                                                 | dex                         | 2.43.1<br>2.39.1                               |
 | ExternalIP Webhook                                  | externalip-webhook          | 1.0.0                                          |
@@ -54,7 +54,7 @@ installing the `ocne-catalog` chart.
 | Prometheus                                          | prometheus                  | 2.31.1                                         |
 | Prometheus Adapter                                  | prometheus-adapter          | 0.10.0                                         |
 | Prometheus Node Exporter                            | prometheus-node-exporter    | 1.6.1                                          |
-| Rook                                                | rook                        | 1.15.9<br>1.12.3                                         |
+| Rook                                                | rook                        | 1.15.9<br>1.13.10<br>1.12.3                    |
 | Tigera Operator with Calico                         | tigera-operator             | 1.32.12<br>1.32.4                              |
 | Oracle Cloud Native Environment Dashboard           | ui                          | 2.2.0<br>2.0.0                                 |
 | Kubernetes Gateway API CRDs                         | kubernetes-gateway-api-crds | 1.2.1                                          |
