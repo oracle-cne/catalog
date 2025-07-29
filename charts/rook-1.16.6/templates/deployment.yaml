@@ -1,10 +1,10 @@
-extra-image: {{ .Values.csi.cephcsi.repository }}:{{ .Values.csi.cephcsi.tag }}
-extra-image: {{ .Values.csi.registrar.repository }}:{{ .Values.csi.registrar.tag }}
-extra-image: {{ .Values.csi.provisioner.repository }}:{{ .Values.csi.provisioner.tag }}
-extra-image: {{ .Values.csi.snapshotter.repository }}:{{ .Values.csi.snapshotter.tag }}
-extra-image: {{ .Values.csi.attacher.repository }}:{{ .Values.csi.attacher.tag }}
-extra-image: {{ .Values.csi.resizer.repository }}:{{ .Values.csi.resizer.tag }}
-extra-image: {{ .Values.image.repository }}:{{ .Values.image.cephTag }}
+#extra-image: {{ .Values.csi.cephcsi.repository }}:{{ .Values.csi.cephcsi.tag }}
+#extra-image: {{ .Values.csi.registrar.repository }}:{{ .Values.csi.registrar.tag }}
+#extra-image: {{ .Values.csi.provisioner.repository }}:{{ .Values.csi.provisioner.tag }}
+#extra-image: {{ .Values.csi.snapshotter.repository }}:{{ .Values.csi.snapshotter.tag }}
+#extra-image: {{ .Values.csi.attacher.repository }}:{{ .Values.csi.attacher.tag }}
+#extra-image: {{ .Values.csi.resizer.repository }}:{{ .Values.csi.resizer.tag }}
+#extra-image: {{ .Values.image.repository }}:{{ .Values.image.cephTag }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
