@@ -958,8 +958,8 @@ sidecar:
   image:
     # -- The Docker registry
     registry:
-    repository: ocne/k8s-sidecar
-    tag: 1.30.7
+    repository: olcne/k8s-sidecar
+    tag: v1.30.7
     sha: ""
   imagePullPolicy: IfNotPresent
   resources: {}
