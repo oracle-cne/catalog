@@ -118,11 +118,11 @@ testFramework:
   ## ref: https://helm.sh/docs/topics/charts_hooks/#the-available-hooks
   ##
   # hookType: test
-  image:
+  #image:
     # -- The Docker registry
-    registry: docker.io
-    repository: bats/bats
-    tag: "v1.4.1"
+    #registry: docker.io
+    #repository: bats/bats
+    #tag: "v1.4.1"
   imagePullPolicy: IfNotPresent
   securityContext: {}
   containerSecurityContext: {}
@@ -183,13 +183,13 @@ extraLabels: {}
 ## Assign a PriorityClassName to pods if set
 # priorityClassName:
 
-downloadDashboardsImage:
+#downloadDashboardsImage:
   # -- The Docker registry
-  registry: docker.io
-  repository: curlimages/curl
-  tag: 8.9.1
-  sha: ""
-  pullPolicy: IfNotPresent
+  #registry: docker.io
+  #repository: curlimages/curl
+  #tag: 8.9.1
+  #sha: ""
+  #pullPolicy: IfNotPresent
 
 downloadDashboards:
   env: {}
@@ -459,9 +459,9 @@ initChownData:
   ##
   image:
     # -- The Docker registry
-    registry: docker.io
-    repository: library/busybox
-    tag: "1.31.1"
+    registry: os
+    repository: oraclelinux
+    tag: "8-slim"
     sha: ""
     pullPolicy: IfNotPresent
 
@@ -1411,19 +1411,19 @@ imageRenderer:
   serverURL: ""
   # The callback url of grafana instances if it is not in the same namespace with the remote image renderer
   renderingCallbackURL: ""
-  image:
+  #image:
     # -- The Docker registry
-    registry: docker.io
+    #registry: docker.io
     # image-renderer Image repository
-    repository: grafana/grafana-image-renderer
+    #repository: grafana/grafana-image-renderer
     # image-renderer Image tag
-    tag: latest
+    #tag: latest
     # image-renderer Image sha (optional)
-    sha: ""
+    #sha: ""
     # image-renderer Image pull secrets (optional)
-    pullSecrets: []
+    #pullSecrets: []
     # image-renderer ImagePullPolicy
-    pullPolicy: Always
+    #pullPolicy: Always
   # extra environment variables
   env:
     HTTP_HOST: "0.0.0.0"
