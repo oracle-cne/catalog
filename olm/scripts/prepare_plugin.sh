@@ -17,16 +17,17 @@ CHART_VALUES=${CHART_ROOT}/../values
 
 # Extract values.yaml from the chart bundle
 function extractValuesYaml {
-  local chartName="$1"
-  local chartVersion="$2"
-  local chartBundle="$3"
-  local destDir="${CHART_VALUES}/${chartName}/${chartVersion}"
-  mkdir -p "$destDir"
-  cd "$destDir"
+  local chartName=$1
+  local chartVersion=$2
+  local chartBundle=$3
+  mkdir -p "${CHART_VALUES}/${chartName}/${chartVersion}"
+  cd "$CHART_VALUES/${chartName}/${chartVersion}"
 
-  # Securely extract values.yaml only
-  gunzip -c "$chartBundle" | tar --strip-components=1 -xf - "${chartName}/values.yaml"
-  cd "$CHART_ROOT"
+  # Extract values.yaml and remove the chartName directory
+  gunzip -c $chartBundle | tar xf - ${chartName}/values.yaml
+  mv $chartName/values.yaml .
+  rm -rf $chartName
+  cd ${CHART_ROOT}
 }
 
 rm -rf $CHART_VALUES
