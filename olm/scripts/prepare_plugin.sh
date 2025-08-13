@@ -41,8 +41,7 @@ for i in *.tgz; do
     withoutExtn="${i%.*}"
  
     # Extract chart name and version 
-    chartName="${withoutExtn%%[0-9]*}"      # Remove from first digit onward
-    chartName="${chartName%-}"              # Remove trailing hyphen if present
+    chartName="${withoutExtn%-*}"
     chartVersion=${withoutExtn##*-}
 
     extractValuesYaml ${chartName} ${chartVersion} $(pwd)/$i
