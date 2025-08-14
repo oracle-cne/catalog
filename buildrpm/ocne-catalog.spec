@@ -3,7 +3,7 @@
 
 Name:		ocne-catalog
 Version:	2.0.0
-Release:	24%{?dist}
+Release:	25%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ cp -ap olm/icons/* %{buildroot}/opt/icons
 /opt/icons
 
 %changelog
+* Wed Aug 13 2025 Murali Annamneni <murali.annamneni@oracle.com> - 2.0.0-25
+- Add istio-1.20.8 helm charts
+
 * Tue Aug 12 2025 Michael Gianatassio <michael.gianatassio@oracle.com> - 2.0.0-24
 - Add grafana 9.2.10 helm chart
 
