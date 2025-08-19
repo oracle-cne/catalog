@@ -7,7 +7,7 @@
 
 Name:		%{_name}-container-image
 Version:	2.0.0
-Release:	25%{?dist}
+Release:	27%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,12 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
+* Tue Aug 19 2025 Murali Annamneni <murali.annamneni@oracle.com> - 2.0.0-27
+- Add grafana-10.2.6 chart
+
+* Fri Aug 15 2025 Thomas Tanaka <thomas.tanaka@oracle.com> - 2.0.0-26
+- Update kubevirt images 0.58, 0.59, 1.0.1, 1.1.1
+
 * Wed Aug 13 2025 Murali Annamneni <murali.annamneni@oracle.com> - 2.0.0-25
 - Add istio-1.20.8 helm charts
 

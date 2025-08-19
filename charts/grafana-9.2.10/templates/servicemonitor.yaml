@@ -12,7 +12,7 @@ metadata:
   labels:
     {{- include "grafana.labels" . | nindent 4 }}
     {{- with .Values.serviceMonitor.labels }}
-    {{- tpl (toYaml . | nindent 4) $ }}
+    {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
   endpoints:
@@ -34,14 +34,6 @@ spec:
     relabelings:
       {{- toYaml . | nindent 6 }}
     {{- end }}
-    {{- with .Values.serviceMonitor.metricRelabelings }}
-    metricRelabelings:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
-    {{- with .Values.serviceMonitor.basicAuth }}
-    basicAuth:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
   jobLabel: "{{ .Release.Name }}"
   selector:
     matchLabels:
@@ -49,8 +41,4 @@ spec:
   namespaceSelector:
     matchNames:
       - {{ include "grafana.namespace" . }}
-  {{- with .Values.serviceMonitor.targetLabels }}
-  targetLabels:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
 {{- end }}

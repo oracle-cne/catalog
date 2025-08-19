@@ -7,7 +7,7 @@ metadata:
   labels:
     {{- include "grafana.labels" . | nindent 4 }}
   annotations:
-    "helm.sh/hook": {{ .Values.testFramework.hookType | default "test" }}
+    "helm.sh/hook": test-success
     "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
   namespace: {{ include "grafana.namespace" . }}
 spec:
@@ -16,9 +16,11 @@ spec:
   securityContext:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- if or .Values.image.pullSecrets .Values.global.imagePullSecrets }}
+  {{- with .Values.image.pullSecrets }}
   imagePullSecrets:
-    {{- include "grafana.imagePullSecrets" (dict "root" $root "imagePullSecrets" .Values.image.pullSecrets) | nindent 4 }}
+    {{- range . }}
+    - name: {{ tpl . $root }}
+    {{- end}}
   {{- end }}
   {{- with .Values.nodeSelector }}
   nodeSelector:
@@ -34,21 +36,13 @@ spec:
   {{- end }}
   containers:
     - name: {{ .Release.Name }}-test
-      image: "{{ .Values.global.imageRegistry | default .Values.testFramework.image.registry }}/{{ .Values.testFramework.image.repository }}:{{ .Values.testFramework.image.tag }}"
+      image: "{{ .Values.testFramework.image}}:{{ .Values.testFramework.tag }}"
       imagePullPolicy: "{{ .Values.testFramework.imagePullPolicy}}"
       command: ["/opt/bats/bin/bats", "-t", "/tests/run.sh"]
-      {{- with .Values.testFramework.containerSecurityContext }}
-      securityContext:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       volumeMounts:
         - mountPath: /tests
           name: tests
           readOnly: true
-      {{- with .Values.testFramework.resources }}
-      resources:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
   volumes:
     - name: tests
       configMap:
