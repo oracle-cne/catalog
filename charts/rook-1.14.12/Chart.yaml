@@ -10,4 +10,4 @@ name: rook
 sources:
 - https://github.com/rook/rook
 version: 1.14.12
-kubeVersion: '>= 1.25.0 < 1.31.0'
+kubeVersion: '>= 1.26.0 < 1.33.0'
