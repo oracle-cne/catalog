@@ -24,16 +24,13 @@ spec:
       from:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: {{ include "grafana.namespace" . }}
-          podSelector:
+              name: {{ include "grafana.namespace" . }}
+        - podSelector:
             matchLabels:
               {{- include "grafana.selectorLabels" . | nindent 14 }}
               {{- with .Values.podLabels }}
               {{- toYaml . | nindent 14 }}
               {{- end }}
-        {{- with .Values.imageRenderer.networkPolicy.extraIngressSelectors -}}
-        {{ toYaml . | nindent 8 }}
-        {{- end }}
 {{- end }}
 
 {{- if and .Values.imageRenderer.enabled .Values.imageRenderer.networkPolicy.limitEgress }}
@@ -64,13 +61,10 @@ spec:
           protocol: TCP
     # talk only to grafana
     - ports:
-        - port: {{ .Values.service.targetPort }}
+        - port: {{ .Values.service.port }}
           protocol: TCP
       to:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: {{ include "grafana.namespace" . }}
-          podSelector:
+        - podSelector:
             matchLabels:
               {{- include "grafana.selectorLabels" . | nindent 14 }}
               {{- with .Values.podLabels }}
