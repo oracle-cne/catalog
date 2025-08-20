@@ -90,7 +90,7 @@ livenessProbe:
 
 image:
   # -- The Docker registry
-  registry:
+  registry: container-registry.oracle.com
   # -- Docker image repository
   repository: olcne/grafana
   # Overrides the Grafana image tag whose default is the chart appVersion
@@ -387,8 +387,8 @@ initChownData:
   ##
   image:
     # -- The Docker registry
-    registry: os
-    repository: oraclelinux
+    registry: container-registry.oracle.com
+    repository: os/oraclelinux
     tag: "8-slim"
     sha: ""
     pullPolicy: IfNotPresent
@@ -832,7 +832,7 @@ smtp:
 sidecar:
   image:
     # -- The Docker registry
-    registry:
+    registry: container-registry.oracle.com
     repository: olcne/k8s-sidecar
     tag: v1.30.7
     sha: ""
