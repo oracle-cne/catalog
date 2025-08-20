@@ -1,4 +1,4 @@
-{{- $sts := list "sts" "StatefulSet" "statefulset" -}}
+{{- $sts := list "sts" "StatefulSet" -}}
 {{- if or .Values.headlessService (and .Values.persistence.enabled (not .Values.persistence.existingClaim) (has .Values.persistence.type $sts)) }}
 apiVersion: v1
 kind: Service
@@ -17,6 +17,7 @@ spec:
     {{- include "grafana.selectorLabels" . | nindent 4 }}
   type: ClusterIP
   ports:
-  - name: {{ .Values.gossipPortName }}-tcp
-    port: 9094
+  - protocol: TCP
+    port: 3000
+    targetPort: {{ .Values.service.targetPort }}
 {{- end }}
