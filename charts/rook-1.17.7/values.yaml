@@ -7,11 +7,9 @@ image:
   repository: olcne/ceph
   # -- Image tag
   # @default -- `master`
-  tag: v1.16.6
+  tag: v1.17.7
   # -- Image pull policy
   pullPolicy: IfNotPresent
-  # -- Default tag for the ceph container image
-  cephTag: v19.2.1
 
 crds:
   # -- Whether the helm chart should create and update the CRDs. If false, the CRDs must be
@@ -491,7 +489,7 @@ csi:
     # -- Ceph CSI image repository
     repository: olcne/cephcsi
     # -- Ceph CSI image tag
-    tag: v3.13.1
+    tag: v3.14.2
 
   registrar:
     # -- Kubernetes CSI registrar image repository
@@ -509,7 +507,7 @@ csi:
     # -- Kubernetes CSI snapshotter image repository
     repository: olcne/csi-snapshotter
     # -- Snapshotter image tag
-    tag: v8.2.0
+    tag: v8.2.1
 
   attacher:
     # -- Kubernetes CSI Attacher image repository
@@ -628,11 +626,8 @@ discover:
   podLabels: # "key1=value1,key2=value2"
   # -- Add resources to discover daemon pods
   resources:
-  #   - limits:
-  #       memory: 512Mi
-  #   - requests:
-  #       cpu: 100m
-  #       memory: 128Mi
+  # resources: |
+  #   '{"resources":{"requests":{"memory":"128Mi","cpu":"100m"},"limits":{"memory":"512Mi"}}}'
 
 # -- Custom label to identify node hostname. If not set `kubernetes.io/hostname` will be used
 customHostnameLabel:
@@ -662,6 +657,13 @@ enableOBCWatchOperatorNamespace: true
 # -- Specify the prefix for the OBC provisioner in place of the cluster namespace
 # @default -- `ceph cluster namespace`
 obcProvisionerNamePrefix:
+
+# -- Many OBC additional config fields may be risky for administrators to allow users control over.
+# The safe and default-allowed fields are 'maxObjects' and 'maxSize'.
+# Other fields should be considered risky. To allow all additional configs, use this value:
+#   "maxObjects,maxSize,bucketMaxObjects,bucketMaxSize,bucketPolicy,bucketLifecycle,bucketOwner"
+# @default -- "maxObjects,maxSize"
+obcAllowAdditionalConfigFields: "maxObjects,maxSize"
 
 monitoring:
   # -- Enable monitoring. Requires Prometheus to be pre-installed.
