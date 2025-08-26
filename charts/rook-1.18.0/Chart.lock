@@ -1,0 +1,9 @@
+dependencies:
+- name: library
+  repository: file://../library
+  version: 0.0.1
+- name: ceph-csi-operator
+  repository: https://ceph.github.io/ceph-csi-operator
+  version: 0.4.0
+digest: sha256:60fc8c541cc1f166ed05aa66b8426c06a8e79a46c91e4cb611e82ac4d808a9f9
+generated: "2025-08-20T20:20:53.726894847Z"
