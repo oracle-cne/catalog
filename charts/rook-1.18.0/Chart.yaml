@@ -2,7 +2,7 @@ apiVersion: v2
 appVersion: 1.18.0
 dependencies:
 - name: library
-  repository: file://../library
+  repository: file://./charts/library
   version: 0.0.1
 - alias: ceph-csi-operator
   condition: csi.rookUseCsiOperator
