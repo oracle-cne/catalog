@@ -10,7 +10,7 @@ dependencies:
   repository: https://ceph.github.io/ceph-csi-operator
   version: 0.4.0
 description: File, Block, and Object Storage Services for your Cloud-Native Environment
-icon: https://rook.io/images/rook-logo.svg
+icon: icons/rook-logo.svg
 name: rook
 sources:
 - https://github.com/rook/rook
