@@ -13,7 +13,7 @@ installing the `ocne-catalog` chart.
 
 ### Supported for Oracle Cloud Native Environment 2.0
 
-| Application                                         | Chart                       | Versions                                                   |
+| Application                                         | Chart                       | Versions                                                          |
 |-----------------------------------------------------|-----------------------------|------------------------------------------------------------|
 | Cert Manager                                        | cert-manager                | 1.17.2<br>1.16.3<br>1.14.5                                 |
 | Cluster API Core Controller                         | core-capi                   | 1.9.9<br>1.9.4<br>1.8.12<br>1.7.1                          |
@@ -39,22 +39,22 @@ installing the `ocne-catalog` chart.
 | Istio Ztunnel                                       | istio-ztunnel               | 1.24.6<br>1.24.1                                           |
 | Istio CNI                                           | istio-cni                   | 1.24.6<br>1.24.1                                           |
 | Keycloak                                            | keycloak                    | 21.1.2                                                     |
-| Kube Prometheus Stack                               | kube-prometheus-stack       | 0.63.0                                                     |
-| Kube Proxy                                          | kube-proxy                  | 2.0.0                                                      |
-| Kube State Metrics                                  | kube-state-metrics          | 2.8.2                                                      |
-| KubeVirt                                            | kubevirt                    | 1.5.2<br>1.4.1<br>1.3.1<br>1.2.2<br>1.1.1                  |
-| MetalLB                                             | metallb                     | 0.15.2<br>0.13.10                                          |
-| Multus                                              | multus                      | 4.2.1<br>4.0.2                                             |
-| OAuth2 Proxy                                        | oauth2-proxy                | 7.8.0                                                      |
-| OCI Cloud Controller Manager                        | oci-ccm                     | 1.30.0<br>1.28.0                                           |
-| OLVM CAPI Controller Manager                        | olvm-capi                   | 1.0.0                                                      |
-| OpenSearch                                          | opensearch                  | 2.15.0                                                     |
-| OpenSearch Dashboards                               | opensearch-dashboards       | 2.15.0                                                     |
-| Oracle Cloud Native Environment Application Catalog | ocne-catalog                | 2.0.0                                                      |
-| Prometheus                                          | prometheus                  | 2.31.1                                                     |
-| Prometheus Adapter                                  | prometheus-adapter          | 0.10.0                                                     |
-| Prometheus Node Exporter                            | prometheus-node-exporter    | 1.6.1                                                      |
-| Rook                                                | rook                        | 1.17.7<br>1.16.6<br>1.15.9<br>1.14.12<br>1.13.10<br>1.12.3 |
+| Kube Prometheus Stack                               | kube-prometheus-stack       | 0.63.0                                                               |
+| Kube Proxy                                          | kube-proxy                  | 2.0.0                                                                |
+| Kube State Metrics                                  | kube-state-metrics          | 2.8.2                                                                |
+| KubeVirt                                            | kubevirt                    | 1.5.2<br>1.4.1<br>1.3.1<br>1.2.2<br>1.1.1                            |
+| MetalLB                                             | metallb                     | 0.15.2<br>0.13.10                                                    |
+| Multus                                              | multus                      | 4.2.1<br>4.0.2                                                       |
+| OAuth2 Proxy                                        | oauth2-proxy                | 7.8.0                                                                |
+| OCI Cloud Controller Manager                        | oci-ccm                     | 1.30.0<br>1.28.0                                                     |
+| OLVM CAPI Controller Manager                        | olvm-capi                   | 1.0.0                                                                |
+| OpenSearch                                          | opensearch                  | 2.15.0                                                               |
+| OpenSearch Dashboards                               | opensearch-dashboards       | 2.15.0                                                               |
+| Oracle Cloud Native Environment Application Catalog | ocne-catalog                | 2.0.0                                                                |
+| Prometheus                                          | prometheus                  | 2.31.1                                                               |
+| Prometheus Adapter                                  | prometheus-adapter          | 0.10.0                                                               |
+| Prometheus Node Exporter                            | prometheus-node-exporter    | 1.6.1                                                                |
+| Rook                                                | rook                        | 1.18.0<br>1.17.7<br>1.16.6<br>1.15.9<br>1.14.12<br>1.13.10<br>1.12.3 |
 | Tigera Operator with Calico                         | tigera-operator             | 1.32.12<br>1.32.4                                          |
 | Oracle Cloud Native Environment Dashboard           | ui                          | 2.2.0<br>2.0.0                                             |
 | Kubernetes Gateway API CRDs                         | kubernetes-gateway-api-crds | 1.2.1                                                      |
