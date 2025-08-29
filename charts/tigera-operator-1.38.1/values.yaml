@@ -72,7 +72,7 @@ podLabels: {}
 tigeraOperator:
   image: tigera-operator
   version: v1.38.1
-  registry: container-registry.oracle.com/olcne
+  registry: olcne
 calicoctl:
   image: olcne/ctl
   tag: v3.30.1
