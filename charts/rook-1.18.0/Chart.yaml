@@ -1,0 +1,18 @@
+apiVersion: v2
+appVersion: 1.18.0
+dependencies:
+- name: library
+  repository: file://./charts/library
+  version: 0.0.1
+- alias: ceph-csi-operator
+  condition: csi.rookUseCsiOperator
+  name: ceph-csi-operator
+  repository: https://ceph.github.io/ceph-csi-operator
+  version: 0.4.0
+description: File, Block, and Object Storage Services for your Cloud-Native Environment
+icon: icons/rook-logo.svg
+name: rook
+sources:
+- https://github.com/rook/rook
+version: 1.18.0
+kubeVersion: '>= 1.29.0 < 1.34.0'
