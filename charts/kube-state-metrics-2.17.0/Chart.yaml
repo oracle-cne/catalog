@@ -1,13 +1,18 @@
+annotations:
+  artifacthub.io/license: Apache-2.0
+  artifacthub.io/links: |
+    - name: Chart Source
+      url: https://github.com/prometheus-community/helm-charts
 apiVersion: v2
-appVersion: 2.16.0
+appVersion: 2.17.0
 description: Install kube-state-metrics to generate and expose cluster-level metrics
 icon: icons/kube-state-metrics-icon.svg
 home: https://github.com/kubernetes/kube-state-metrics/
 keywords:
-  - metric
-  - monitoring
-  - prometheus
-  - kubernetes
+- metric
+- monitoring
+- prometheus
+- kubernetes
 maintainers:
 - email: tariq.ibrahim@mulesoft.com
   name: tariq1890
@@ -22,5 +27,6 @@ name: kube-state-metrics
 sources:
 - https://github.com/kubernetes/kube-state-metrics/
 type: application
-version: 2.16.0
+# Original chart version is 6.3.0
+version: 2.17.0
 kubeVersion: '>= 1.26.0 < 1.33.0'
