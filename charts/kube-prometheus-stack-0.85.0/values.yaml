@@ -49,8 +49,8 @@ crds:
       kubectl:
         registry: olcne
         repository: kubectl
-        tag: ""  # defaults to the Kubernetes version
-        sha: "v1.33.5"
+        tag: "v1.33.5"  # defaults to the Kubernetes version
+        sha: ""
         pullPolicy: IfNotPresent
 
     env: {}
