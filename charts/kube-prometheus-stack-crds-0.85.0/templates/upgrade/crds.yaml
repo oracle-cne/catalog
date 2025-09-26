@@ -11,5 +11,5 @@ metadata:
   labels:
     {{- include "kube-prometheus-stack.crd.upgradeJob.labels" . | nindent 4 }}
 binaryData:
-  crds.bz2: {{ .Files.Get "files/crds.bz2" | b64enc }}
+  crds.bz2: {{ .Files.Get "files/crds.tar.gz" | b64enc }}
 {{- end }}
