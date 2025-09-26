@@ -41,9 +41,9 @@ crds:
     forceConflicts: false
     image:
       busybox:
-        registry: os
-        repository: oraclelinux
-        tag: "9-slim"
+        registry: olcne
+        repository: kubectl
+        tag: "v1.33.5"
         sha: ""
         pullPolicy: IfNotPresent
       kubectl:
