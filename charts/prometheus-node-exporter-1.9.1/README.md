@@ -16,7 +16,7 @@ _See [helm repo](https://helm.sh/docs/helm/helm_repo/) for command documentation
 ## Install Chart
 
 ```console
-helm install [RELEASE_NAME] prometheus-community/prometheus-node-exporter
+ocne application install --release [RELEASE_NAME] --namespace [NAMESPACE]
 ```
 
 _See [configuration](#configuring) below._
@@ -26,7 +26,7 @@ _See [helm install](https://helm.sh/docs/helm/helm_install/) for command documen
 ## Uninstall Chart
 
 ```console
-helm uninstall [RELEASE_NAME]
+ocne application install --release [RELEASE_NAME] --namespace [NAMESPACE]
 ```
 
 This removes all the Kubernetes components associated with the chart and deletes the release.

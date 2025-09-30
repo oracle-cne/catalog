@@ -23,7 +23,7 @@ The installation instructions use the OCI registry. Refer to the [`helm repo`]([
 ### Install Helm Chart
 
 ```console
-helm install [RELEASE_NAME] oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
+ocne application install --namespace [NAMESPACE] --release [RELEASE_NAME] --name kube-prometheus-stack
 ```
 
 _See [configuration](#configuration) below._
@@ -55,7 +55,7 @@ If you wish to contribute or modify dashboards, please follow the guidance in th
 ### Uninstall Helm Chart
 
 ```console
-helm uninstall [RELEASE_NAME]
+ocne application uninstall --release [RELEASE_NAME} --namespace [NAMESPACE]
 ```
 
 This removes all the Kubernetes components associated with the chart and deletes the release.
@@ -80,7 +80,7 @@ kubectl delete crd thanosrulers.monitoring.coreos.com
 ### Upgrading Chart
 
 ```console
-helm upgrade [RELEASE_NAME] [CHART]
+ocne application update --release [RELEASE_NAME] --namespace [NAMESPACE]
 ```
 
 With Helm v3, CRDs created by this chart are not updated by default and should be manually updated.
