@@ -1,0 +1,71 @@
+repo: https://charts.rook.io/release
+chart: rook-ceph
+icon: prometheus-logo.svg
+values:
+  crds:
+    upgradeJob:
+      image:
+        busybox:
+          registry: olcne
+          repository: kubectl
+          tag: "v1.33.5"
+        kubectl:
+          registry: olcne
+          repository: kubectl
+          tag: "v1.33.5"
+  alertmanager:
+    alertmanagerSpec:
+      image:
+        registry: olcne
+        repository: alertmanager
+        tag: "v0.28.1"
+  prometheus:
+    prometheusSpec:
+      image:
+        registry: olcne
+        repository: prometheus
+        tag: "v3.5.0"
+  prometheusOperator:
+    admissionWebhooks:
+      deployment:
+        image:
+          registry: olcne
+          repository: prometheus-admission-webhook
+          tag: "v0.85.0"
+      patch:
+        image:
+          registry: olcne
+          repository: kube-webhook-certgen
+          tag: v1.13.1
+    image:
+      registry: olcne
+      repository: prometheus-operator
+      tag: "v0.85.0"
+    prometheusConfigReloader:
+      image:
+        registry: olcne
+        repository: prometheus-config-reloader
+        tag: "v0.85.0"
+    thanosImage:
+      registry: olcne
+      repository: thanos
+      tag: "v0.39.2"
+  thanosRuler:
+    thanosRulerSpec:
+      image:
+        registry: olcne
+        repository: thanos
+        tag: "v0.39.2"
+
+extraImages:
+  deployment.yaml:
+    - "{{ .Values.csi.cephcsi.repository }}:{{ .Values.csi.cephcsi.tag }}"
+    - "{{ .Values.csi.registrar.repository }}:{{ .Values.csi.registrar.tag }}"
+    - "{{ .Values.csi.provisioner.repository }}:{{ .Values.csi.provisioner.tag }}"
+    - "{{ .Values.csi.snapshotter.repository }}:{{ .Values.csi.snapshotter.tag }}"
+    - "{{ .Values.csi.attacher.repository }}:{{ .Values.csi.attacher.tag }}"
+    - "{{ .Values.csi.resizer.repository }}:{{ .Values.csi.resizer.tag }}"
+    - "{{ .Values.image.repository }}:{{ .Values.image.cephTag }}"
+
+extraChartYqs:
+  - '(.dependencies[] | select(.name == "library") | .repository) = "file://./charts/library"'
