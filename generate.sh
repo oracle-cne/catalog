@@ -6,7 +6,7 @@ KUBE_VERSION="$3"
 
 REPO_NAME="tmp-repo"
 
-TEMPLATE_FILE="$PWD/templates/$APP/chart.yaml"
+TEMPLATE_FILE="$PWD/templates/$APP/template.yaml"
 
 set -x
 
