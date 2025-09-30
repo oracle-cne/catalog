@@ -114,6 +114,58 @@ The same chart can be used to run multiple Prometheus instances in the same clus
 
 ## Work-Arounds for Known Issues
 
+### Upgrading from kube-prometheus-stack-0.63.0
+There is an issue with upgrading the StatefulSets when upgrading an existing installation of kube-prometheus-stack-0.63.0 (from the Oracle Cloud Native Environment catalog).
+
+The issue is caused by a change in the `prometheus-operator`. It generates different values for the selector labels in the StatefulSets `alertmanager-kube-prometheus-stack-alertmanager` and `prometheus-kube-prometheus-stack-prometheus`. This results in the `prometheus-operator` not being unable to update the contents of StatefulSets. An example of how the labels changed is that the value of `app.kubernetes.io/managed-by` changed from `Helm` to `prometheus-operator`.
+
+This issue needs to be resolved manually by performing the following basic steps:
+1. Patch the AlertManager and Prometheus custom resources to scale down the replica counts to 0.
+2. Wait for the associated pods to terminate, then delete the StatefulSets.
+3. Patch the AlertManager and Prometheus custom resource to scale back up to the desired replica count.
+4. The prometheus-operator will re-create the StatefulSets.
+
+#### Example Upgrade
+Here is a detailed example of how to resolve this issue.  Use the example commands as a guide to resolving the issue in your environment.
+
+1. Assume that kube-prometheus-stack-0.63.0 was originally installed as follows:
+    ```
+    ocne app install -n prometheus -r kube-prometheus-stack --name kube-prometheus-stack
+    ```
+2. Also assume that kube-prometheus-stack is upgraded as follows:
+    ```
+    ocne app update -n prometheus -r kube-prometheus-stack --version 0.85.0
+    ```
+3. Verify the issue occurred by searching the logs of the prometheus-operator.  You will see errors like the example below.
+    ```
+    kubectl logs -f -n prometheus kube-prometheus-stack-operator-5b6f9fff87-fql4d | grep error
+    ts=2025-09-30T13:06:12.711533777Z level=error caller=/workspace/go/src/github.com/oracle-cne/prometheus-operator/pkg/operator/resource_reconciler.go:680 msg="Unhandled Error" logger=UnhandledError err="sync \"prometheus/kube-prometheus-stack-alertmanager\" failed: creating statefulset failed: statefulsets.apps \"alertmanager-kube-prometheus-stack-alertmanager\" already exists"
+    ts=2025-09-30T13:06:15.283722574Z level=error caller=/workspace/go/src/github.com/oracle-cne/prometheus-operator/pkg/operator/resource_reconciler.go:680 msg="Unhandled Error" logger=UnhandledError err="sync \"prometheus/kube-prometheus-stack-prometheus\" failed: creating statefulset failed: statefulsets.apps \"prometheus-kube-prometheus-stack-prometheus\" already exists"
+    ```
+4. Scale down the replica count for the StatefulSets to zero.  The `prometheus-operator `should notice the change in replica count and terminate the running pods.
+    ```
+    kubectl -n prometheus patch prometheus kube-prometheus-stack-prometheus --type=merge -p '{"spec":{"replicas":0}}'
+    
+    kubectl -n prometheus patch alertmanager kube-prometheus-stack-alertmanager --type=merge -p '{"spec":{"replicas":0}}'
+    ```
+5. If the `prometheus-operator` does not automatically terminate the pods in the StatefulSets, use the following commands to shut them down.
+    ```
+    kubectl scale statefulset alertmanager-kube-prometheus-stack-alertmanager -n prometheus --replicas=0
+
+    kubectl scale statefulset prometheus-kube-prometheus-stack-prometheus -n prometheus --replicas=0
+    ```
+6. Delete the StatefulSets after the pods have terminated.
+    ```
+    kubectl -n prometheus delete sts alertmanager-kube-prometheus-stack-alertmanager
+    kubectl -n prometheus delete sts prometheus-kube-prometheus-stack-prometheus
+    ```
+7. Scale the replicas back up. The `prometheus-operator` will recreate the StatefulSets.
+    ```
+    kubectl -n prometheus patch prometheus kube-prometheus-stack-prometheus --type=merge -p '{"spec":{"replicas":1}}'
+    
+    kubectl -n prometheus patch alertmanager kube-prometheus-stack-alertmanager --type=merge -p '{"spec":{"replicas":1}}'
+    ```
+
 ### Running on private GKE clusters
 
 When Google configure the control plane for private clusters, they automatically configure VPC peering between your Kubernetes cluster’s network and a separate Google managed project. In order to restrict what Google are able to access within your cluster, the firewall rules configured restrict access to your Kubernetes pods. This means that in order to use the webhook component with a GKE private cluster, you must configure an additional firewall rule to allow the GKE control plane access to your webhook pod.
