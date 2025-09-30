@@ -52,7 +52,7 @@ installing the `ocne-catalog` chart.
 | OpenSearch Dashboards                               | opensearch-dashboards       | 2.15.0                                                               |
 | Oracle Cloud Native Environment Application Catalog | ocne-catalog                | 2.0.0                                                                |
 | Prometheus                                          | prometheus                  | 2.31.1                                                               |
-| Prometheus Adapter                                  | prometheus-adapter          | 0.10.0                                                               |
+| Prometheus Adapter                                  | prometheus-adapter          | 0.12.0<br>0.10.0                                                     |
 | Prometheus Node Exporter                            | prometheus-node-exporter    | 1.9.1<br>1.6.1                                                       |
 | Rook                                                | rook                        | 1.18.0<br>1.17.7<br>1.16.6<br>1.15.9<br>1.14.12<br>1.13.10<br>1.12.3 |
 | Tigera Operator with Calico                         | tigera-operator             | 1.38.1<br>1.32.12<br>1.32.4                                          |
@@ -61,18 +61,18 @@ installing the `ocne-catalog` chart.
 
 ### Supported While Upgrading From Oracle Cloud Native Environment 1.x
 
-| Application | Chart | Versions |
-|-------------|-------|----------|
-| Cert Manager | cert-manager | 1.9.1 |
-| Istio CRDs | istio-base | 1.19.9 |
-| Istiod | istiod | 1.19.9 |
-| Istio Egress Gateway | istio-egress | 1.19.9 |
-| Istio Ingress Gateway | istio-ingress | 1.19.9 |
-| KubeVirt | kubevirt | 1.0.1<br>0.59.0<br>0.58.0 |
-| MetalLB | metallb | 0.12.1 |
-| OCI Cloud Controller Manager | oci-ccm | 1.27.2 |
-| Rook | rook | 1.11.6<br>1.10.9 |
-| Tigera Operator with Calico | tigera-operator | 1.32.12<br>1.32.4<br>1.29.3 |
+| Application                  | Chart           | Versions                    |
+|------------------------------|-----------------|-----------------------------|
+| Cert Manager                 | cert-manager    | 1.9.1                       |
+| Istio CRDs                   | istio-base      | 1.19.9                      |
+| Istiod                       | istiod          | 1.19.9                      |
+| Istio Egress Gateway         | istio-egress    | 1.19.9                      |
+| Istio Ingress Gateway        | istio-ingress   | 1.19.9                      |
+| KubeVirt                     | kubevirt        | 1.0.1<br>0.59.0<br>0.58.0   |
+| MetalLB                      | metallb         | 0.12.1                      |
+| OCI Cloud Controller Manager | oci-ccm         | 1.27.2                      |
+| Rook                         | rook            | 1.11.6<br>1.10.9            |
+| Tigera Operator with Calico  | tigera-operator | 1.32.12<br>1.32.4<br>1.29.3 |
 
 ## Documentation
 
