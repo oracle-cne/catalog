@@ -36,7 +36,7 @@ _See [helm uninstall](https://helm.sh/docs/helm/helm_uninstall/) for command doc
 ## Upgrading Chart
 
 ```console
-helm upgrade [RELEASE_NAME] prometheus-community/prometheus-node-exporter --install
+ocne application update --release [RELEASE_NAME] --namespace [NAMESPACE]
 ```
 
 _See [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) for command documentation._
@@ -47,7 +47,7 @@ Starting from version 4.0.0, the `node exporter` chart is using the [Kubernetes 
 
 ```console
 kubectl delete daemonset -l app=prometheus-node-exporter
-helm upgrade -i prometheus-node-exporter prometheus-community/prometheus-node-exporter
+ocne application update prometheus-node-exporter --release prometheus-node-exporter
 ```
 
 If you use your own custom [ServiceMonitor](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api-reference/api.md#servicemonitor) or [PodMonitor](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api-reference/api.md#podmonitor), please ensure to upgrade their `selector` fields accordingly to the new labels.

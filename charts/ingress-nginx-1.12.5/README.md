@@ -12,13 +12,6 @@ This chart bootstraps an ingress-nginx deployment on a [Kubernetes](http://kuber
 
 Kubernetes: `>=1.21.0-0`
 
-## Get Repo Info
-
-```console
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-helm repo update
-```
-
 ## Install Chart
 
 **Important:** only helm3 is supported
