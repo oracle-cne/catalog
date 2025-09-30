@@ -11,7 +11,6 @@ This chart bootstraps a [Prometheus](https://prometheus.io/) deployment on a [Ku
 ## Install The Application
 
 ```console
-helm install [RELEASE_NAME] prometheus-community/prometheus
 ocne application install --release [RELEASE_NAME] --name prometheus --namespace [NAMESPACE]
 ```
 
@@ -61,7 +60,7 @@ serverFiles:
 ```
 
 ```console
-helm install [RELEASE_NAME] prometheus-community/prometheus -f values.yaml -f service1-alert.yaml -f service2-alert.yaml
+ocne application install --release [RELEASE_NAME] --name prometheus --values values.yaml --values service1-alert.yaml --values service2-alert.yaml
 ```
 
 ### RBAC Configuration

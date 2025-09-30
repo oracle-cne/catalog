@@ -19,7 +19,7 @@ This Helm chart installs [OpenSearch](https://github.com/opensearch-project/Open
 Once you've added this Helm repository as per the repository-level [README](../../README.md#installing) then you can install the chart as follows:
 
  ```shell
- helm install my-release opensearch/opensearch
+ ocne application install --name opensearch --release opensearch --namespace opensearch
  ```
 
 The command deploys OpenSearch with its associated components (data statefulsets, masters, clients) on the Kubernetes cluster in the default configuration.

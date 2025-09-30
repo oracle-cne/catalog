@@ -25,11 +25,7 @@ $ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/downloa
 To install the chart with the release name `cert-manager`:
 
 ```console
-## Add the Jetstack Helm repository
-$ helm repo add jetstack https://charts.jetstack.io --force-update
-
-## Install the cert-manager helm chart
-$ helm install cert-manager --namespace cert-manager --version v1.17.2 jetstack/cert-manager
+ocne application install --name cert-manager --release cert-manager --namespace cert-manager
 ```
 
 In order to begin issuing certificates, you will need to set up a ClusterIssuer
@@ -1998,7 +1994,7 @@ Specify each parameter using the `--set key=value[,key=value]` argument to `helm
 Alternatively, a YAML file that specifies the values for the above parameters can be provided while installing the chart. For example,
 
 ```console
-$ helm install my-release -f values.yaml .
+$ ocne application install --name cert-manager --release cert-manager --namespace cert-manager --values values.yaml
 ```
 > **Tip**: You can use the default [values.yaml](https://github.com/cert-manager/cert-manager/blob/master/deploy/charts/cert-manager/values.yaml)
 

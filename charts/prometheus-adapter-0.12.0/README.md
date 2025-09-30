@@ -18,7 +18,7 @@ The installation instructions use the OCI registry. Refer to the [`helm repo`]([
 ### Install Helm Chart
 
 ```console
-helm install [RELEASE_NAME] oci://ghcr.io/prometheus-community/charts/prometheus-adapter
+ocne application install --release [RELEASE_NAME] --name prometheus-adapter --namespace [NAMESPACE]
 ```
 
 _See [configuration](#configuration) below._
@@ -28,7 +28,7 @@ _See [helm install](https://helm.sh/docs/helm/helm_install/) for command documen
 ### Uninstall Helm Chart
 
 ```console
-helm uninstall [RELEASE_NAME]
+ocne application uninstall --release [RELEASE_NAME] --namespace [NAMESPACE]
 ```
 
 This removes all the Kubernetes components associated with the chart and deletes the release.
@@ -38,10 +38,8 @@ _See [helm uninstall](https://helm.sh/docs/helm/helm_uninstall/) for command doc
 ### Upgrading Helm Chart
 
 ```console
-helm upgrade [RELEASE_NAME] [CHART] --install
+ocne application update --release [RELEASE_NAME] --namespace [NAMESPACE]
 ```
-
-_See [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) for command documentation._
 
 ### To 5.0.0
 
@@ -57,7 +55,7 @@ Previously, security context of the container was set directly in the deployment
 
 #### To 3.0.0
 
-Due to a change in deployment labels, the upgrade requires `helm upgrade --force` in order to re-create the deployment.
+Due to a change in deployment labels, the upgrade requires the `--force` option on `helm upgrade` in order to re-create the deployment.
 
 ## Configuration
 
