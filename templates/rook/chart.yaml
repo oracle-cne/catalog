@@ -1,0 +1,34 @@
+repo: https://charts.rook.io/release
+chart: rook-ceph
+icon: rook-logo.svg
+values:
+  image:
+    repository: olcne/ceph
+  csi:
+    cephcsi:
+      repository: olcne/cephcsi
+    registrar:
+      repository: olcne/csi-node-driver-registrar
+    provisioner:
+      repository: olcne/csi-provisioner
+    snapshotter:
+      repository: olcne/csi-snapshotter
+    attacher:
+      repository: olcne/csi-attacher
+    resizer:
+      repository: olcne/csi-resizer
+    csiAddons:
+      repository: olcne/csiaddons-k8s-sidecar
+
+extraImages:
+  deployment.yaml:
+  - "{{ .Values.csi.cephcsi.repository }}:{{ .Values.csi.cephcsi.tag }}"
+  - "{{ .Values.csi.registrar.repository }}:{{ .Values.csi.registrar.tag }}"
+  - "{{ .Values.csi.provisioner.repository }}:{{ .Values.csi.provisioner.tag }}"
+  - "{{ .Values.csi.snapshotter.repository }}:{{ .Values.csi.snapshotter.tag }}"
+  - "{{ .Values.csi.attacher.repository }}:{{ .Values.csi.attacher.tag }}"
+  - "{{ .Values.csi.resizer.repository }}:{{ .Values.csi.resizer.tag }}"
+  - "{{ .Values.image.repository }}:{{ .Values.image.cephTag }}"
+
+extraChartYqs:
+  - '(.dependencies[] | select(.name == "library") | .repository) = "file://./charts/library"'
