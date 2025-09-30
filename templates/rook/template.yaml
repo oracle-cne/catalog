@@ -20,6 +20,23 @@ values:
     csiAddons:
       repository: olcne/csiaddons-k8s-sidecar
 
+latestImages:
+  - name: .csi.cephcsi.repository
+    tag: .csi.cephcsi.tag
+  - name: .csi.registrar.repository
+    tag: .csi.registrar.tag
+  - name: .csi.provisioner.repository
+    tag: .csi.provisioner.tag
+  - name: .csi.snapshotter.repository
+    tag: .csi.snapshotter.tag
+  - name: .csi.attacher.repository
+    tag: .csi.attacher.tag
+  - name: .csi.resizer.repository
+    tag: .csi.resizer.tag
+  - name: .csi.csiAddons.repository
+    tag: .csi.csiAddons.tag
+
+
 extraImages:
   deployment.yaml:
   - "{{ .Values.csi.cephcsi.repository }}:{{ .Values.csi.cephcsi.tag }}"

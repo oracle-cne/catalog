@@ -37,6 +37,19 @@ for tmpl in $TEMPLATES; do
 done
 
 yq '.values' "$TEMPLATE_FILE" > vals.tmp
+
+NUM_LATEST_IMAGES=$(yq '.latestImages | length' "$TEMPLATE_FILE")
+NUM_LATEST_IMAGES=$((NUM_LATEST_IMAGES-1))
+for i in $(seq 0 $NUM_LATEST_IMAGES); do
+	REG_PATH=$(yq ".latestImages[$i].name" "$TEMPLATE_FILE")
+	REG=$(yq "$REG_PATH" vals.tmp)
+	IMAGE="$REGISTRY/$REG"
+	LATEST=$(skopeo list-tags "docker://$IMAGE" | yq .Tags[] | grep -v -e '-amd64' | grep -v -e '-arm64' | sort -V | tail -1)
+	echo "latest for $IMAGE: $LATEST"
+	TAG_PATH=$(yq ".latestImages[$i].tag" "$TEMPLATE_FILE")
+	yq -i "$TAG_PATH = \"$LATEST\"" vals.tmp
+done
+
 yq -i '. *= load("vals.tmp")' values.yaml
 rm vals.tmp
 
