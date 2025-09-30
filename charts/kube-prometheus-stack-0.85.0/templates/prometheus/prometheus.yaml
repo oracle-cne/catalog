@@ -1,3 +1,16 @@
+{{- if .Values.prometheus.prometheusSpec.image }}
+  {{- $registry := .Values.global.imageRegistry | default .Values.prometheus.prometheusSpec.image.registry -}}
+  {{- if and .Values.prometheus.prometheusSpec.image.tag .Values.prometheus.prometheusSpec.image.sha }}
+# extra-image: {{ $registry }}/{{ .Values.prometheus.prometheusSpec.image.repository }}:{{ .Values.prometheus.prometheusSpec.image.tag }}@sha256:{{ .Values.prometheus.prometheusSpec.image.sha }}
+  {{- else if .Values.prometheus.prometheusSpec.image.sha }}
+# extra-image: {{ $registry }}/{{ .Values.prometheus.prometheusSpec.image.repository }}@sha256:{{ .Values.prometheus.prometheusSpec.image.sha }}
+  {{- else if .Values.prometheus.prometheusSpec.image.tag }}
+# extra-image: {{ $registry }}/{{ .Values.prometheus.prometheusSpec.image.repository }}:{{ .Values.prometheus.prometheusSpec.image.tag }}
+  {{- else }}
+# extra-image: {{ $registry }}/{{ .Values.prometheus.prometheusSpec.image.repository }}
+  {{- end }}
+{{- end }}
+
 {{- if .Values.prometheus.enabled }}
 {{- if .Values.prometheus.agentMode }}
 apiVersion: monitoring.coreos.com/v1alpha1

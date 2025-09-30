@@ -1,3 +1,15 @@
+{{- if .Values.alertmanager.alertmanagerSpec.image }}
+  {{- $registry := .Values.global.imageRegistry | default .Values.alertmanager.alertmanagerSpec.image.registry -}}
+  {{- if and .Values.alertmanager.alertmanagerSpec.image.tag .Values.alertmanager.alertmanagerSpec.image.sha }}
+# extra-image: {{ $registry }}/{{ .Values.alertmanager.alertmanagerSpec.image.repository }}:{{ .Values.alertmanager.alertmanagerSpec.image.tag }}@sha256:{{ .Values.alertmanager.alertmanagerSpec.image.sha }}
+  {{- else if .Values.alertmanager.alertmanagerSpec.image.sha }}
+# extra-image: {{ $registry }}/{{ .Values.alertmanager.alertmanagerSpec.image.repository }}@sha256:{{ .Values.alertmanager.alertmanagerSpec.image.sha }}
+  {{- else if .Values.alertmanager.alertmanagerSpec.image.tag }}
+# extra-image: {{ $registry }}/{{ .Values.alertmanager.alertmanagerSpec.image.repository }}:{{ .Values.alertmanager.alertmanagerSpec.image.tag }}
+  {{- else }}
+# extra-image: {{ $registry }}/{{ .Values.alertmanager.alertmanagerSpec.image.repository }}
+  {{- end }}
+{{- end }}
 {{- if .Values.alertmanager.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: Alertmanager
