@@ -37,7 +37,7 @@ The command deploys CoreDNS on the Kubernetes cluster in the default configurati
 To uninstall/delete the `coredns` deployment:
 
 ```console
-$ helm uninstall coredns
+$ ocne application uninstall --release coredns
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.

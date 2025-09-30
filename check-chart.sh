@@ -44,6 +44,14 @@ if [ -e "$CHART_README" ]; then
 		echo "The string 'helm upgrade ' was found in $CHART_README"
 		exit 1
 	fi
+	if grep -qi "helm uninstall " $CHART_README; then
+		echo "The string 'helm uninstall ' was found in $CHART_README"
+		exit 1
+	fi
+	if grep -qi "helm delete " $CHART_README; then
+		echo "The string 'helm delete ' was found in $CHART_README"
+		exit 1
+	fi
 fi
 
 

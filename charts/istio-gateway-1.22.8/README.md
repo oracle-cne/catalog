@@ -15,7 +15,7 @@ ocne application install --namespace istio-system --release istio-ingressgateway
 To uninstall/delete the `istio-ingressgateway` deployment:
 
 ```console
-helm delete istio-ingressgateway
+ocne application uninstall --release istio-ingressgateway
 ```
 
 ## Configuration

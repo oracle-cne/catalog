@@ -58,8 +58,6 @@ ocne application uninstall --release [RELEASE_NAME} --namespace [NAMESPACE]
 
 This removes all the Kubernetes components associated with the chart and deletes the release.
 
-_See [helm uninstall](https://helm.sh/docs/helm/helm_uninstall/) for command documentation._
-
 CRDs created by this chart are not removed by default and should be manually cleaned up:
 
 ```console
@@ -238,7 +236,7 @@ If the **prometheus-operator** values are compatible with the new **kube-prometh
 2. Uninstall the **prometheus-operator** release and delete the existing PersistentVolumeClaim, and verify PV become Released.
 
     ```console
-    helm uninstall prometheus-operator -n monitoring
+    ocne application uninstall --release prometheus-operator -n monitoring
     kubectl delete pvc/<PersistenceVolumeClaim name> -n monitoring
     ```
 

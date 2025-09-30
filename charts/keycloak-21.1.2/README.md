@@ -51,7 +51,7 @@ $ ocne application install --name keycloak --release keycloakx --namespace keycl
 To uninstall the `keycloakx` deployment:
 
 ```console
-$ helm uninstall keycloakx
+$ ocne application uninstall --release keycloakx
 ```
 
 ## Configuration

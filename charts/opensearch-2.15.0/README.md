@@ -30,7 +30,7 @@ The command deploys OpenSearch with its associated components (data statefulsets
 To delete/uninstall the chart with the release name `my-release`:
 
 ```shell
-helm uninstall my-release
+ocne application uninstall --release my-release
 ```
 
 ## Configuration

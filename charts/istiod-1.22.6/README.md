@@ -17,7 +17,7 @@ ocne application install --release istiod --name istiod --namespace istio-system
 To uninstall/delete the `istiod` deployment:
 
 ```console
-helm delete istiod --namespace istio-system
+ocne application uninstall --release istiod --namespace istio-system
 ```
 
 ## Configuration

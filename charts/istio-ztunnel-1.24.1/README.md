@@ -14,7 +14,7 @@ ocne application install --name ztunnel --release ztunnel --namespace ztunnel```
 To uninstall/delete the chart:
 
 ```console
-helm delete ztunnel
+ocne application uninstall --release ztunnel
 ```
 
 ## Configuration

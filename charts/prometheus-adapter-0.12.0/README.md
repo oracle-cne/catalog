@@ -33,8 +33,6 @@ ocne application uninstall --release [RELEASE_NAME] --namespace [NAMESPACE]
 
 This removes all the Kubernetes components associated with the chart and deletes the release.
 
-_See [helm uninstall](https://helm.sh/docs/helm/helm_uninstall/) for command documentation._
-
 ### Upgrading Helm Chart
 
 ```console

@@ -28,7 +28,7 @@ The [configuration](#configuration) section lists the parameters that can be con
 To uninstall/delete the `my-release` deployment:
 
 ```console
-$ helm uninstall my-release
+$ ocne application uninstall --release my-release
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
