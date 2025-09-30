@@ -2,21 +2,12 @@
 
 This chart installs an Istio gateway deployment.
 
-## Setup Repo Info
-
-```console
-helm repo add istio https://istio-release.storage.googleapis.com/charts
-helm repo update
-```
-
-_See [helm repo](https://helm.sh/docs/helm/helm_repo/) for command documentation._
-
 ## Installing the Chart
 
 To install the chart with the release name `istio-ingressgateway`:
 
 ```console
-helm install istio-ingressgateway istio/gateway
+ocne application install --namespace istio-system --release istio-ingressgateway --name istio-ingressgateway
 ```
 
 ## Uninstalling the Chart
@@ -54,7 +45,9 @@ That is, `--set some.field=true` should be passed, not `--set defaults.some.fiel
 When deploying the gateway in an OpenShift cluster, use the `openshift` profile to override the default values, for example:
 
 ```console
-helm install istio-ingressgateway istio/gateway --set profile=openshift
+ocne application install --namespace istio-system --release istio-ingressgateway --name istio-ingressgateway --values - <<EOF
+profile: openshift
+EOF
 ```
 
 ### `image: auto` Information
@@ -110,7 +103,7 @@ This chart has the following benefits and differences:
 
 For a smooth migration, the resource names and `Deployment.spec.selector` labels must match.
 
-If you install with `helm install istio-gateway istio/gateway`, resources will be named `istio-gateway` and the `selector` labels set to:
+If you install with `ocne application install`, resources will be named `istio-gateway` and the `selector` labels set to:
 
 ```yaml
 app: istio-gateway
@@ -134,13 +127,18 @@ An existing helm release can be `helm upgrade`d to this chart by using the same 
 installation was done like:
 
 ```console
-helm install istio-ingress manifests/charts/gateways/istio-ingress -n istio-system
+ocne application install --namespace istio-system --release istio-ingressgateway --name istio-ingressgateway
 ```
 
 It could be upgraded with
 
 ```console
-helm upgrade istio-ingress manifests/charts/gateway -n istio-system --set name=istio-ingressgateway --set labels.app=istio-ingressgateway --set labels.istio=ingressgateway
+ocne application update --namespace istio-system --release istio-ingressgateway --values - <<EOF
+name: istio-ingressgateway
+labels:
+  app: istio-ingressgateway
+  istio: ingressgateway
+EOF
 ```
 
 Note the name and labels are overridden to match the names of the existing installation.
