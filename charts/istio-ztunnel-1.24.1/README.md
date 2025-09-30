@@ -2,22 +2,12 @@
 
 This chart installs an Istio ztunnel.
 
-## Setup Repo Info
-
-```console
-helm repo add istio https://istio-release.storage.googleapis.com/charts
-helm repo update
-```
-
-_See [helm repo](https://helm.sh/docs/helm/helm_repo/) for command documentation._
-
 ## Installing the Chart
 
 To install the chart:
 
 ```console
-helm install ztunnel istio/ztunnel
-```
+ocne application install --name ztunnel --release ztunnel --namespace ztunnel```
 
 ## Uninstalling the Chart
 

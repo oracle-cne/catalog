@@ -2,15 +2,6 @@
 
 This chart installs an Istiod deployment.
 
-## Setup Repo Info
-
-```console
-helm repo add istio https://istio-release.storage.googleapis.com/charts
-helm repo update
-```
-
-_See [helm repo](https://helm.sh/docs/helm/helm_repo/) for command documentation._
-
 ## Installing the Chart
 
 Before installing, ensure CRDs are installed in the cluster (from the `istio/base` chart).
@@ -18,8 +9,7 @@ Before installing, ensure CRDs are installed in the cluster (from the `istio/bas
 To install the chart with the release name `istiod`:
 
 ```console
-kubectl create namespace istio-system
-helm install istiod istio/istiod --namespace istio-system
+ocne application install --release istiod --name istiod --namespace istio-system
 ```
 
 ## Uninstalling the Chart

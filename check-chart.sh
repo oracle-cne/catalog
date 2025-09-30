@@ -36,7 +36,14 @@ grep -q "$NAME[[:space:]]*|[[:space:]].*$VERSION" README.md
 
 echo "Ensure a README.md does not contain helm commands to install or uninstall"
 if [ -e "$CHART_README" ]; then
-	grep -qFi "helm install" $CHART_README
+	if grep -qi "helm install " $CHART_README; then
+		echo "The string 'helm install ' was found in $CHART_README"
+		exit 1
+	fi
+	if grep -qi "helm upgrade " $CHART_README; then
+		echo "The string 'helm upgrade ' was found in $CHART_README"
+		exit 1
+	fi
 fi
 
 

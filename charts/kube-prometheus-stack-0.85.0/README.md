@@ -28,8 +28,6 @@ ocne application install --namespace [NAMESPACE] --release [RELEASE_NAME] --name
 
 _See [configuration](#configuration) below._
 
-_See [helm install](https://helm.sh/docs/helm/helm_install/) for command documentation._
-
 ### Dependencies
 
 By default this chart installs additional, dependent charts:
@@ -89,8 +87,6 @@ Consult also the [Helm Documentation on CRDs](https://helm.sh/docs/chart_best_pr
 CRDs update lead to a major version bump.
 The Chart's [appVersion](https://github.com/prometheus-community/helm-charts/blob/13ed7098db2f78c2bbcdab6c1c3c7a95b4b94574/charts/kube-prometheus-stack/Chart.yaml#L36) refers to the [`prometheus-operator`](https://github.com/prometheus-operator/prometheus-operator/tree/main)'s version with matching CRDs.
 
-_See [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) for command documentation._
-
 #### Upgrading an existing Release to a new major version
 
 A major chart version change (like v1.2.3 -> v2.0.0) indicates that there is an incompatible breaking change needing manual actions.
@@ -130,11 +126,11 @@ Here is a detailed example of how to resolve this issue.  Use the example comman
 
 1. Assume that kube-prometheus-stack-0.63.0 was originally installed as follows:
     ```
-    ocne app install -n prometheus -r kube-prometheus-stack --name kube-prometheus-stack
+    ocne application install -n prometheus -r kube-prometheus-stack --name kube-prometheus-stack
     ```
 2. Also assume that kube-prometheus-stack is upgraded as follows:
     ```
-    ocne app update -n prometheus -r kube-prometheus-stack --version 0.85.0
+    ocne application update -n prometheus -r kube-prometheus-stack --version 0.85.0
     ```
 3. Verify the issue occurred by searching the logs of the prometheus-operator.  You will see errors like the example below.
     ```
@@ -224,19 +220,6 @@ An easy way of doing this, without compromising the default PodMonitors/ServiceM
 To do so, you can set `prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues` and `prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues` to `false`.
 
 ## Migrating from stable/prometheus-operator chart
-
-## Zero downtime
-
-Since `kube-prometheus-stack` is fully compatible with the `stable/prometheus-operator` chart, a migration without downtime can be achieved.
-However, the old name prefix needs to be kept. If you want the new name please follow the step by step guide below (with downtime).
-
-You can override the name to achieve this:
-
-```console
-helm upgrade prometheus-operator prometheus-community/kube-prometheus-stack -n monitoring --reuse-values --set nameOverride=prometheus-operator
-```
-
-**Note**: It is recommended to run this first with `--dry-run --debug`.
 
 ## Redeploy with new name (downtime)
 

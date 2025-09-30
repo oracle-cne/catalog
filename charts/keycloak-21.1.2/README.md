@@ -25,7 +25,7 @@ extraEnv: |
       -Djgroups.dns.query={{ include "keycloak.fullname" . }}-headless
 EOF
 
-$ helm install keycloak codecentric/keycloakx --values ./values.yaml
+$ ocne application install --name keycloak --release keycloak --namespace keycloak --values values.yaml
 ```
 Note that the default configuration is not suitable for production since it uses a h2 file database by default.
 It is strongly recommended to use a dedicated database with Keycloak.
@@ -43,7 +43,7 @@ For more information on Keycloak and its capabilities, see its [documentation](h
 To install the chart with the release name `keycloakx`:
 
 ```console
-$ helm install keycloak codecentric/keycloakx
+$ ocne application install --name keycloak --release keycloakx --namespace keycloak --values values.yaml
 ```
 
 ## Uninstalling the Chart
@@ -217,14 +217,16 @@ The following table lists the configurable parameters of the Keycloak-X chart an
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
 
 ```console
-$ helm install keycloak codecentric/keycloakx -n keycloak --set replicas=1
+$ ocne application install keycloak --name keycloak --release keycloakx --namespace keycloak --values - <<EOF
+replicas: 1
+EOF
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```console
-$ helm install keycloak codecentric/keycloakx -n keycloak --values values.yaml
+$ ocne application install keycloak --name keycloak --release keycloakx --namespace keycloak --values values.yamml
 ```
 
 The chart offers great flexibility.
