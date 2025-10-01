@@ -49,25 +49,25 @@ for xform in $TRANSFORMS; do
 		continue
 	fi
 	FILE=$(cat templates/$xform)
-	cat <(echo "$TEXT") <(echo "$FILE") > templates/$xform
+	printf "%s\n%s" "$TEXT" "$FILE" > templates/$xform
 done
 
 yq '.values' "$TEMPLATE_FILE" > vals.tmp
+yq -i '. *= load("vals.tmp")' values.yaml
+rm vals.tmp
 
 NUM_LATEST_IMAGES=$(yq '.latestImages | length' "$TEMPLATE_FILE")
 NUM_LATEST_IMAGES=$((NUM_LATEST_IMAGES-1))
 for i in $(seq 0 $NUM_LATEST_IMAGES); do
 	REG_PATH=$(yq ".latestImages[$i].name" "$TEMPLATE_FILE")
-	REG=$(yq "$REG_PATH" vals.tmp)
+	REG=$(yq "$REG_PATH" values.yaml)
 	IMAGE="$REGISTRY/$REG"
 	LATEST=$(skopeo list-tags "docker://$IMAGE" | yq .Tags[] | grep -v -e '-amd64' | grep -v -e '-arm64' | sort -V | tail -1)
 	echo "latest for $IMAGE: $LATEST"
 	TAG_PATH=$(yq ".latestImages[$i].tag" "$TEMPLATE_FILE")
-	yq -i "$TAG_PATH = \"$LATEST\"" vals.tmp
+	yq -i "$TAG_PATH = \"$LATEST\"" values.yaml
 done
 
-yq -i '. *= load("vals.tmp")' values.yaml
-rm vals.tmp
 
 popd # APP-APP_VERSION
 
