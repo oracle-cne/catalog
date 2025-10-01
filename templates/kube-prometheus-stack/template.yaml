@@ -1,6 +1,9 @@
 repo: https://charts.rook.io/release
 chart: rook-ceph
 icon: prometheus-logo.svg
+latestImages:
+  - name: crds.upgradeJob.image.busybox.registry/crds.upgradeJob.image.busybox.repository
+    tag: crds.upgradeJob.image.busybox.tag
 values:
   crds:
     upgradeJob:
@@ -8,23 +11,19 @@ values:
         busybox:
           registry: olcne
           repository: kubectl
-          tag: "v1.33.5"
         kubectl:
           registry: olcne
           repository: kubectl
-          tag: "v1.33.5"
   alertmanager:
     alertmanagerSpec:
       image:
         registry: olcne
         repository: alertmanager
-        tag: "v0.28.1"
   prometheus:
     prometheusSpec:
       image:
         registry: olcne
         repository: prometheus
-        tag: "v3.5.0"
   prometheusOperator:
     admissionWebhooks:
       deployment:
@@ -49,13 +48,11 @@ values:
     thanosImage:
       registry: olcne
       repository: thanos
-      tag: "v0.39.2"
   thanosRuler:
     thanosRulerSpec:
       image:
         registry: olcne
         repository: thanos
-        tag: "v0.39.2"
 
 extraImages:
   deployment.yaml:
