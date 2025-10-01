@@ -26,13 +26,12 @@ latestImages:
     tag: .thanosRuler.thanosRulerSpec.image.tag
 
 values:
-  upgradeJob:
-    enabled: true
-    forceConflicts: true
   grafana:
     enabled: false
   crds:
     upgradeJob:
+      enabled: true
+      forceConflicts: true
       image:
         busybox:
           registry: olcne
