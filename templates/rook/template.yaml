@@ -1,6 +1,5 @@
 repo: https://charts.rook.io/release
 chart: rook-ceph
-chartVersion: 1.18.2
 icon: rook-logo.svg
 values:
   image:
