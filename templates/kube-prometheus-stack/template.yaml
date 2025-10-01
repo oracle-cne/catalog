@@ -109,9 +109,6 @@ transforms:
       {{- end }}
   "prometheus-operator/deployment.yaml":
     prepend: |
-      {{- $namespace := printf "%s" (include "kube-prometheus-stack.namespace" .) }}
-      {{- $defaultKubeletSvcName := printf "%s-kubelet" (include "kube-prometheus-stack.fullname" .) }}
-      
       {{- $configReloaderRegistry := .Values.global.imageRegistry | default .Values.prometheusOperator.prometheusConfigReloader.image.registry -}}
       {{- $thanosRegistry := .Values.global.imageRegistry | default .Values.prometheusOperator.thanosImage.registry -}}
       {{- if .Values.prometheusOperator.thanosImage.sha }}
