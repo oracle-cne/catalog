@@ -36,16 +36,19 @@ latestImages:
   - name: .csi.csiAddons.repository
     tag: .csi.csiAddons.tag
 
-
-extraImages:
+transforms:
   deployment.yaml:
-  - "{{ .Values.csi.cephcsi.repository }}:{{ .Values.csi.cephcsi.tag }}"
-  - "{{ .Values.csi.registrar.repository }}:{{ .Values.csi.registrar.tag }}"
-  - "{{ .Values.csi.provisioner.repository }}:{{ .Values.csi.provisioner.tag }}"
-  - "{{ .Values.csi.snapshotter.repository }}:{{ .Values.csi.snapshotter.tag }}"
-  - "{{ .Values.csi.attacher.repository }}:{{ .Values.csi.attacher.tag }}"
-  - "{{ .Values.csi.resizer.repository }}:{{ .Values.csi.resizer.tag }}"
-  - "{{ .Values.image.repository }}:{{ .Values.image.cephTag }}"
+    extraImages:
+    - "{{ .Values.csi.cephcsi.repository }}:{{ .Values.csi.cephcsi.tag }}"
+    - "{{ .Values.csi.registrar.repository }}:{{ .Values.csi.registrar.tag }}"
+    - "{{ .Values.csi.provisioner.repository }}:{{ .Values.csi.provisioner.tag }}"
+    - "{{ .Values.csi.snapshotter.repository }}:{{ .Values.csi.snapshotter.tag }}"
+    - "{{ .Values.csi.attacher.repository }}:{{ .Values.csi.attacher.tag }}"
+    - "{{ .Values.csi.resizer.repository }}:{{ .Values.csi.resizer.tag }}"
+    - "{{ .Values.image.repository }}:{{ .Values.image.cephTag }}"
+  configmap.yaml:
+    prepend: |
+      this is some text
 
 extraChartYqs:
   - '(.dependencies[] | select(.name == "library") | .repository) = "file://./charts/library"'

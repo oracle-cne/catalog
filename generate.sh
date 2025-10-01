@@ -40,10 +40,19 @@ yq -i ".name = \"$APP\"" Chart.yaml
 
 yq -r -0 '.extraChartYqs[]' "$TEMPLATE_FILE" | xargs -0 -I{} yq -i {} Chart.yaml
 
-TEMPLATES=$(yq -r '.extraImages | keys | .[]' "$TEMPLATE_FILE")
-for tmpl in $TEMPLATES; do
-	yq -r -0 ".extraImages.\"$tmpl\" | .[]" "$TEMPLATE_FILE" | xargs -0 -I{} sed -i "1s;^;# extra-image: {}\n;" templates/$tmpl
+TRANSFORMS=$(yq -r '.transforms | keys | .[]' "$TEMPLATE_FILE")
+for xform in $TRANSFORMS; do
+	yq -r -0 ".transforms.\"$xform\".extraImages | .[]" "$TEMPLATE_FILE" | xargs -0 -I{} sed -i "1s;^;# extra-image: {}\n;" templates/$xform
+
+	TEXT=$(yq -re ".transforms.\"$xform\".prepend" "$TEMPLATE_FILE" 2>/dev/null)
+	if [ "$?" != "0" ]; then
+		continue
+	fi
+	FILE=$(cat templates/$xform)
+	cat <(echo "$TEXT") <(echo "$FILE") > templates/$xform
 done
+
+exit 1
 
 yq '.values' "$TEMPLATE_FILE" > vals.tmp
 
