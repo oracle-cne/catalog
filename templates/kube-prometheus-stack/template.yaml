@@ -120,4 +120,7 @@ transforms:
       {{- end }}
 
 extraChartYqs:
-  - '(.dependencies[] | select(.name == "library") | .repository) = "file://./charts/library"'
+  - '(.dependencies[] | select(.name == "kube-state-metrics") | .repository) = "file://../kube-state-metrics-2.8.2"'
+  - '(.dependencies[] | select(.name == "prometheus-node-exporter") | .repository) = "file://../prometheus-node-exporter-1.6.1"'
+  - '(.dependencies[] | select(.name == "grafana") | .repository) = "file://../grafana-7.5.17"'
+
