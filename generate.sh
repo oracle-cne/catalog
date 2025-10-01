@@ -13,11 +13,20 @@ set -x
 REPO_URL=$(yq .repo "$TEMPLATE_FILE")
 ICON=$(yq .icon "$TEMPLATE_FILE")
 CHART=$(yq .chart "$TEMPLATE_FILE")
+CHART_VERSION=$(yq -re .chartVersion "$TEMPLATE_FILE" 2>/dev/null)
+if [ "$?" != "0" ]; then
+	CHART_VERSION="$APP_VERSION"
+fi
 
 pushd "charts"
 
 helm repo add "$REPO_NAME" "$REPO_URL"
-helm pull --untar "$REPO_NAME/$CHART" --version "v$APP_VERSION"
+helm pull --untar "$REPO_NAME/$CHART" --version "v$CHART_VERSION"
+if [ "$?" != "0" ]; then
+	echo "Could not pull ${CHART}@${CHART_VERSION} from ${REPO_URL}"
+	exit 1
+fi
+
 helm repo remove "$REPO_NAME"
 
 mv "$CHART" "${APP}-${APP_VERSION}"
