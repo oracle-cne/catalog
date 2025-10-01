@@ -1,9 +1,12 @@
-repo: https://charts.rook.io/release
-chart: rook-ceph
+repo: https://prometheus-community.github.io/helm-charts
+chart: kube-prometheus-stack
+chartVersion: 77.12.0
 icon: prometheus-logo.svg
+
 latestImages:
-  - name: crds.upgradeJob.image.busybox.registry/crds.upgradeJob.image.busybox.repository
-    tag: crds.upgradeJob.image.busybox.tag
+  - name: '.crds.upgradeJob.image.busybox | "(.registry)/(.repository)"'
+    tag: .crds.upgradeJob.image.busybox.tag
+
 values:
   crds:
     upgradeJob:
@@ -54,15 +57,22 @@ values:
         registry: olcne
         repository: thanos
 
-extraImages:
-  deployment.yaml:
-    - "{{ .Values.csi.cephcsi.repository }}:{{ .Values.csi.cephcsi.tag }}"
-    - "{{ .Values.csi.registrar.repository }}:{{ .Values.csi.registrar.tag }}"
-    - "{{ .Values.csi.provisioner.repository }}:{{ .Values.csi.provisioner.tag }}"
-    - "{{ .Values.csi.snapshotter.repository }}:{{ .Values.csi.snapshotter.tag }}"
-    - "{{ .Values.csi.attacher.repository }}:{{ .Values.csi.attacher.tag }}"
-    - "{{ .Values.csi.resizer.repository }}:{{ .Values.csi.resizer.tag }}"
-    - "{{ .Values.image.repository }}:{{ .Values.image.cephTag }}"
+transforms:
+  "prometheus/prometheus.yaml":
+
+    prepend: |
+      {{- if .Values.prometheus.prometheusSpec.image }}
+        {{- $registry := .Values.global.imageRegistry | default .Values.prometheus.prometheusSpec.image.registry -}}
+        {{- if and .Values.prometheus.prometheusSpec.image.tag .Values.prometheus.prometheusSpec.image.sha }}
+      # extra-image: {{ $registry }}/{{ .Values.prometheus.prometheusSpec.image.repository }}:{{ .Values.prometheus.prometheusSpec.image.tag }}@sha256:{{ .Values.prometheus.prometheusSpec.image.sha }}
+        {{- else if .Values.prometheus.prometheusSpec.image.sha }}
+      # extra-image: {{ $registry }}/{{ .Values.prometheus.prometheusSpec.image.repository }}@sha256:{{ .Values.prometheus.prometheusSpec.image.sha }}
+        {{- else if .Values.prometheus.prometheusSpec.image.tag }}
+      # extra-image: {{ $registry }}/{{ .Values.prometheus.prometheusSpec.image.repository }}:{{ .Values.prometheus.prometheusSpec.image.tag }}
+        {{- else }}
+      # extra-image: {{ $registry }}/{{ .Values.prometheus.prometheusSpec.image.repository }}
+        {{- end }}
+      {{- end }}
 
 extraChartYqs:
   - '(.dependencies[] | select(.name == "library") | .repository) = "file://./charts/library"'
