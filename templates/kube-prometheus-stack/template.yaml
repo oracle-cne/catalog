@@ -59,16 +59,13 @@ values:
         image:
           registry: olcne
           repository: kube-webhook-certgen
-          tag: v1.13.1
     image:
       registry: olcne
       repository: prometheus-operator
-      tag: "v0.85.0"
     prometheusConfigReloader:
       image:
         registry: olcne
         repository: prometheus-config-reloader
-        tag: "v0.85.0"
     thanosImage:
       registry: olcne
       repository: thanos
