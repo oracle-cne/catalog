@@ -49,7 +49,7 @@ for xform in $TRANSFORMS; do
 		continue
 	fi
 	FILE=$(cat templates/$xform)
-	cat <(echo "$TEXT") <(echo "$FILE") > templates/$xform
+	printf "%s\n%s" "$TEXT" "$FILE" > templates/$xform
 done
 
 yq '.values' "$TEMPLATE_FILE" > vals.tmp
