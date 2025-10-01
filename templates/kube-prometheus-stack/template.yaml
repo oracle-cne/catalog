@@ -93,6 +93,37 @@ transforms:
       # extra-image: {{ $registry }}/{{ .Values.prometheus.prometheusSpec.image.repository }}
         {{- end }}
       {{- end }}
+  "alertmanager/alertmanager.yaml":
+    prepend: |
+      {{- if .Values.alertmanager.alertmanagerSpec.image }}
+        {{- $registry := .Values.global.imageRegistry | default .Values.alertmanager.alertmanagerSpec.image.registry -}}
+        {{- if and .Values.alertmanager.alertmanagerSpec.image.tag .Values.alertmanager.alertmanagerSpec.image.sha }}
+      # extra-image: {{ $registry }}/{{ .Values.alertmanager.alertmanagerSpec.image.repository }}:{{ .Values.alertmanager.alertmanagerSpec.image.tag }}@sha256:{{ .Values.alertmanager.alertmanagerSpec.image.sha }}
+        {{- else if .Values.alertmanager.alertmanagerSpec.image.sha }}
+      # extra-image: {{ $registry }}/{{ .Values.alertmanager.alertmanagerSpec.image.repository }}@sha256:{{ .Values.alertmanager.alertmanagerSpec.image.sha }}
+        {{- else if .Values.alertmanager.alertmanagerSpec.image.tag }}
+      # extra-image: {{ $registry }}/{{ .Values.alertmanager.alertmanagerSpec.image.repository }}:{{ .Values.alertmanager.alertmanagerSpec.image.tag }}
+        {{- else }}
+      # extra-image: {{ $registry }}/{{ .Values.alertmanager.alertmanagerSpec.image.repository }}
+        {{- end }}
+      {{- end }}
+  "prometheus-operator/deployment.yaml":
+    prepend: |
+      {{- $namespace := printf "%s" (include "kube-prometheus-stack.namespace" .) }}
+      {{- $defaultKubeletSvcName := printf "%s-kubelet" (include "kube-prometheus-stack.fullname" .) }}
+      
+      {{- $configReloaderRegistry := .Values.global.imageRegistry | default .Values.prometheusOperator.prometheusConfigReloader.image.registry -}}
+      {{- $thanosRegistry := .Values.global.imageRegistry | default .Values.prometheusOperator.thanosImage.registry -}}
+      {{- if .Values.prometheusOperator.thanosImage.sha }}
+      # extra-image: {{ $thanosRegistry }}/{{ .Values.prometheusOperator.thanosImage.repository }}:{{ .Values.prometheusOperator.thanosImage.tag }}@sha256:{{ .Values.prometheusOperator.thanosImage.sha }}
+      {{- else }}
+      # extra-image: {{ $thanosRegistry }}/{{ .Values.prometheusOperator.thanosImage.repository }}:{{ .Values.prometheusOperator.thanosImage.tag }}
+      {{- end }}
+      {{- if .Values.prometheusOperator.prometheusConfigReloader.image.sha }}
+      # extra-image: {{ $configReloaderRegistry }}/{{ .Values.prometheusOperator.prometheusConfigReloader.image.repository }}:{{ .Values.prometheusOperator.prometheusConfigReloader.image.tag | default .Chart.AppVersion }}@sha256:{{ .Values.prometheusOperator.prometheusConfigReloader.image.sha }}
+      {{- else }}
+      # extra-image: {{ $configReloaderRegistry }}/{{ .Values.prometheusOperator.prometheusConfigReloader.image.repository }}:{{ .Values.prometheusOperator.prometheusConfigReloader.image.tag | default .Chart.AppVersion }}
+      {{- end }}
 
 extraChartYqs:
   - '(.dependencies[] | select(.name == "library") | .repository) = "file://./charts/library"'
