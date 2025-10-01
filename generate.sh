@@ -52,8 +52,6 @@ for xform in $TRANSFORMS; do
 	cat <(echo "$TEXT") <(echo "$FILE") > templates/$xform
 done
 
-exit 1
-
 yq '.values' "$TEMPLATE_FILE" > vals.tmp
 
 NUM_LATEST_IMAGES=$(yq '.latestImages | length' "$TEMPLATE_FILE")
