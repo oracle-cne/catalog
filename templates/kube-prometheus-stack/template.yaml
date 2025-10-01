@@ -1,13 +1,36 @@
 repo: https://prometheus-community.github.io/helm-charts
 chart: kube-prometheus-stack
-chartVersion: 77.12.0
+chartVersion: 77.6.0
 icon: prometheus-logo.svg
 
 latestImages:
   - name: .crds.upgradeJob.image.busybox | (.registry) + "/" + (.repository)
     tag: .crds.upgradeJob.image.busybox.tag
+  - name: .crds.upgradeJob.image.kubectl | (.registry) + "/" + (.repository)
+    tag: .crds.upgradeJob.image.kubectl.tag
+  - name: .alertmanager.alertmanagerSpec.image | (.registry) + "/" + (.repository)
+    tag: .alertmanager.alertmanagerSpec.image.tag
+  - name: .prometheus.prometheusSpec.image | (.registry) + "/" + (.repository)
+    tag: .prometheus.prometheusSpec.image.tag
+  - name: .prometheusOperator.image | (.registry) + "/" + (.repository)
+    tag: .prometheusOperator.image.tag
+  - name: .prometheusOperator.admissionWebhooks.deployment.image | (.registry) + "/" + (.repository)
+    tag: .prometheusOperator.admissionWebhooks.deployment.image.tag
+  - name: .prometheusOperator.admissionWebhooks.patch.image | (.registry) + "/" + (.repository)
+    tag: .prometheusOperator.admissionWebhooks.patch.image.tag
+  - name: .prometheusOperator.prometheusConfigReloader.image | (.registry) + "/" + (.repository)
+    tag: .prometheusOperator.prometheusConfigReloader.image.tag
+  - name: .prometheusOperator.thanosImage | (.registry) + "/" + (.repository)
+    tag: .prometheusOperator.thanosImage.tag
+  - name: .thanosRuler.thanosRulerSpec.image | (.registry) + "/" + (.repository)
+    tag: .thanosRuler.thanosRulerSpec.image.tag
 
 values:
+  upgradeJob:
+    enabled: true
+    forceConflicts: true
+  grafana:
+    enabled: false
   crds:
     upgradeJob:
       image:
@@ -33,7 +56,6 @@ values:
         image:
           registry: olcne
           repository: prometheus-admission-webhook
-          tag: "v0.85.0"
       patch:
         image:
           registry: olcne
