@@ -8,6 +8,10 @@ REPO_NAME="tmp-repo"
 
 TEMPLATE_FILE="$PWD/templates/$APP/template.yaml"
 
+if [ -z "$REGISTRY" ]; then
+	REGISTRY=container-registry.oracle.com
+fi
+
 set -x
 
 REPO_URL=$(yq .repo "$TEMPLATE_FILE")
