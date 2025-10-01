@@ -25,7 +25,7 @@ $ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/downloa
 To install the chart with the release name `cert-manager`:
 
 ```console
-ocne application install --name cert-manager --release cert-manager --namespace cert-manager
+ocne application install --name cert-manager --release cert-manager --namespace cert-manager --version 1.17.2
 ```
 
 In order to begin issuing certificates, you will need to set up a ClusterIssuer
