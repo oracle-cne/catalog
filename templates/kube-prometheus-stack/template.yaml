@@ -59,7 +59,6 @@ values:
 
 transforms:
   "prometheus/prometheus.yaml":
-
     prepend: |
       {{- if .Values.prometheus.prometheusSpec.image }}
         {{- $registry := .Values.global.imageRegistry | default .Values.prometheus.prometheusSpec.image.registry -}}
