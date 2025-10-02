@@ -3,7 +3,7 @@
 
 Name:		ocne-catalog
 Version:	2.0.0
-Release:	27%{?dist}
+Release:	28%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ cp -ap olm/icons/* %{buildroot}/opt/icons
 /opt/icons
 
 %changelog
+* Thu Oct 02 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-28
+- Use container-registry.oracle.com/olcne/ock:base-image as the base image
+
 * Tue Aug 19 2025 Murali Annamneni <murali.annamneni@oracle.com> - 2.0.0-27
 - Add grafana-10.2.6 chart
 
