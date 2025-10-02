@@ -48,7 +48,7 @@ spec:
             - sh
           args:
             - -c
-            - tar -xOzf /crds/crds.tar.gz > /tmp/crds.yaml
+            - bzcat /crds/crds.bz2 > /tmp/crds.yaml
           {{- with .Values.upgradeJob.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
