@@ -7,7 +7,7 @@
 
 Name:		%{_name}-container-image
 Version:	2.0.0
-Release:	27%{?dist}
+Release:	28%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -24,7 +24,7 @@ An on-disk Helm chart repository
 yum clean all
 yumdownloader --destdir=${PWD}/rpms %{rpm_name}
 
-docker build --pull=never --squash --build-arg https_proxy=${https_proxy} \
+docker build --pull --squash --build-arg https_proxy=${https_proxy} \
 	-t %{docker_tag} -f ./olm/builds/Dockerfile .
 docker save -o %{_name}.tar %{docker_tag}
 
@@ -37,6 +37,9 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
+* Thu Oct 02 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-28
+- Use container-registry.oracle.com/olcne/ock:base-image as the base image
+
 * Tue Aug 19 2025 Murali Annamneni <murali.annamneni@oracle.com> - 2.0.0-27
 - Add grafana-10.2.6 chart
 
