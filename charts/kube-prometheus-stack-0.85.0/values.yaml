@@ -3311,7 +3311,7 @@ prometheusOperator:
     registry: olcne
     repository: prometheus-operator
     # if not set appVersion field from Chart.yaml is used
-    tag: v0.85.0
+    tag: "v0.85.0"
     sha: ""
     pullPolicy: IfNotPresent
 
@@ -3338,7 +3338,7 @@ prometheusOperator:
       registry: olcne
       repository: prometheus-config-reloader
       # if not set appVersion field from Chart.yaml is used
-      tag: v0.85.0
+      tag: "v0.85.0"
       sha: ""
 
     # add prometheus config reloader liveness and readiness probe. Default: false
