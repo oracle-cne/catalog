@@ -911,7 +911,7 @@ alertmanager:
     ## Image of Alertmanager
     ##
     image:
-      registry: "olcne"
+      registry: olcne
       repository: alertmanager
       tag: v0.28.1
       sha: ""
@@ -2806,7 +2806,7 @@ prometheusOperator:
       ## Prometheus-operator webhook image
       ##
       image:
-        registry: "olcne"
+        registry: olcne
         repository: prometheus-admission-webhook
         # if not set appVersion field from Chart.yaml is used
         tag: "v0.85.0"
@@ -2918,7 +2918,7 @@ prometheusOperator:
     patch:
       enabled: true
       image:
-        registry: "olcne"
+        registry: olcne
         repository: kube-webhook-certgen
         tag: v1.13.1  # latest tag: https://github.com/kubernetes/ingress-nginx/blob/main/images/kube-webhook-certgen/TAG
         sha: ""
@@ -3308,7 +3308,7 @@ prometheusOperator:
   ## Prometheus-operator image
   ##
   image:
-    registry: "olcne"
+    registry: olcne
     repository: prometheus-operator
     # if not set appVersion field from Chart.yaml is used
     tag: v0.85.0
@@ -3335,7 +3335,7 @@ prometheusOperator:
   ##
   prometheusConfigReloader:
     image:
-      registry: "olcne"
+      registry: olcne
       repository: prometheus-config-reloader
       # if not set appVersion field from Chart.yaml is used
       tag: v0.85.0
@@ -3356,7 +3356,7 @@ prometheusOperator:
   ## Thanos side-car image when configured
   ##
   thanosImage:
-    registry:  "olcne"
+    registry:  olcne
     repository: thanos
     tag: v0.39.2
     sha: ""
@@ -4008,7 +4008,7 @@ prometheus:
     ## Image of Prometheus.
     ##
     image:
-      registry: "olcne"
+      registry: olcne
       repository: prometheus
       tag: v3.5.0
       sha: ""
@@ -5111,7 +5111,7 @@ thanosRuler:
     ## Image of ThanosRuler
     ##
     image:
-      registry: "olcne"
+      registry: olcne
       repository: thanos
       tag: v0.39.2
       sha: ""
