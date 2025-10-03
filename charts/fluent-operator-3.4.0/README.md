@@ -2,20 +2,22 @@
 
 [Fluent Operator](https://github.com/fluent/fluent-operator/) provides a Kubernetes-native logging pipeline based on Fluent-Bit and Fluentd.
 
-## Installation
+## Deploy Fluent Operator with Oracle Cloud Native Environment
 
-To install or upgrade Fluent Operator using Helm:
+The Fluent Bit section of the Fluent Operator supports different CRI `docker`, `containerd`,  and `CRI-O`.
+`containerd` and `CRI-O` use the `CRI Log` format which is different with `docker`, they require additional parser to parse JSON application logs. You should set different `containerRuntime` depending on your container runtime.
+
+The default runtime is docker, you can choose other runtimes as follows.
+
+If your container runtime is `containerd` or  `cri-o`, you can set the `containerRuntime` parameter to `containerd` or `crio`. e.g.
 
 ```shell
-export FLUENT_OPERATOR_CONTAINER_RUNTIME="containerd" # or "cri-o", "docker" depending on the container runtime being used (see `values.yaml`)
-
-helm repo add fluent https://fluent.github.io/helm-charts
-helm upgrade --install fluent-operator fluent/fluent-operator \
-  --create-namespace \ 
-  --set containerRuntime=${FLUENT_OPERATOR_CONTAINER_RUNTIME}
+ocne application install --namespace fluent --name fluent-operator --release fluent-operator
 ```
 
-By default, all CRDs required for Fluent Operator will be installed.  To prevent `helm install` from installing CRDs, you can set `fluent-bit.crdsEnable` or `fluentd.crdsEnable` to `false`.  
+Fluent Operator CRDs will be installed by default when running an install for the application. But if the CRD already exists, it will be skipped with a warning. So make sure you install the CRDs by yourself if you upgrade your Fluent Operator version.
+
+> Note: During the upgrade process, if a CRD was previously created using the create operation, an error will occur during the apply operation. Using apply here allows the CRD to be replaced and created in its entirety in a single operation.
 
 ## Upgrading
 

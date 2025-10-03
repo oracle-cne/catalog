@@ -32,7 +32,7 @@ This version requires Helm >= 2.12.0.
 
 ### To 5.0.0
 
-You have to add --force to your helm upgrade command as the labels of the chart have changed.
+You have to add --force to your `helm upgrade` command as the labels of the chart have changed.
 
 ### To 6.0.0
 

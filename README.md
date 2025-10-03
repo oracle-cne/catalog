@@ -39,9 +39,9 @@ installing the `ocne-catalog` chart.
 | Istio Ztunnel                                       | istio-ztunnel               | 1.24.6<br>1.24.1                                                     |
 | Istio CNI                                           | istio-cni                   | 1.24.6<br>1.24.1                                                     |
 | Keycloak                                            | keycloak                    | 21.1.2                                                               |
-| Kube Prometheus Stack                               | kube-prometheus-stack       | 0.63.0                                                               |
+| Kube Prometheus Stack                               | kube-prometheus-stack       | 0.85.0<br>0.63.0                                                     |
 | Kube Proxy                                          | kube-proxy                  | 2.0.0                                                                |
-| Kube State Metrics                                  | kube-state-metrics          | 2.8.2                                                                |
+| Kube State Metrics                                  | kube-state-metrics          | 2.17.0<br>2.8.2                                                      |
 | KubeVirt                                            | kubevirt                    | 1.5.2<br>1.4.1<br>1.3.1<br>1.2.2<br>1.1.1                            |
 | MetalLB                                             | metallb                     | 0.15.2<br>0.13.10                                                    |
 | Multus                                              | multus                      | 4.2.1<br>4.0.2                                                       |
@@ -53,7 +53,7 @@ installing the `ocne-catalog` chart.
 | Oracle Cloud Native Environment Application Catalog | ocne-catalog                | 2.0.0                                                                |
 | Prometheus                                          | prometheus                  | 2.31.1                                                               |
 | Prometheus Adapter                                  | prometheus-adapter          | 0.12.0<br>0.10.0                                                     |
-| Prometheus Node Exporter                            | prometheus-node-exporter    | 1.6.1                                                                |
+| Prometheus Node Exporter                            | prometheus-node-exporter    | 1.9.1<br>1.6.1                                                       |
 | Rook                                                | rook                        | 1.18.0<br>1.17.7<br>1.16.6<br>1.15.9<br>1.14.12<br>1.13.10<br>1.12.3 |
 | Tigera Operator with Calico                         | tigera-operator             | 1.38.1<br>1.32.12<br>1.32.4                                          |
 | Oracle Cloud Native Environment Dashboard           | ui                          | 2.2.0<br>2.0.0                                                       |
@@ -61,18 +61,18 @@ installing the `ocne-catalog` chart.
 
 ### Supported While Upgrading From Oracle Cloud Native Environment 1.x
 
-| Application | Chart | Versions |
-|-------------|-------|----------|
-| Cert Manager | cert-manager | 1.9.1 |
-| Istio CRDs | istio-base | 1.19.9 |
-| Istiod | istiod | 1.19.9 |
-| Istio Egress Gateway | istio-egress | 1.19.9 |
-| Istio Ingress Gateway | istio-ingress | 1.19.9 |
-| KubeVirt | kubevirt | 1.0.1<br>0.59.0<br>0.58.0 |
-| MetalLB | metallb | 0.12.1 |
-| OCI Cloud Controller Manager | oci-ccm | 1.27.2 |
-| Rook | rook | 1.11.6<br>1.10.9 |
-| Tigera Operator with Calico | tigera-operator | 1.32.12<br>1.32.4<br>1.29.3 |
+| Application                  | Chart           | Versions                    |
+|------------------------------|-----------------|-----------------------------|
+| Cert Manager                 | cert-manager    | 1.9.1                       |
+| Istio CRDs                   | istio-base      | 1.19.9                      |
+| Istiod                       | istiod          | 1.19.9                      |
+| Istio Egress Gateway         | istio-egress    | 1.19.9                      |
+| Istio Ingress Gateway        | istio-ingress   | 1.19.9                      |
+| KubeVirt                     | kubevirt        | 1.0.1<br>0.59.0<br>0.58.0   |
+| MetalLB                      | metallb         | 0.12.1                      |
+| OCI Cloud Controller Manager | oci-ccm         | 1.27.2                      |
+| Rook                         | rook            | 1.11.6<br>1.10.9            |
+| Tigera Operator with Calico  | tigera-operator | 1.32.12<br>1.32.4<br>1.29.3 |
 
 ## Documentation
 
