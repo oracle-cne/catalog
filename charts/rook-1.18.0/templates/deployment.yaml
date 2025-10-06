@@ -4,7 +4,7 @@
 # extra-image: {{ .Values.csi.snapshotter.repository }}:{{ .Values.csi.snapshotter.tag }}
 # extra-image: {{ .Values.csi.attacher.repository }}:{{ .Values.csi.attacher.tag }}
 # extra-image: {{ .Values.csi.resizer.repository }}:{{ .Values.csi.resizer.tag }}
-# extra-image: {{ .Values.csiAddons.repository }}:{{ .Values.csiAddons.tag }}
+# extra-image: {{ .Values.csi.csiAddons.repository }}:{{ .Values.csi.csiAddons.tag }}
 # extra-image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
 apiVersion: apps/v1
 kind: Deployment
