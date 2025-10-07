@@ -23,7 +23,7 @@ maintainers:
 version: 2.3.0
 # upstream appVersion:0.34.0
 appVersion: 2.3.0
-kubeVersion: ">= 1.32.0 < 1.33.0"
+kubeVersion: ">= 1.29.0 < 1.33.0"
 annotations:
   artifacthub.io/category: monitoring-logging
   artifacthub.io/license: Apache-2.0
