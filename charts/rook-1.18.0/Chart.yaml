@@ -7,7 +7,7 @@ dependencies:
 - alias: ceph-csi-operator
   condition: csi.rookUseCsiOperator
   name: ceph-csi-operator
-  repository: https://ceph.github.io/ceph-csi-operator
+  repository: file://./charts/ceph-csi-operator
   version: 0.4.0
 description: File, Block, and Object Storage Services for your Cloud-Native Environment
 icon: icons/rook-logo.svg
