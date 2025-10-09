@@ -22,7 +22,7 @@ function extractValuesYaml {
   local chartBundle=$3
   mkdir -p "${CHART_VALUES}/${chartName}/${chartVersion}"
   cd "$CHART_VALUES/${chartName}/${chartVersion}"
- 
+
   # Extract values.yaml and remove the chartName directory
   gunzip -c $chartBundle | tar xf - ${chartName}/values.yaml
   mv $chartName/values.yaml .

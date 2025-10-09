@@ -12,19 +12,12 @@ This chart bootstraps an ingress-nginx deployment on a [Kubernetes](http://kuber
 
 Kubernetes: `>=1.21.0-0`
 
-## Get Repo Info
-
-```console
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-helm repo update
-```
-
 ## Install Chart
 
 **Important:** only helm3 is supported
 
 ```console
-helm install [RELEASE_NAME] ingress-nginx/ingress-nginx
+ocne application install --name ingress-nginx --release [RELEASE_NAME] --namespace ingress-nginx
 ```
 
 The command deploys ingress-nginx on the Kubernetes cluster in the default configuration.
@@ -36,17 +29,15 @@ _See [helm install](https://helm.sh/docs/helm/helm_install/) for command documen
 ## Uninstall Chart
 
 ```console
-helm uninstall [RELEASE_NAME]
+ocne application uninstall --release [RELEASE_NAME] --namespace [NAMESPACE]
 ```
 
 This removes all the Kubernetes components associated with the chart and deletes the release.
 
-_See [helm uninstall](https://helm.sh/docs/helm/helm_uninstall/) for command documentation._
-
 ## Upgrading Chart
 
 ```console
-helm upgrade [RELEASE_NAME] [CHART] --install
+ocne application update --release [RELEASE_NAME] --namespace [NAMESPACE]
 ```
 
 _See [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) for command documentation._

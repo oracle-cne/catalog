@@ -4,6 +4,7 @@ set -e
 CHART_DIR="$1"
 CHART_NAME=$(basename "$CHART_DIR")
 CHART_FILE="$CHART_DIR/Chart.yaml"
+CHART_README="$CHART_DIR/README.md"
 
 NAME=$(yq -r '.name' "$CHART_FILE")
 VERSION=$(yq -r '.version' "$CHART_FILE")
@@ -33,6 +34,26 @@ stat "$CHART_DIR/values.yaml" > /dev/null
 echo "Ensure that the chart is in the README.md"
 grep -q "$NAME[[:space:]]*|[[:space:]].*$VERSION" README.md
 
+echo "Ensure a README.md does not contain helm commands to install or uninstall"
+if [ -e "$CHART_README" ]; then
+	if grep -qi "helm install " $CHART_README; then
+		echo "The string 'helm install ' was found in $CHART_README"
+		exit 1
+	fi
+	if grep -qi "helm upgrade " $CHART_README; then
+		echo "The string 'helm upgrade ' was found in $CHART_README"
+		exit 1
+	fi
+	if grep -qi "helm uninstall " $CHART_README; then
+		echo "The string 'helm uninstall ' was found in $CHART_README"
+		exit 1
+	fi
+	if grep -qi "helm delete " $CHART_README; then
+		echo "The string 'helm delete ' was found in $CHART_README"
+		exit 1
+	fi
+fi
+
 
 # Make sure there are no forbidden registries
 BAD_FILES=
@@ -43,7 +64,7 @@ registry.k8s.io
 "
 for registry in $REGISTRIES; do
 	echo "Checking for references to $registry"
-	# cat is to supress the non-zero exit code if grep has no matches
+	# cat is to suppress the non-zero exit code if grep has no matches
 	FILES=$(find "$CHART_DIR" -type f)
 	for file in $FILES; do
 		# Ignore CRDs
