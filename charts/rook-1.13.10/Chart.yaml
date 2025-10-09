@@ -1,0 +1,13 @@
+apiVersion: v2
+appVersion: 1.13.10
+dependencies:
+- name: library
+  repository: "file://./charts/library"
+  version: "0.0.1"
+description: File, Block, and Object Storage Services for your Cloud-Native Environment
+icon: icons/rook-logo.svg
+name: rook
+sources:
+- https://github.com/rook/rook
+version: 1.13.10
+kubeVersion: '>= 1.26.0 < 1.33.0'
