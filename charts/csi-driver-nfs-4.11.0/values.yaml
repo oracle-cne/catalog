@@ -3,7 +3,7 @@ image:
     baseRepo:
     nfs:
         repository: olcne/nfsplugin
-        tag: v4.11.0-1
+        tag: v4.12.1
         pullPolicy: IfNotPresent
     csiProvisioner:
         repository: olcne/csi-provisioner
