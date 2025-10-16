@@ -3,5 +3,5 @@ appVersion: 4.12.1
 description: CSI NFS Driver for Kubernetes
 name: csi-driver-nfs
 version: 4.12.1
-icon: icons/icons/kubernetes-logo.svg
+icon: icons/kubernetes-logo.svg
 kubeVersion: '>= 1.30.0 < 1.33.0'
