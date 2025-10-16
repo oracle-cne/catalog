@@ -4,6 +4,7 @@ chartVersion: 4.12.1
 icon: icons/kubernetes-logo.svg
 values:
   image:
+    baseRepo:
     nfs:
       repository: olcne/nfsplugin
     csiProvisioner:
