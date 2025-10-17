@@ -18,7 +18,7 @@
  then you can install the chart as follows:
 
  ```shell
- helm install my-release opensearch/opensearch-dashboards
+ ocne application install --release my-release --name opensearch-dashboards
 ```
 
  The command deploys OpenSearch Dashboards with its associated components on the Kubernetes cluster in the default configuration.
@@ -29,7 +29,7 @@
  To delete/uninstall the chart with the release name `my-release`:
 
  ```shell
- helm uninstall my-release
+ ocne application uninstall --release my-release
  ```
 
 ## Configuration
