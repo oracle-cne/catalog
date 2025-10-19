@@ -18,7 +18,6 @@ ocne application install --release [RELEASE_NAME] --name kube-prometheus-stack -
 ## Uninstall The Application
 
 ```console
-helm uninstall [RELEASE_NAME]
 ocne application uninstall --release [RELEASE_NAME] --namespace [NAMESPACE]
 ```
 

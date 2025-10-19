@@ -5,8 +5,7 @@
 # TL;DR;
 
 ```console
-$ helm repo add coredns https://coredns.github.io/helm
-$ helm --namespace=kube-system install coredns coredns/coredns
+$ ocne application install --namespace kube-system --name coredns --release coredns
 ```
 
 ## Introduction
@@ -26,8 +25,7 @@ This chart bootstraps a [CoreDNS](https://github.com/coredns/coredns) deployment
 The chart can be installed as follows:
 
 ```console
-$ helm repo add coredns https://coredns.github.io/helm
-$ helm --namespace=kube-system install coredns coredns/coredns
+$ ocne application install --namespace kube-system --name coredns --release coredns
 ```
 
 The command deploys CoreDNS on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists various ways to override default configuration during deployment.
@@ -39,7 +37,7 @@ The command deploys CoreDNS on the Kubernetes cluster in the default configurati
 To uninstall/delete the `coredns` deployment:
 
 ```console
-$ helm uninstall coredns
+$ ocne application uninstall --release coredns
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -152,9 +150,10 @@ The command removes all the Kubernetes components associated with the chart and 
 See `values.yaml` for configuration notes. Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
 ```console
-$ helm install coredns \
-  coredns/coredns \
-  --set rbac.create=false
+$ ocne application install --namespace kube-system --name coredns --release coredns --values - <<EOF
+rbac:
+  create: false
+EOF
 ```
 
 The above command disables automatic creation of RBAC rules.
@@ -162,7 +161,7 @@ The above command disables automatic creation of RBAC rules.
 Alternatively, a YAML file that specifies the values for the above parameters can be provided while installing the chart. For example,
 
 ```console
-$ helm install coredns coredns/coredns -f values.yaml
+$ ocne application install --namespace kube-system --name coredns --release coredns --values values.yaml
 ```
 
 > **Tip**: You can use the default [values.yaml](/charts/coredns/values.yaml)

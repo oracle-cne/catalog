@@ -5,8 +5,7 @@
 ## TL;DR;
 
 ```console
-$ helm repo add oauth2-proxy https://oauth2-proxy.github.io/manifests
-$ helm install my-release oauth2-proxy/oauth2-proxy
+$ ocne application install --name oauth2-proxy --release oauth2-proxy
 ```
 
 ## Introduction
@@ -18,7 +17,7 @@ This chart bootstraps an oauth2-proxy deployment on a [Kubernetes](http://kubern
 To install the chart with the release name `my-release`:
 
 ```console
-$ helm install my-release oauth2-proxy/oauth2-proxy
+$ ocne application install --name oauth2-proxy --release my-release
 ```
 
 The command deploys oauth2-proxy on the Kubernetes cluster in the default configuration.
@@ -29,7 +28,7 @@ The [configuration](#configuration) section lists the parameters that can be con
 To uninstall/delete the `my-release` deployment:
 
 ```console
-$ helm uninstall my-release
+$ ocne application uninstall --release my-release
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -239,14 +238,19 @@ The following table lists the configurable parameters of the oauth2-proxy chart 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
 ```console
-$ helm install my-release oauth2-proxy/oauth2-proxy \
-  --set=image.tag=v0.0.2,resources.limits.cpu=200m
+$ ocne application install --name oauth2-proxy --release oauth2-proxy --values - <<EOF
+image:
+  tag:v0.0.2
+resources:
+  limits:
+    cpu: 200m
+EOF
 ```
 
 Alternatively, a YAML file that specifies the values for the above parameters can be provided while installing the chart. For example,
 
 ```console
-$ helm install my-release oauth2-proxy/oauth2-proxy -f values.yaml
+$ ocne application install --name oauth2-proxy --release oauth2-proxy --values values.yaml
 ```
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
