@@ -3,31 +3,31 @@ image:
     baseRepo:
     nfs:
         repository: olcne/nfsplugin
-        tag: v4.12.1
+        tag: v4.11.0-1
         pullPolicy: IfNotPresent
     csiProvisioner:
         repository: olcne/csi-provisioner
-        tag: v5.3.0
+        tag: v5.2.0
         pullPolicy: IfNotPresent
     csiResizer:
         repository: olcne/csi-resizer
-        tag: v1.14.0
+        tag: v1.13.2
         pullPolicy: IfNotPresent
     csiSnapshotter:
         repository: olcne/csi-snapshotter
-        tag: v8.3.0
+        tag: v8.2.1
         pullPolicy: IfNotPresent
     livenessProbe:
         repository: olcne/livenessprobe
-        tag: v2.17.0
+        tag: v2.15.0
         pullPolicy: IfNotPresent
     nodeDriverRegistrar:
         repository: olcne/csi-node-driver-registrar
-        tag: v2.15.0
+        tag: v2.13.0
         pullPolicy: IfNotPresent
     externalSnapshotter:
         repository: olcne/snapshot-controller
-        tag: v8.3.0
+        tag: v8.2.1
         pullPolicy: IfNotPresent
 
 serviceAccount:
