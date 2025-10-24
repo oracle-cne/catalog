@@ -2,6 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: {{ include "bootstrap-capi.fullname" . }}-selfsigned-issuer
+  namespace: {{ .Release.Namespace }}
   labels:
   {{- include "bootstrap-capi.labels" . | nindent 4 }}
 spec:

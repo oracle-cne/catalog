@@ -2,6 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: {{ include "core-capi.fullname" . }}-serving-cert
+  namespace: {{ .Release.Namespace }}
   labels:
   {{- include "core-capi.labels" . | nindent 4 }}
 spec:

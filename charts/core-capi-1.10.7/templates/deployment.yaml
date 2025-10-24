@@ -2,9 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "core-capi.fullname" . }}-controller-manager
+  namespace: {{ .Release.Namespace }}
   labels:
     cluster.x-k8s.io/provider: cluster-api
-    clusterctl.cluster.x-k8s.io: ""
     control-plane: controller-manager
   {{- include "core-capi.labels" . | nindent 4 }}
 spec:
@@ -26,6 +26,18 @@ spec:
         command:
         - /manager
         env:
+{{ if .Values.proxy.httpsProxy }}
+        - name: https_proxy
+          value: {{ quote .Values.proxy.httpsProxy }}
+{{ end }}
+{{ if .Values.proxy.httpProxy }}
+        - name: http_proxy
+          value: {{ quote .Values.proxy.httpProxy }}
+{{ end }}
+{{ if .Values.proxy.noProxy }}
+        - name: no_proxy
+          value: {{ quote .Values.proxy.noProxy }}
+{{ end }}
         - name: POD_NAMESPACE
           valueFrom:
             fieldRef:
@@ -70,15 +82,15 @@ spec:
         - mountPath: /tmp/k8s-webhook-server/serving-certs
           name: cert
           readOnly: true
-      securityContext:
-        runAsNonRoot: true
-        seccompProfile:
-          type: RuntimeDefault
+      securityContext: {{- toYaml .Values.controllerManager.podSecurityContext | nindent
+        8 }}
       serviceAccountName: {{ include "core-capi.fullname" . }}-manager
       terminationGracePeriodSeconds: 10
       tolerations:
+{{ if .Values.legacyControlPlaneAnnotation }}
       - effect: NoSchedule
         key: node-role.kubernetes.io/master
+{{ end }}
       - effect: NoSchedule
         key: node-role.kubernetes.io/control-plane
       volumes:

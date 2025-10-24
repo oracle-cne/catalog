@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "control-plane-capi.fullname" . }}-controller-manager
+  namespace: {{ .Release.Namespace }}
   labels:
     cluster.x-k8s.io/provider: control-plane-kubeadm
     clusterctl.cluster.x-k8s.io: ""
@@ -26,6 +27,19 @@ spec:
         command:
         - /manager
         env:
+{{ if .Values.proxy.httpsProxy }}
+        - name: https_proxy
+          value: {{ quote .Values.proxy.httpsProxy }}
+{{ end }}
+{{ if .Values.proxy.httpProxy }}
+        - name: http_proxy
+          value: {{ quote .Values.proxy.httpProxy }}
+{{ end }}
+{{ if .Values.proxy.noProxy }}
+        - name: no_proxy
+          value: {{ quote .Values.proxy.noProxy }}
+{{ end }}
+
         - name: POD_NAMESPACE
           valueFrom:
             fieldRef:
@@ -77,8 +91,10 @@ spec:
       serviceAccountName: {{ include "control-plane-capi.fullname" . }}-manager
       terminationGracePeriodSeconds: 10
       tolerations:
+{{ if .Values.legacyControlPlaneAnnotation }}
       - effect: NoSchedule
         key: node-role.kubernetes.io/master
+{{ end }}
       - effect: NoSchedule
         key: node-role.kubernetes.io/control-plane
       volumes:
