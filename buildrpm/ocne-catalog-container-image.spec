@@ -7,7 +7,7 @@
 
 Name:		%{_name}-container-image
 Version:	2.0.0
-Release:	29{?dist}
+Release:	29%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
