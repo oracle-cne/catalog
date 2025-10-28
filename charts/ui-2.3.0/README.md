@@ -21,7 +21,7 @@ $ ocne application install --release ui --name ui --namespace ocne-system
 
 Access Headlamp:
 ```console
-$ kubectl port-forward -n kube-system svc/my-headlamp 8080:80
+$ kubectl port-forward -n ocne-system svc/ui 8443:443
 ```
 Then open http://localhost:8080 in your browser.
 
@@ -30,24 +30,6 @@ Then open http://localhost:8080 in your browser.
 ### Basic Installation
 ```console
 $ ocne application install --release ui --name ui --namespace ocne-system
-```
-
-### Installation with OIDC
-```console
-$ helm install my-headlamp headlamp/headlamp \
-  --namespace kube-system \
-  --set config.oidc.clientID=your-client-id \
-  --set config.oidc.clientSecret=your-client-secret \
-  --set config.oidc.issuerURL=https://your-issuer-url
-```
-
-### Installation with Ingress
-```console
-$ helm install my-headlamp headlamp/headlamp \
-  --namespace kube-system \
-  --set ingress.enabled=true \
-  --set ingress.hosts[0].host=headlamp.example.com \
-  --set ingress.hosts[0].paths[0].path=/
 ```
 
 ## Configuration
