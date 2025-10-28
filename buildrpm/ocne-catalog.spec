@@ -3,7 +3,7 @@
 
 Name:		ocne-catalog
 Version:	2.0.0
-Release:	28%{?dist}
+Release:	29%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ cp -ap olm/icons/* %{buildroot}/opt/icons
 /opt/icons
 
 %changelog
+* Tue Oct 28 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-29
+- Fix the readme for the UI version 2.3.0
+
 * Thu Oct 02 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-28
 - Use container-registry.oracle.com/olcne/ock:base-image as the base image
 
