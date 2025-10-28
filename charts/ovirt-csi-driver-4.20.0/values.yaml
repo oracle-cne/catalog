@@ -4,7 +4,7 @@ csiController:
       privileged: true
     image:
       repository: olcne/csi-attacher
-      tag: v4.8.1
+      tag: v4.10.0
     resources:
       limits:
         cpu: 160m
@@ -17,7 +17,7 @@ csiController:
       privileged: true
     image:
       repository: olcne/csi-provisioner
-      tag: v5.2.0
+      tag: v6.0.0
     resources:
       limits:
         cpu: 160m
@@ -30,7 +30,7 @@ csiController:
       privileged: true
     image:
       repository: olcne/csi-resizer
-      tag: v1.13.2
+      tag: v1.14.0
     resources:
       limits:
         cpu: 160m
@@ -41,7 +41,7 @@ csiController:
   livenessProbe:
     image:
       repository: olcne/livenessprobe
-      tag: v2.15.0
+      tag: v2.17.0
     resources:
       limits:
         cpu: 160m
@@ -83,7 +83,7 @@ csiNode:
   csiDriverRegistrar:
     image:
       repository: olcne/csi-node-driver-registrar
-      tag: v2.13.0
+      tag: v2.15.0
     resources:
       limits:
         cpu: 160m
@@ -94,7 +94,7 @@ csiNode:
   livenessProbe:
     image:
       repository: olcne/livenessprobe
-      tag: v2.15.0
+      tag: v2.17.0
     resources:
       limits:
         cpu: 160m
