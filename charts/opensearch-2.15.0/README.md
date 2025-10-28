@@ -19,7 +19,7 @@ This Helm chart installs [OpenSearch](https://github.com/opensearch-project/Open
 Once you've added this Helm repository as per the repository-level [README](../../README.md#installing) then you can install the chart as follows:
 
  ```shell
- helm install my-release opensearch/opensearch
+ ocne application install --name opensearch --release opensearch --namespace opensearch
  ```
 
 The command deploys OpenSearch with its associated components (data statefulsets, masters, clients) on the Kubernetes cluster in the default configuration.
@@ -30,7 +30,7 @@ The command deploys OpenSearch with its associated components (data statefulsets
 To delete/uninstall the chart with the release name `my-release`:
 
 ```shell
-helm uninstall my-release
+ocne application uninstall --release my-release
 ```
 
 ## Configuration

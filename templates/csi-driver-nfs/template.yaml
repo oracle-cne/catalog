@@ -1,0 +1,38 @@
+repo: https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts
+chart: csi-driver-nfs
+chartVersion: 4.12.1
+icon: kubernetes-logo.svg
+values:
+  image:
+    baseRepo:
+    nfs:
+      repository: olcne/nfsplugin
+    csiProvisioner:
+      repository: olcne/csi-provisioner
+    csiResizer:
+      repository: olcne/csi-resizer
+    csiSnapshotter:
+      repository: olcne/csi-snapshotter
+    livenessProbe:
+      repository: olcne/livenessprobe
+    nodeDriverRegistrar:
+      repository: olcne/csi-node-driver-registrar
+    externalSnapshotter:
+      repository: olcne/snapshot-controller
+
+
+latestImages:
+  - name: .image.nfs.repository
+    tag: .image.nfs.tag
+  - name: .image.csiProvisioner.repository
+    tag: .image.csiProvisioner.tag
+  - name: .image.csiResizer.repository
+    tag: .image.csiResizer.tag
+  - name: .image.csiSnapshotter.repository
+    tag: .image.csiSnapshotter.tag
+  - name: .image.livenessProbe.repository
+    tag: .image.livenessProbe.tag
+  - name: .image.nodeDriverRegistrar.repository
+    tag: .image.nodeDriverRegistrar.tag
+  - name: .image.externalSnapshotter.repository
+    tag: .image.externalSnapshotter.tag

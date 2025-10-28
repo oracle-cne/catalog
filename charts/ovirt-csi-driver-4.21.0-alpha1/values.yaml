@@ -1,0 +1,153 @@
+csiController:
+  csiAttacher:
+    containerSecurityContext:
+      privileged: true
+    image:
+      repository: olcne/csi-attacher
+      tag: v4.10.0
+    resources:
+      limits:
+        cpu: 160m
+        memory: 128Mi
+      requests:
+        cpu: 80m
+        memory: 64Mi
+  csiProvisioner:
+    containerSecurityContext:
+      privileged: true
+    image:
+      repository: olcne/csi-provisioner
+      tag: v6.0.0
+    resources:
+      limits:
+        cpu: 160m
+        memory: 128Mi
+      requests:
+        cpu: 80m
+        memory: 64Mi
+  csiResizer:
+    containerSecurityContext:
+      privileged: true
+    image:
+      repository: olcne/csi-resizer
+      tag: v1.14.0
+    resources:
+      limits:
+        cpu: 160m
+        memory: 128Mi
+      requests:
+        cpu: 80m
+        memory: 64Mi
+  livenessProbe:
+    image:
+      repository: olcne/livenessprobe
+      tag: v2.17.0
+    resources:
+      limits:
+        cpu: 160m
+        memory: 128Mi
+      requests:
+        cpu: 80m
+        memory: 64Mi
+  ovirtController:
+    name: ovirt-csi-controller-plugin
+    containerSecurityContext:
+      privileged: true
+    env:
+      csiEndpoint: unix:///csi-socket/csi.sock
+      ovirtConfig: /tmp/config/ovirt-config.yaml
+    image:
+      repository: olcne/ovirt-csi-driver
+      tag: v4.21.0-1
+    imagePullPolicy: Always
+    resources:
+      limits:
+        cpu: 160m
+        memory: 128Mi
+      requests:
+        cpu: 80m
+        memory: 64Mi
+  prepareOvirtConfig:
+    env:
+      ovirtCafile: /tmp/config/ovirt-engine-ca.pem
+    image:
+      repository: olcne/ovirt-csi-driver
+      tag: v4.21.0-1
+    imagePullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 160m
+        memory: 128Mi
+  replicas: 1
+csiNode:
+  csiDriverRegistrar:
+    image:
+      repository: olcne/csi-node-driver-registrar
+      tag: v2.15.0
+    resources:
+      limits:
+        cpu: 160m
+        memory: 128Mi
+      requests:
+        cpu: 80m
+        memory: 64Mi
+  livenessProbe:
+    image:
+      repository: olcne/livenessprobe
+      tag: v2.17.0
+    resources:
+      limits:
+        cpu: 160m
+        memory: 128Mi
+      requests:
+        cpu: 80m
+        memory: 64Mi
+  ovirtNode:
+    name: ovirt-csi-node-plugin
+    containerSecurityContext:
+      privileged: true
+    env:
+      csiEndpoint: unix:///csi-socket/csi.sock
+      ovirtConfig: /tmp/config/ovirt-config.yaml
+    image:
+      repository: olcne/ovirt-csi-driver
+      tag: v4.21.0-1
+    imagePullPolicy: Always
+    resources:
+      limits:
+        cpu: 160m
+        memory: 128Mi
+      requests:
+        cpu: 80m
+        memory: 64Mi
+  prepareOvirtConfig:
+    env:
+      ovirtCafile: /tmp/config/ovirt-engine-ca.pem
+    image:
+      repository: olcne/ovirt-csi-driver
+      tag: v4.21.0-1
+    imagePullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 10m
+        memory: 50Mi
+kubernetesClusterDomain: cluster.local
+ovirt:
+  caProvided: true
+  insecure: false
+  secretName: ovirt-csi-creds
+  caConfigMapName: ovirt-csi-ca.crt
+ovirtCsiDriverControllerSa:
+  serviceAccount:
+    annotations: {}
+ovirtCsiDriverNodeSa:
+  serviceAccount:
+    annotations: {}
+pvc:
+  1GOvirtCowDisk:
+    storageClass: ovirt-csi-sc
+    storageRequest: 1Gi
+
+driver:
+  name: csi.ovirt.org
+

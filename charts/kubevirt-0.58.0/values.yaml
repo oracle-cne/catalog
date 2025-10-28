@@ -8,7 +8,7 @@ image:
   repository: olcne
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v0.58.0-2"
+  tag: "v0.58.0-4"
 
 createKubevirt: true
 kubevirt:

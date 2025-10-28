@@ -1,4 +1,4 @@
-FROM container-registry.oracle.com/os/oraclelinux:8
+FROM container-registry.oracle.com/olcne/ock:base-image
 
 COPY rpms /tmp/
 
