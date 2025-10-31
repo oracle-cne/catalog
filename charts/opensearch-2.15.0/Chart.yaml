@@ -16,4 +16,4 @@ sources:
   - https://github.com/opensearch-project/opensearch
   - https://github.com/opensearch-project/helm-charts
 type: application
-kubeVersion: '>= 1.26.0 < 1.33.0'
+kubeVersion: '>= 1.26.0 < 1.34.0'
