@@ -3,7 +3,7 @@ name: keycloak
 version: 21.1.2
 appVersion: 21.1.2
 deprecated: true
-kubeVersion: '>= 1.26.0 < 1.33.0'
+kubeVersion: '>= 1.26.0 < 1.34.0'
 description: Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 keywords:
   - sso

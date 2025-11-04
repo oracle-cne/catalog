@@ -37,7 +37,7 @@ keywords:
 - operator
 - prometheus
 - kube-prometheus
-kubeVersion: '>= 1.26.0 < 1.33.0'
+kubeVersion: '>= 1.26.0 < 1.34.0'
 maintainers:
 - email: andrew@quadcorps.co.uk
   name: andrewgkew
