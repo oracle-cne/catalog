@@ -9,8 +9,7 @@ OpenID Connect (OIDC) identity and OAuth 2.0 provider with pluggable connectors.
 ## TL;DR;
 
 ```bash
-helm repo add dex https://charts.dexidp.io
-helm install --generate-name --wait dex/dex
+ocne application install --release dex --name dex --namespace dex
 ```
 
 ## Getting started
@@ -56,13 +55,7 @@ but by far the most popular and portable is undoubtedly [Cert Manager](https://c
 Cert Manager can be [installed](https://cert-manager.io/docs/installation/kubernetes) with a few steps:
 
 ```shell
-helm repo add jetstack https://charts.jetstack.io
-helm repo update
-kubectl create namespace cert-manager
-helm install \
-  cert-manager jetstack/cert-manager \
-  --namespace cert-manager \
-  --set installCRDs=true
+ocne application install --namespace cert-manager --release cert-manager --name cert-manager
 ```
 
 The next step is setting up an [issuer](https://cert-manager.io/docs/concepts/issuer/) (eg. [Let's Encrypt](https://letsencrypt.org/)):
