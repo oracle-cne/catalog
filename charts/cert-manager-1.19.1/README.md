@@ -45,7 +45,7 @@ are documented in our full [upgrading guide](https://cert-manager.io/docs/instal
 To uninstall/delete the `cert-manager` deployment:
 
 ```console
-helm delete cert-manager --namespace cert-manager
+$ ocne application uninstall --release cert-manager --namespace cert-manager
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
