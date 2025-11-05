@@ -15,7 +15,7 @@ installing the `ocne-catalog` chart.
 
 | Application                                         | Chart                       | Versions                                                             |
 |-----------------------------------------------------|-----------------------------|----------------------------------------------------------------------|
-| Cert Manager                                        | cert-manager                | 1.17.2<br>1.16.3<br>1.14.5                                           |
+| Cert Manager                                        | cert-manager                | 1.19.1<br>1.17.2<br>1.16.3<br>1.14.5                                 |
 | Cluster API Core Controller                         | core-capi                   | 1.9.9<br>1.9.4<br>1.8.12<br>1.7.1                                    |
 | Cluster API Kubeadm Control Plane Controller        | control-plane-capi          | 1.9.9<br>1.9.4<br>1.8.12<br>1.7.1                                    |
 | Cluster API Kubeadm Bootstrap Controller            | bootstrap-capi              | 1.9.9<br>1.9.4<br>1.8.12<br>1.7.1                                    |

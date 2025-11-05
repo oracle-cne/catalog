@@ -1,0 +1,31 @@
+repo: https://charts.jetstack.io
+chart: cert-manager
+chartVersion: 1.19.1
+icon: cert-manager-icon.svg
+values:
+  image:
+    repository: olcne/cert-manager-controller
+  webhook:
+    image:
+      repository: olcne/cert-manager-webhook
+  cainjector:
+    image:
+      repository: olcne/cert-manager-cainjector
+  acmesolver:
+    image:
+      repository: olcne/cert-manager-acmesolver
+  startupapicheck:
+    image:
+      repository: olcne/cert-manager-startupapicheck
+
+latestImages:
+  - name: .image.repository
+    tag: .image.tag
+  - name: .image.webhook.repository
+    tag: .image.webhook.tag
+  - name: .image.cainjector.repository
+    tag: .image.cainjector.tag
+  - name: .image.acmesolver.repository
+    tag: .image.acmesolver.tag
+  - name: .image.startupapicheck.repository
+    tag: .image.startupapicheck.tag
