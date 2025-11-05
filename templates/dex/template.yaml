@@ -1,0 +1,13 @@
+repo: https://charts.dexidp.io
+chart: dex
+chartVersion: 0.24.0
+appVersion: 2.44.0
+icon: dex-icon.svg
+values:
+  image:
+    repository: olcne/dex
+
+
+latestImages:
+  - name: .image.repository
+    tag: .image.tag
