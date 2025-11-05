@@ -18,16 +18,7 @@ functionality in cert-manager can be found in the [installation docs](https://ce
 To install the chart with the release name `cert-manager`:
 
 ```console
-# Add the Jetstack Helm repository
-helm repo add jetstack https://charts.jetstack.io --force-update
-
-# Install the cert-manager helm chart
-helm install \
-  cert-manager jetstack/cert-manager \
-  --namespace cert-manager \
-  --create-namespace \
-  --version v1.19.1 \
-  --set crds.enabled=true
+ocne application install --name cert-manager --release cert-manager --namespace cert-manager --version 1.19.1
 ```
 
 In order to begin issuing certificates, you will need to set up a ClusterIssuer
