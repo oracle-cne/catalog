@@ -3,29 +3,35 @@ chart: cert-manager
 chartVersion: 1.19.1
 icon: cert-manager-icon.svg
 values:
+  crds:
+    enabled: true
   image:
     repository: olcne/cert-manager-controller
   webhook:
     image:
       repository: olcne/cert-manager-webhook
+      tag:
   cainjector:
     image:
       repository: olcne/cert-manager-cainjector
+      tag:
   acmesolver:
     image:
       repository: olcne/cert-manager-acmesolver
+      tag:
   startupapicheck:
     image:
       repository: olcne/cert-manager-startupapicheck
+      tag:
 
 latestImages:
   - name: .image.repository
     tag: .image.tag
-  - name: .image.webhook.repository
-    tag: .image.webhook.tag
-  - name: .image.cainjector.repository
-    tag: .image.cainjector.tag
-  - name: .image.acmesolver.repository
-    tag: .image.acmesolver.tag
-  - name: .image.startupapicheck.repository
-    tag: .image.startupapicheck.tag
+  - name: .webhook.image.repository
+    tag: .webhook.image.tag
+  - name: .cainjector.image.repository
+    tag: .cainjector.image.tag
+  - name: .acmesolver.image.repository
+    tag: .acmesolver.image.tag
+  - name: .startupapicheck.image.repository
+    tag: .startupapicheck.image.tag
