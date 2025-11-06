@@ -33,7 +33,7 @@ values:
       patch:
         image:
           image: olcne/kube-webhook-certgen
-        digest:
+          digest:
   defaultBackend:
     image:
       image: olcne/custom-error-pages
