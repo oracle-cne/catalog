@@ -9,6 +9,26 @@ values:
       image: olcne/ingress-nginx-controller
       digest:
       digestChroot:
+    opentelemetry:
+      enabled: false
+      name: opentelemetry
+      image:
+        registry:
+        image:
+        tag:
+        digest:
+        distroless:
+      containerSecurityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        allowPrivilegeEscalation: false
+        seccompProfile:
+          type: RuntimeDefault
+        capabilities:
+          drop:
+            - ALL
+        readOnlyRootFilesystem: true
+      resources: {}
     admissionWebhooks:
       patch:
         image:
@@ -20,26 +40,6 @@ values:
   global:
     image:
       registry:
-  opentelemetry:
-    enabled: false
-    name: opentelemetry
-    image:
-      registry:
-      image:
-      tag:
-      digest:
-      distroless:
-    containerSecurityContext:
-      runAsNonRoot: true
-      runAsUser: 65532
-      allowPrivilegeEscalation: false
-      seccompProfile:
-        type: RuntimeDefault
-      capabilities:
-        drop:
-          - ALL
-      readOnlyRootFilesystem: true
-  resources: {}
 
 
 latestImages:
