@@ -6,7 +6,7 @@ icon: 500px-Nginx_logo.svg.png
 values:
   controller:
     image:
-      image: olcne/ingress-nginx-controller
+      image: ingress-nginx-controller
       digest:
       digestChroot:
     opentelemetry:
@@ -32,14 +32,14 @@ values:
     admissionWebhooks:
       patch:
         image:
-          image: olcne/kube-webhook-certgen
+          image: kube-webhook-certgen
           digest:
   defaultBackend:
     image:
-      image: olcne/custom-error-pages
+      image: custom-error-pages
   global:
     image:
-      registry:
+      registry: olcne
 
 
 latestImages:
