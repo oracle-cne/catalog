@@ -1,0 +1,51 @@
+repo: https://kubernetes.github.io/ingress-nginx
+chart: ingress-nginx
+chartVersion: 4.14.0
+appVersion: 1.14.0
+icon: 500px-Nginx_logo.svg.png
+values:
+  controller:
+    image:
+      image: ingress-nginx-controller
+      digest:
+      digestChroot:
+    opentelemetry:
+      enabled: false
+      name: opentelemetry
+      image:
+        registry:
+        image:
+        tag:
+        digest:
+        distroless:
+      containerSecurityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        allowPrivilegeEscalation: false
+        seccompProfile:
+          type: RuntimeDefault
+        capabilities:
+          drop:
+            - ALL
+        readOnlyRootFilesystem: true
+      resources: {}
+    admissionWebhooks:
+      patch:
+        image:
+          image: kube-webhook-certgen
+          digest:
+  defaultBackend:
+    image:
+      image: custom-error-pages
+  global:
+    image:
+      registry: olcne
+
+
+latestImages:
+  - name: .controller.image.image
+    tag: .controller.image.tag
+  - name: .controller.admissionWebhooks.patch.image.image
+    tag: .controller.admissionWebhooks.patch.image.tag
+  - name: .defaultBackend.image.image
+    tag: .defaultBackend.image.tag

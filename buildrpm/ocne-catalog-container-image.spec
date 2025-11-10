@@ -7,7 +7,7 @@
 
 Name:		%{_name}-container-image
 Version:	2.0.0
-Release:	21%{?dist}
+Release:	29%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -24,7 +24,7 @@ An on-disk Helm chart repository
 yum clean all
 yumdownloader --destdir=${PWD}/rpms %{rpm_name}
 
-docker build --pull=never --squash --build-arg https_proxy=${https_proxy} \
+docker build --pull --squash --build-arg https_proxy=${https_proxy} \
 	-t %{docker_tag} -f ./olm/builds/Dockerfile .
 docker save -o %{_name}.tar %{docker_tag}
 
@@ -37,10 +37,34 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
-* Fri Jul 18 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-21
-- Rebuild with latest base image
+* Tue Oct 28 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-29
+- Fix the readme for the UI version 2.3.0
 
-* Wed Jul 02 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-20
+* Thu Oct 02 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-28
+- Use container-registry.oracle.com/olcne/ock:base-image as the base image
+
+* Tue Aug 19 2025 Murali Annamneni <murali.annamneni@oracle.com> - 2.0.0-27
+- Add grafana-10.2.6 chart
+
+* Fri Aug 15 2025 Thomas Tanaka <thomas.tanaka@oracle.com> - 2.0.0-26
+- Update kubevirt images 0.58, 0.59, 1.0.1, 1.1.1
+
+* Wed Aug 13 2025 Murali Annamneni <murali.annamneni@oracle.com> - 2.0.0-25
+- Add istio-1.20.8 helm charts
+
+* Tue Aug 12 2025 Michael Gianatassio <michael.gianatassio@oracle.com> - 2.0.0-24
+- Add grafana 9.2.10 helm chart
+
+* Tue Jul 22 2025 Paul Mackin <paul.mackin@oracle.com> - 2.0.0-23
+- Add ovirt-csi-driver 4.21.0-alpha1.  Update ovirt-csi-driver logos
+
+* Fri Jul 18 2025 Thomas Tanaka <thomas.tanaka@oracle.com> - 2.0.0-22
+- Update Kubevirt charts to 1.5.2
+
+* Wed Jul 16 2025 Murali Annamneni <murali.annamneni@oracle.com> - 2.0.0-21
+- Add istio-1.22.8 and 1.24.6 helm charts
+
+* Wed Jul 02 2025 Daniel Krasinski <daniel.krasinski@oraclelcom> - 2.0.0-20
 - Bump nginx to 1.24
 
 * Fri Jun 27 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-19

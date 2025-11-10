@@ -5,7 +5,7 @@
 ## Deploy Fluent Operator with Oracle Cloud Native Environment
 
 The Fluent Bit section of the Fluent Operator supports different CRI `docker`, `containerd`,  and `CRI-O`. 
-`containerd` and `CRI-O` use the `CRI Log` format which is different with `docker`, they requires additional parser to parse JSON application logs. You should set different `containerRuntime` depending on your container runtime.
+`containerd` and `CRI-O` use the `CRI Log` format which is different with `docker`, they require additional parser to parse JSON application logs. You should set different `containerRuntime` depending on your container runtime.
 
 The default runtime is docker, you can choose other runtimes as follows.
 

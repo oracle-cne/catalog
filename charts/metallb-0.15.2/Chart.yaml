@@ -28,7 +28,7 @@ type: application
 # The optional kubeVersion field can define semver constraints on supported Kubernetes versions.
 # Helm will validate the version constraints when installing the chart and fail if the cluster
 # runs an unsupported Kubernetes version.
-kubeVersion: "> 1.29.0 < 1.33.0"
+kubeVersion: "> 1.29.0 < 1.34.0"
 
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.

@@ -22,7 +22,7 @@ function extractValuesYaml {
   local chartBundle=$3
   mkdir -p "${CHART_VALUES}/${chartName}/${chartVersion}"
   cd "$CHART_VALUES/${chartName}/${chartVersion}"
- 
+
   # Extract values.yaml and remove the chartName directory
   gunzip -c $chartBundle | tar xf - ${chartName}/values.yaml
   mv $chartName/values.yaml .
@@ -41,8 +41,10 @@ for i in *.tgz; do
     withoutExtn="${i%.*}"
  
     # Extract chart name and version 
-    chartName="${withoutExtn%-*}"
-    chartVersion=${withoutExtn##*-}
+    chartName="$(echo "$withoutExtn" | sed -E 's/-[0-9].*$//')"
+    if [[ "$withoutExtn" =~ -([0-9].*) ]]; then
+      chartVersion="${BASH_REMATCH[1]}"
+    fi
 
     extractValuesYaml ${chartName} ${chartVersion} $(pwd)/$i
 done
