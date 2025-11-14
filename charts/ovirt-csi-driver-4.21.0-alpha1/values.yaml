@@ -58,7 +58,7 @@ csiController:
       ovirtConfig: /tmp/config/ovirt-config.yaml
     image:
       repository: olcne/ovirt-csi-driver
-      tag: v4.21.0-1
+      tag: v4.21.0-2
     imagePullPolicy: Always
     resources:
       limits:
@@ -72,7 +72,7 @@ csiController:
       ovirtCafile: /tmp/config/ovirt-engine-ca.pem
     image:
       repository: olcne/ovirt-csi-driver
-      tag: v4.21.0-1
+      tag: v4.21.0-2
     imagePullPolicy: IfNotPresent
     resources:
       requests:
@@ -111,7 +111,7 @@ csiNode:
       ovirtConfig: /tmp/config/ovirt-config.yaml
     image:
       repository: olcne/ovirt-csi-driver
-      tag: v4.21.0-1
+      tag: v4.21.0-2
     imagePullPolicy: Always
     resources:
       limits:
@@ -125,7 +125,7 @@ csiNode:
       ovirtCafile: /tmp/config/ovirt-engine-ca.pem
     image:
       repository: olcne/ovirt-csi-driver
-      tag: v4.21.0-1
+      tag: v4.21.0-2
     imagePullPolicy: IfNotPresent
     resources:
       requests:
