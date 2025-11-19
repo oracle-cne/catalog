@@ -26,7 +26,7 @@ fullnameOverride: ""
 initContainers:
   - name: "ui-plugins"
     image: container-registry.oracle.com/olcne/ui-plugins:v2.0.0
-    imagePullPolicy: Always
+    imagePullPolicy: IfNotPresent
     command: ["/bin/sh", "-c", "mkdir -p /build/plugins && cp -r /headlamp-plugins/* /build/plugins/"]
     volumeMounts:
       - name: "ui-plugins"
