@@ -7,7 +7,7 @@
 
 Name:		%{_name}-container-image
 Version:	2.0.0
-Release:	29%{?dist}
+Release:	30%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
+* Mon Dec 01 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-30
+- Update MetalLb to 0.15.2-1
+
 * Tue Oct 28 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-29
 - Fix the readme for the UI version 2.3.0
 
