@@ -1,0 +1,83 @@
+# templates/daemonset.yaml
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "ocne-ha-config.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "ocne-ha-config.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "ocne-ha-config.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "ocne-ha-config.serviceAccountName" . }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      hostNetwork: true
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+      initContainers:
+      - name: init-config
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}" 
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command:
+          - "sh"
+          - "-c"
+          - "grep -o 'kubeadm.kubernetes.io/kube-apiserver.advertise-address.endpoint: [^ \t]*' /etc/manifests/kube-apiserver.yaml | cut -d' ' -f2 | rev |  cut -d: -f1 | rev > /config/kube-apiserver-port"
+        volumeMounts:
+          - name: kube-apiserver-yaml
+            mountPath: /etc/manifests/kube-apiserver.yaml
+          - name: config
+            mountPath: /config
+      containers:
+      - name: cp-container
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["sleep", "10d"]
+          #command: ["sh", '/scripts/check.sh']
+        volumeMounts:
+        - name: kubectl-bin
+          mountPath: /usr/host-bin/kubectl
+        - name: script-volume
+          mountPath: /scripts
+        - name: config
+          mountPath: /config
+        - name: keepalived-config
+          mountPath: /keepalived/keepalived.conf
+        - name: nginx-config
+          mountPath: /nginx/nginx.conf
+      volumes:
+      - name: kubectl-bin
+        hostPath:
+          path: {{ .Values.kubectlHostPath }}
+          type: File
+      - name: script-volume
+        configMap:
+          name: {{ include "ocne-ha-config.fullname" . }}-check.sh
+      - name: kube-apiserver-yaml
+        hostPath:
+          path: /etc/kubernetes/manifests/kube-apiserver.yaml
+          type: File
+      - name: nginx-config
+        hostPath:
+          path: /etc/ocne/nginx/nginx.conf
+          type: File
+      - name: keepalived-config
+        hostPath:
+          path: /etc/keepalived/keepalived.conf
+          type: File
+      - name: config
+        emptyDir: {}
