@@ -46,8 +46,7 @@ spec:
       - name: cp-container
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-        command: ["sleep", "10d"]
-          #command: ["sh", '/scripts/check.sh']
+        command: ["sh", '/scripts/check.sh']
         volumeMounts:
         - name: kubectl-bin
           mountPath: /usr/host-bin/kubectl
