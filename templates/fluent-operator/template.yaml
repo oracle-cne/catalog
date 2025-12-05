@@ -8,11 +8,11 @@ values:
   operator:
     initcontainer:
       image:
-        registry:
+        registry: container-registry.oracle.com
         repository: os/oraclelinux
         tag: 8
     image:
-      registry:
+      registry: container-registry.oracle.com
       repository: olcne/fluent-operator
     podSecurityContext:
       runAsGroup: 1025
@@ -30,7 +30,7 @@ values:
       crio: /var/log
   fluentbit:
     image:
-      registry:
+      registry: container-registry.oracle.com
       repository: olcne/fluent-bit
     podSecurityContext:
       seccompProfile:
@@ -47,13 +47,15 @@ values:
         type: spc_t
   fluentd:
     image:
-      registry:
+      registry: container-registry.oracle.com
       repository: ""
 
 
 latestImages:
-  - name: .operator.container.repository
-    tag: .operator.container.tag
+  - name: .operator.initcontainer.image.repository
+    tag: .operator.initcontainer.image.tag
+  - name: .operator.image.repository
+    tag: .operator.image.tag
   - name: .fluentbit.image.repository
     tag: .fluentbit.image.tag
 
