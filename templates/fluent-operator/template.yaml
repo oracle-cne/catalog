@@ -32,6 +32,19 @@ values:
     image:
       registry:
       repository: olcne/fluent-bit
+    podSecurityContext:
+      seccompProfile:
+        type: RuntimeDefault
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        add:
+          - DAC_OVERRIDE
+        drop:
+          - ALL
+      privileged: false
+      seLinuxOptions:
+        type: spc_t
   fluentd:
     image:
       registry:
