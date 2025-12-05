@@ -4,6 +4,9 @@ chartVersion: 3.5.0
 appVersion: 3.5.0
 icon: fluent-operator-icon.svg
 values:
+  containerRuntime: crio
+  logPath:
+    crio: /var/log
   operator:
     initcontainer:
       repository: os/oraclelinux
