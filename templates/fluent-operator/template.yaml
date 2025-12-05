@@ -5,19 +5,36 @@ appVersion: 3.5.0
 icon: fluent-operator-icon.svg
 values:
   containerRuntime: crio
-  logPath:
-    crio: /var/log
   operator:
     initcontainer:
-      repository: os/oraclelinux
-      tag: 8
-    container:
+      image:
+        registry:
+        repository: os/oraclelinux
+        tag: 8
+    image:
+      registry:
       repository: olcne/fluent-operator
+    podSecurityContext:
+      runAsGroup: 1025
+      runAsNonRoot: true
+      runAsUser: 1025
+      seccompProfile:
+        type: RuntimeDefault
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      privileged: false
+    logPath:
+      crio: /var/log
   fluentbit:
     image:
+      registry:
       repository: olcne/fluent-bit
   fluentd:
     image:
+      registry:
       repository: ""
 
 
