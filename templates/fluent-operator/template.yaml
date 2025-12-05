@@ -1,0 +1,25 @@
+repo: https://fluent.github.io/helm-charts
+chart: fluent-operator
+chartVersion: 3.5.0
+appVersion: 3.5.0
+icon: fluent-operator-icon.svg
+values:
+  operator:
+    initcontainer:
+      repository: os/oraclelinux
+      tag: 8
+    container:
+      repository: olcne/fluent-operator
+  fluentbit:
+    image:
+      repository: olcne/fluent-bit
+  fluentd:
+    image:
+      repository: ""
+
+
+latestImages:
+  - name: .operator.container.repository
+    tag: .operator.container.tag
+  - name: .fluentbit.image.repository
+    tag: .fluentbit.image.tag
