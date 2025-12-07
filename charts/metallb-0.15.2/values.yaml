@@ -202,7 +202,7 @@ controller:
   # webhookMode: enabled
   image:
     repository: olcne/controller
-    tag: v0.15.2
+    tag: v0.15.2-1
     pullPolicy:
   ## @param controller.updateStrategy.type Metallb controller deployment strategy type.
   ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
@@ -278,7 +278,7 @@ speaker:
 
   image:
     repository: olcne/speaker
-    tag: v0.15.2
+    tag: v0.15.2-1
     pullPolicy:
   ## @param speaker.updateStrategy.type Speaker daemonset strategy type
   ## ref: https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/
