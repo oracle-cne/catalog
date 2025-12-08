@@ -49,11 +49,10 @@ values:
     image:
       registry: container-registry.oracle.com
       repository: ""
+      tag: ""
 
 
 latestImages:
-  - name: .operator.initcontainer.image.repository
-    tag: .operator.initcontainer.image.tag
   - name: .operator.image.repository
     tag: .operator.image.tag
   - name: .fluentbit.image.repository
