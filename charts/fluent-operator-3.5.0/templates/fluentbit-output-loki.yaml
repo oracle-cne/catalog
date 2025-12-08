@@ -1,0 +1,130 @@
+{{- if .Values.Kubernetes }}
+{{- if .Values.fluentbit.enable }}
+{{- if .Values.fluentbit.output.loki }}
+{{- if .Values.fluentbit.output.loki.enable }}
+{{- with .Values.fluentbit.output.loki }}
+{{/*
+When http{User,Password}, bearerToken, or tenantID is a string, make a secret for them
+When these keys are objects, they specify a secret to use generated elsewhere, assumed to exist in the k8s cluster
+*/}}
+{{- $userSecret := "loki-http-auth" }}
+{{- $passSecret := "loki-http-pass" }}
+{{- $bearerTokenSecret := "loki-bearer-token" }}
+{{- $tenantIDSecret := "loki-tenant-id" }}
+
+{{- range $k, $v := dict $userSecret .httpUser $passSecret .httpPassword $tenantIDSecret .tenantID $bearerTokenSecret .bearerToken }}
+{{- if kindIs "string" $v }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ $k | quote }}
+  namespace: {{ $.Release.Namespace | quote }}
+type: Opaque
+data:
+  value: {{ $v | b64enc | quote }}
+{{- end }}
+{{- end }}
+---
+apiVersion: fluentbit.fluent.io/v1alpha2
+kind: ClusterOutput
+metadata:
+  name: loki
+  labels:
+    fluentbit.fluent.io/enabled: "true"
+    fluentbit.fluent.io/component: logging
+spec:
+  matchRegex: (?:kube|service)\.(.*)
+  retry_limit: "{{ .retryLimit }}"
+  logLevel: "{{ .logLevel }}"
+  loki:
+    {{- with .host }}
+    host: {{ . | quote }}
+    {{- end }}
+    {{- with .port }}
+    port: {{ . }}
+    {{- end }}
+    {{- with .autoKubernetesLabels }}
+    autoKubernetesLabels: {{ . | quote }}
+    {{- end }}
+    {{- with .labelMapPath }}
+    labelMapPath: {{ . }}
+    {{- end }}
+    {{- with .dropSingleKey }}
+    dropSingleKey: {{ . | quote }}
+    {{- end }}
+    {{- with .lineFormat }}
+    lineFormat: {{ . }}
+    {{- end }}
+    {{- with .tenantIDKey }}
+    tenantIDKey: {{ . }}
+    {{- end }}
+    {{- with .httpUser }}
+    httpUser:
+      {{- if kindIs "string" . }}
+      valueFrom:
+        secretKeyRef:
+          key: 'value'
+          name: {{ $userSecret }}
+          optional: false
+      {{- else }}
+      {{- . | toYaml | nindent 6 }}
+      {{- end }}
+    {{- end }}
+    {{- with .httpPassword }}
+    httpPassword:
+      {{- if kindIs "string" . }}
+      valueFrom:
+        secretKeyRef:
+          key: 'value'
+          name: {{ $passSecret }}
+          optional: false
+      {{- else }}
+      {{- . | toYaml | nindent 6 }}
+      {{- end }}
+    {{- end }}
+    {{- with .bearerToken }}
+    bearerToken:
+      {{- if kindIs "string" . }}
+      valueFrom:
+        secretKeyRef:
+          key: 'value'
+          name: {{ $bearerTokenSecret }}
+          optional: false
+      {{- else }}
+      {{- . | toYaml | nindent 6 }}
+      {{- end }}
+    {{- end }}
+    {{- with .tenantID }}
+    tenantID:
+      {{- if kindIs "string" . }}
+      valueFrom:
+        secretKeyRef:
+          key: 'value'
+          name: {{ $tenantIDSecret }}
+          optional: false
+      {{- else }}
+      {{- . | toYaml | nindent 6 }}
+      {{- end }}
+    {{- end }}
+    {{- with .labels }}
+    labels:
+      {{- . | toYaml | nindent 6 }}
+    {{- end }}
+    {{- with .labelKeys }}
+    labelKeys:
+      {{- . | toYaml | nindent 6 }}
+    {{- end }}
+    {{- with .removeKeys }}
+    removeKeys:
+      {{- . | toYaml | nindent 6 }}
+    {{- end }}
+    {{ with .tls }}
+    tls:
+      {{- . | toYaml | nindent 6 }}
+    {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

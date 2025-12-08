@@ -1,0 +1,124 @@
+{{- if .Values.Kubernetes }}
+{{- if .Values.fluentbit.enable }}
+apiVersion: fluentbit.fluent.io/v1alpha2
+kind: FluentBit
+metadata:
+  name: fluent-bit
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    app.kubernetes.io/name: fluent-bit
+spec:
+  {{- with .Values.fluentbit.hostNetwork }}
+  hostNetwork: {{ . }}
+  {{- end }}
+  {{- if .Values.fluentbit.dnsPolicy }}
+  dnsPolicy: {{ .Values.fluentbit.dnsPolicy | quote }}
+  {{- else if .Values.fluentbit.hostNetwork }}
+  dnsPolicy: ClusterFirstWithHostNet
+  {{- end }}
+  image: {{ template "fluent-operator.image" (tuple .Values.fluentbit.image "") }}
+  {{- with .Values.fluentbit.imagePullSecrets }}
+  imagePullSecrets:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  positionDB:
+    {{- toYaml .Values.fluentbit.positionDB | nindent 4 }}
+  resources:
+    {{- toYaml .Values.fluentbit.resources | nindent 4  }}
+  fluentBitConfigName: fluent-bit-config
+  {{- with .Values.fluentbit.namespaceFluentBitCfgSelector }}
+  namespaceFluentBitCfgSelector:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.fluentbit.command }}
+  command:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.fluentbit.args }}
+  args:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.fluentbit.envVars }}
+  envVars:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.fluentbit.securityContext }}
+  containerSecurityContext:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.fluentbit.tolerations }}
+  tolerations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.fluentbit.nodeSelector }}
+  nodeSelector:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.fluentbit.priorityClassName }}
+  priorityClassName: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.fluentbit.affinity }}
+  affinity:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.fluentbit.schedulerName }}
+  schedulerName: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.fluentbit.secrets }}
+  secrets:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.fluentbit.additionalVolumes }}
+  volumes:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- if .Values.fluentbit.livenessProbe.enabled }}
+  livenessProbe:
+  {{- with omit .Values.fluentbit.livenessProbe "enabled" }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- end }}
+  {{- with .Values.fluentbit.additionalVolumesMounts }}
+  volumesMounts:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- if or .Values.fluentbit.annotations .Values.fluentbit.output.stdout.enable }}
+  annotations:
+  {{- with .Values.fluentbit.annotations }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- if .Values.fluentbit.output.stdout.enable }}
+    fluentbit.io/exclude: "true"
+  {{- end }}
+  {{- end }}
+  {{- with .Values.fluentbit.labels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.fluentbit.podSecurityContext }}
+  securityContext:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.fluentbit.serviceAccountAnnotations }}
+  serviceAccountAnnotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  rbacRules:
+    - apiGroups:
+      - ""
+      resources:
+      - events
+      verbs:
+      - list
+  {{- if .Values.fluentbit.rbacRules }}
+    {{- toYaml .Values.fluentbit.rbacRules | nindent 4 }}
+  {{- end }}
+  {{- with .Values.fluentbit.disableLogVolumes }}
+  disableLogVolumes: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.fluentbit.initContainers }}
+  initContainers:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}
