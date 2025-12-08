@@ -10,7 +10,7 @@ values:
       image:
         registry: container-registry.oracle.com
         repository: os/oraclelinux
-        tag: 8
+        tag: "8"
     image:
       registry: container-registry.oracle.com
       repository: olcne/fluent-operator
