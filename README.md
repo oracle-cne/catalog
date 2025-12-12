@@ -58,6 +58,7 @@ installing the `ocne-catalog` chart.
 | Tigera Operator with Calico                         | tigera-operator             | 1.38.1<br>1.32.12<br>1.32.4                                          |
 | Oracle Cloud Native Environment Dashboard           | ui                          | 2.3.0<br>2.2.0<br>2.0.0                                              |
 | Kubernetes Gateway API CRDs                         | kubernetes-gateway-api-crds | 1.4.0<br>1.3.0<br>1.2.1                                              |
+| Oracle Cloud Native Environment HA Monitor          | ocne-ha-monitor             | 2.0.0                                                                |
 
 ### Supported While Upgrading From Oracle Cloud Native Environment 1.x
 
