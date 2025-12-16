@@ -24,7 +24,7 @@ installing the `ocne-catalog` chart.
 | CoreDNS                                             | coredns                     | 2.0.0                                                                |
 | CSI Driver for oVirt                                | ovirt-csi-driver            | 4.21.0-alpha1<br>4.20.0                                              |
 | CSI NFS Driver for Kubernetes                       | csi-driver-nfs              | 4.12.1<br>4.11.0                                                     |
-| Dex                                                 | dex                         | 2.43.1<br>2.39.1                                                     |
+| Dex                                                 | dex                         | 2.44.0<br>2.43.1<br>2.39.1                                           |
 | ExternalIP Webhook                                  | externalip-webhook          | 1.0.0                                                                |
 | Flannel                                             | flannel                     | 2.0.0<br>0.22.3                                                      |
 | Fluent Operator                                     | fluent-operator             | 3.4.0<br>3.2.0                                                       |
@@ -45,7 +45,7 @@ installing the `ocne-catalog` chart.
 | KubeVirt                                            | kubevirt                    | 1.5.2<br>1.4.1<br>1.3.1<br>1.2.2<br>1.1.1                            |
 | MetalLB                                             | metallb                     | 0.15.2<br>0.13.10                                                    |
 | Multus                                              | multus                      | 4.2.1<br>4.0.2                                                       |
-| OAuth2 Proxy                                        | oauth2-proxy                | 7.8.0                                                                |
+| OAuth2 Proxy                                        | oauth2-proxy                | 7.12.0<br>7.8.0                                                      |
 | OCI Cloud Controller Manager                        | oci-ccm                     | 1.30.0<br>1.28.0                                                     |
 | OLVM CAPI Controller Manager                        | olvm-capi                   | 1.0.0                                                                |
 | OpenSearch                                          | opensearch                  | 2.15.0                                                               |
@@ -58,6 +58,7 @@ installing the `ocne-catalog` chart.
 | Tigera Operator with Calico                         | tigera-operator             | 1.38.1<br>1.32.12<br>1.32.4                                          |
 | Oracle Cloud Native Environment Dashboard           | ui                          | 2.3.0<br>2.2.0<br>2.0.0                                              |
 | Kubernetes Gateway API CRDs                         | kubernetes-gateway-api-crds | 1.4.0<br>1.3.0<br>1.2.1                                              |
+| Oracle Cloud Native Environment HA Monitor          | ocne-ha-monitor             | 2.0.0                                                                |
 
 ### Supported While Upgrading From Oracle Cloud Native Environment 1.x
 

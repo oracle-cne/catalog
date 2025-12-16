@@ -1,0 +1,115 @@
+# values.yaml
+image:
+  repository: container-registry.oracle.com/os/oraclelinux
+  tag: 8
+  pullPolicy: Never
+
+nodeSelector:
+  node-role.kubernetes.io/control-plane: ""
+
+kubectlHostPath: /usr/bin/kubectl
+
+apiAddress: localhost
+apiPort: 6443
+
+# New config value (replace the contents as needed)
+checkScript: |-
+  #! /bin/bash
+  TOKEN=$(cat /run/secrets/kubernetes.io/serviceaccount/token)
+  CA=/run/secrets/kubernetes.io/serviceaccount/ca.crt
+  KUBE_APISERVER_PORT=$(cat /config/kube-apiserver-port)
+  IFACE=$(ip -br addr show to {{ .Values.apiAddress }} | cut -d' ' -f1)
+  if [ -z "$IFACE" ]; then
+    IFACE=$(ip route get {{ .Values.apiAddress }} | grep -o 'dev [^ \t]*' | cut -d' ' -f2)
+  fi
+  HOST_ADDRS=$(ip addr)
+  while true; do
+      PORT_AND_ADDRS=$(/usr/host-bin/kubectl --token "$TOKEN" --certificate-authority "$CA" "--server=https://localhost:${KUBE_APISERVER_PORT}" --tls-server-name=${HOSTNAME} --request-timeout 1m -n default get endpointslices.discovery.k8s.io -l kubernetes.io/service-name=kubernetes -o jsonpath='{range .items[*]}{.ports[?(@.name=="https")].port}|{.endpoints[*].addresses[*]}{end}')
+      if [ "$?" -ne 0 ]; then
+        continue
+      fi
+
+      IFS=$'\n' read -ra PORT_AND_ADDR_LINES <<< "$PORT_AND_ADDRS"
+
+      NGINX_PEERS=
+      KEEPALIVED_PEERS=
+      for es in "${PORT_AND_ADDR_LINES[@]}"; do
+        PORT=$(echo "$es" | cut '-d|' -f1)
+        ADDRS=$(echo "$es" | cut '-d|' -f2 | sort | uniq)
+        for addr in $ADDRS; do
+          NGINX_PEERS="${NGINX_PEERS}    server ${addr}:${PORT} fail_timeout={{ .Values.nginx.failTimeout }} max_fails={{ .Values.nginx.maxFails }};\n"
+          echo "$HOST_ADDRS" | grep "$addr"
+          if [ "$?" -ne 0 ]; then
+            KEEPALIVED_PEERS="${KEEPALIVED_PEERS}    ${addr}\n"
+          fi
+        done
+      done
+      NGINX_PEERS=$(echo "$NGINX_PEERS" | sort | uniq)
+      KEEPALIVED_PEERS=$(echo "$KEEPALIVED_PEERS" | sort | uniq)
+      NGINX_CONFIG=$(sed "s/PEERS/${NGINX_PEERS}/g" /scripts/nginx.tmpl)
+      KEEPALIVED_CONFIG=$(sed "s/PEERS/${KEEPALIVED_PEERS}/g" /scripts/keepalived.tmpl | sed "s/IFACE/${IFACE}/g")
+      NGINX_CONFIG_SHA=$(echo "$NGINX_CONFIG" | sha256sum | cut -d' ' -f1)
+      NGINX_CONFIG_CURRENT_SHA=$(sha256sum /nginx/nginx.conf | cut -d' ' -f1)
+      KEEPALIVED_CONFIG_SHA=$(echo "$KEEPALIVED_CONFIG" | sha256sum | cut -d' ' -f1)
+      KEEPALIVED_CONFIG_CURRENT_SHA=$(sha256sum /keepalived/keepalived.conf | cut -d' ' -f1)
+      if [ "$NGINX_CONFIG_SHA" != "$NGINX_CONFIG_CURRENT_SHA" ]; then
+        echo "$NGINX_CONFIG" > /nginx/nginx.conf
+      fi
+      if [ "$KEEPALIVED_CONFIG_SHA" != "$KEEPALIVED_CONFIG_CURRENT_SHA" ]; then
+        echo "$KEEPALIVED_CONFIG" > /keepalived/keepalived.conf
+      fi
+      sleep 10
+  done
+
+keepalived:
+  priority: 50
+  routerId: 51
+  template: |-
+    global_defs {
+      router_id LVS_DEVEL
+      enable_script_security
+    }
+    vrrp_script check_apiserver {
+      script "/etc/keepalived/check_apiserver.sh"
+      interval 5
+      weight 0 # 0 is needed for instance to transition in and out of FAULT state
+      fall 10
+      rise 2
+    }
+    vrrp_instance VI_1 {
+      state BACKUP
+      interface IFACE
+      virtual_router_id {{ .Values.keepalived.routerId }}
+      priority {{ .Values.keepalived.priority }}
+      unicast_peer {
+    PEERS
+      }
+      virtual_ipaddress {
+        {{ .Values.apiAddress }}
+      }
+      track_script {
+        check_apiserver
+      }
+      notify /etc/keepalived/keepalived_state.sh
+    }
+
+nginx:
+  failTimeout: 10s
+  maxFails: 1
+  template: |-
+    load_module /usr/lib64/nginx/modules/ngx_stream_module.so;
+    events {
+      worker_connections 2048;
+    }
+    stream {
+      upstream backend1 {
+    PEERS
+        least_conn;
+      }
+      server {
+        listen {{ .Values.apiPort }};
+        listen [::]:{{ .Values.apiPort }};
+        proxy_pass backend1;
+        proxy_connect_timeout 500m;
+      }
+    }
