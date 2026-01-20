@@ -14,43 +14,22 @@ Headlamp is an easy-to-use and extensible Kubernetes web UI that provides:
 
 ## Quick Start
 
-Add the Headlamp repository and install the chart:
 
 ```console
-$ helm repo add headlamp https://kubernetes-sigs.github.io/headlamp/
-$ helm repo update
-$ helm install my-headlamp headlamp/headlamp --namespace kube-system
+$ ocne application install --release ui --name ui --namespace ocne-system
 ```
 
 Access Headlamp:
 ```console
-$ kubectl port-forward -n kube-system svc/my-headlamp 8080:80
+$ kubectl port-forward -n ocne-system svc/ui 8443:443
 ```
-Then open http://localhost:8080 in your browser.
+Then open http://localhost:8443 in your browser.
 
 ## Installation
 
 ### Basic Installation
 ```console
-$ helm install my-headlamp headlamp/headlamp --namespace kube-system
-```
-
-### Installation with OIDC
-```console
-$ helm install my-headlamp headlamp/headlamp \
-  --namespace kube-system \
-  --set config.oidc.clientID=your-client-id \
-  --set config.oidc.clientSecret=your-client-secret \
-  --set config.oidc.issuerURL=https://your-issuer-url
-```
-
-### Installation with Ingress
-```console
-$ helm install my-headlamp headlamp/headlamp \
-  --namespace kube-system \
-  --set ingress.enabled=true \
-  --set ingress.hosts[0].host=headlamp.example.com \
-  --set ingress.hosts[0].paths[0].path=/
+$ ocne application install --release ui --name ui --namespace ocne-system
 ```
 
 ## Configuration
@@ -59,23 +38,23 @@ $ helm install my-headlamp headlamp/headlamp \
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| replicaCount | int | `1` | Number of desired pods |
-| image.registry | string | `"ghcr.io"` | Container image registry |
-| image.repository | string | `"headlamp-k8s/headlamp"` | Container image name |
-| image.tag | string | `""` | Container image tag (defaults to Chart appVersion) |
+| replicaCount | int | `1`     | Number of desired pods |
+| image.registry | string | `"container-registry.oracle.com"` | Container image registry |
+| image.repository | string | `"olcne/ui"` | Container image name |
+| image.tag | string | `"v0.39.0"` | Container image tag (defaults to Chart appVersion) |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 
 ### Application Configuration
 
-| Key                | Type   | Default               | Description                                                               |
-|--------------------|--------|-----------------------|---------------------------------------------------------------------------|
-| config.inCluster   | bool   | `true`                | Run Headlamp in-cluster                                                   |
-| config.baseURL     | string | `""`                  | Base URL path for Headlamp UI                                             |
-| config.pluginsDir  | string | `"/headlamp/plugins"` | Directory to load Headlamp plugins from                                   |
-| config.enableHelm  | bool   | `false`               | Enable Helm operations like install, upgrade and uninstall of Helm charts |
-| config.extraArgs   | array  | `[]`                  | Additional arguments for Headlamp server                                  |
-| config.tlsCertPath | string | `""`                  | Certificate for serving TLS                                               |
-| config.tlsKeyPath  | string | `""`                  | Key for serving TLS                                                       |
+| Key                | Type   | Default            | Description                                                               |
+|--------------------|--------|--------------------|---------------------------------------------------------------------------|
+| config.inCluster   | bool   | `true`             | Run Headlamp in-cluster                                                   |
+| config.baseURL     | string | `""`               | Base URL path for Headlamp UI                                             |
+| config.pluginsDir  | string | `"/build/plugins"` | Directory to load Headlamp plugins from                                   |
+| config.enableHelm  | bool   | `false`            | Enable Helm operations like install, upgrade and uninstall of Helm charts |
+| config.extraArgs   | array  | `[]`               | Additional arguments for Headlamp server                                  |
+| config.tlsCertPath | string | `""`               | Certificate for serving TLS                                               |
+| config.tlsKeyPath  | string | `""`               | Key for serving TLS                                                       |
 
 ### OIDC Configuration
 
@@ -129,15 +108,15 @@ config:
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | replicaCount | int | `1` | Number of desired pods |
-| image.registry | string | `"ghcr.io"` | Container image registry |
-| image.repository | string | `"headlamp-k8s/headlamp"` | Container image name |
-| image.tag | string | `""` | Container image tag (defaults to Chart appVersion) |
+| image.registry | string | `"container-registry.oracle.com"` | Container image registry |
+| image.repository | string | `"olcne/ui"` | Container image name |
+| image.tag | string | `"v0.39.0"` | Container image tag (defaults to Chart appVersion) |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | imagePullSecrets | list | `[]` | Image pull secrets references |
 | nameOverride | string | `""` | Override the name of the chart |
 | fullnameOverride | string | `""` | Override the full name of the chart |
 | namespaceOverride | string | `""` | Override the deployment namespace; defaults to .Release.Namespace |
-| initContainers | list | `[]` | Init containers to run before main container |
+| initContainers | list | `<OCNE supported plugins>` | Init containers to run before main container |
 
 ### Security Configuration
 

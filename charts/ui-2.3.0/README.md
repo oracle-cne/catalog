@@ -23,7 +23,7 @@ Access Headlamp:
 ```console
 $ kubectl port-forward -n ocne-system svc/ui 8443:443
 ```
-Then open http://localhost:8080 in your browser.
+Then open http://localhost:8443 in your browser.
 
 ## Installation
 
