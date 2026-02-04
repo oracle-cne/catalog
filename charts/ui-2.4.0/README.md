@@ -38,20 +38,23 @@ $ ocne application install --release ui --name ui --namespace ocne-system
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| replicaCount | int | `1` | Number of desired pods |
+| replicaCount | int | `1`     | Number of desired pods |
 | image.registry | string | `"container-registry.oracle.com"` | Container image registry |
 | image.repository | string | `"olcne/ui"` | Container image name |
-| image.tag | string | `"v0.35.0"` | Container image tag (defaults to Chart appVersion) |
+| image.tag | string | `"v0.39.0"` | Container image tag (defaults to Chart appVersion) |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 
 ### Application Configuration
 
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| config.inCluster | bool | `true` | Run Headlamp in-cluster |
-| config.baseURL | string | `""` | Base URL path for Headlamp UI |
-| config.pluginsDir | string | `"/build/plugins"` | Directory to load Headlamp plugins from |
-| config.extraArgs | array | `[]` | Additional arguments for Headlamp server |
+| Key                | Type   | Default            | Description                                                               |
+|--------------------|--------|--------------------|---------------------------------------------------------------------------|
+| config.inCluster   | bool   | `true`             | Run Headlamp in-cluster                                                   |
+| config.baseURL     | string | `""`               | Base URL path for Headlamp UI                                             |
+| config.pluginsDir  | string | `"/build/plugins"` | Directory to load Headlamp plugins from                                   |
+| config.enableHelm  | bool   | `false`            | Enable Helm operations like install, upgrade and uninstall of Helm charts |
+| config.extraArgs   | array  | `[]`               | Additional arguments for Headlamp server                                  |
+| config.tlsCertPath | string | `""`               | Certificate for serving TLS                                               |
+| config.tlsKeyPath  | string | `""`               | Key for serving TLS                                                       |
 
 ### OIDC Configuration
 
@@ -61,10 +64,12 @@ $ ocne application install --release ui --name ui --namespace ocne-system
 | config.oidc.clientSecret | string | `""` | OIDC client secret |
 | config.oidc.issuerURL | string | `""` | OIDC issuer URL |
 | config.oidc.scopes | string | `""` | OIDC scopes to be used |
+| config.oidc.usePKCE | bool | `false` | Use PKCE (Proof Key for Code Exchange) for enhanced security in OIDC flow |
 | config.oidc.secret.create | bool | `true` | Create OIDC secret using provided values |
 | config.oidc.secret.name | string | `"oidc"` | Name of the OIDC secret |
 | config.oidc.externalSecret.enabled | bool | `false` | Enable using external secret for OIDC |
 | config.oidc.externalSecret.name | string | `""` | Name of external OIDC secret |
+| config.oidc.meUserInfoURL | string | `""` | URL to fetch additional user info for the /me endpoint. For oauth2proxy /oauth2/userinfo can be used. |
 
 There are three ways to configure OIDC:
 
@@ -105,11 +110,12 @@ config:
 | replicaCount | int | `1` | Number of desired pods |
 | image.registry | string | `"container-registry.oracle.com"` | Container image registry |
 | image.repository | string | `"olcne/ui"` | Container image name |
-| image.tag | string | `"v0.35.0"` | Container image tag (defaults to Chart appVersion) |
+| image.tag | string | `"v0.39.0"` | Container image tag (defaults to Chart appVersion) |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | imagePullSecrets | list | `[]` | Image pull secrets references |
 | nameOverride | string | `""` | Override the name of the chart |
 | fullnameOverride | string | `""` | Override the full name of the chart |
+| namespaceOverride | string | `""` | Override the deployment namespace; defaults to .Release.Namespace |
 | initContainers | list | `<OCNE supported plugins>` | Init containers to run before main container |
 
 ### Security Configuration
@@ -187,6 +193,7 @@ ingress:
 | tolerations | list | `[]` | Pod tolerations |
 | affinity | object | `{}` | Pod affinity settings |
 | podAnnotations | object | `{}` | Pod annotations |
+| podLabels | object | `{}` | Pod labels |
 | env | list | `[]` | Additional environment variables |
 
 Example resource configuration:
@@ -209,6 +216,74 @@ env:
     value: "6443"
 ```
 
+### Pod Disruption Budget (PDB)
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| podDisruptionBudget.enabled | bool | `false` | Create a PodDisruptionBudget resource |
+| podDisruptionBudget.minAvailable | integer \| string \| null | `0` | Minimum pods that must be available. Rendered only when set to a positive integer or a percentage string (e.g. `"1"` or `"50%"`). Schema default is 0, but the chart skips rendering `0`. |
+| podDisruptionBudget.maxUnavailable | integer \| string \| null | `null` | Maximum pods allowed to be unavailable. Accepts integer >= 0 or percentage string. Mutually exclusive with `minAvailable`; the template renders this field when set. |
+| podDisruptionBudget.unhealthyPodEvictionPolicy | string \| null | `null` | Eviction policy: `"IfHealthyBudget"` or `"AlwaysAllow"`. Emitted only on clusters running Kubernetes >= 1.27 and when explicitly set in values. |
+
+Note: Ensure `minAvailable` and `maxUnavailable` are not both set (use `null` to disable one). To include `minAvailable` in the rendered PDB, set a positive integer or percentage; the template omits a `0` value.
+
+Example, Require at least 1 pod available (ensure maxUnavailable is disabled):
+```yaml
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+  maxUnavailable: null
+```
+
+Example, Allow up to 50% of pods to be unavailable:
+```yaml
+podDisruptionBudget:
+  enabled: true
+  maxUnavailable: "50%"
+  minAvailable: null
+```
+
+Example, Set unhealthyPodEvictionPolicy (requires Kubernetes >= 1.27):
+```yaml
+podDisruptionBudget:
+  enabled: true
+  maxUnavailable: 1
+  minAvailable: null
+  unhealthyPodEvictionPolicy: "IfHealthyBudget"
+```
+
+Ensure your replicaCount and maintenance procedures respect the configured PDB to avoid blocking intended operations.
+
+### pluginsManager Configuration
+
+| Key           | Type    | Default           | Description                                                                               |
+| ------------- | ------- | ----------------- | ----------------------------------------------------------------------------------------- |
+| enabled       | boolean | `false`           | Enable plugin manager                                                                     |
+| configFile    | string  | `plugin.yml`      | Plugin configuration file name                                                            |
+| configContent | string  | `""`              | Plugin configuration content in YAML format. This is required if plugins.enabled is true. |
+| baseImage     | string  | `node:lts-alpine` | Base node image to use                                                                    |
+| version       | string  | `latest`          | Headlamp plugin package version to install                                                |
+| env           | list    | `[]`              | Plugin manager env variable configuration                                                 |
+| resources     | object  | `{}`              | Plugin manager resource requests/limits                                                   |
+
+Example resource configuration:
+
+```yaml
+pluginsManager:
+  enabled: true
+  baseImage: node:lts-alpine
+  version: latest
+  env:
+    - name: HTTPS_PROXY
+      value: "proxy.example.com:8080"
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "2048Mi"
+    limits:
+      cpu: "1"
+      memory: "4Gi"
+```
 ## Contributing
 
 We welcome contributions to the Headlamp Helm chart! To contribute:
@@ -240,4 +315,4 @@ For more details, refer to our [contributing guidelines](https://github.com/kube
 
 - [GitHub Repository](https://github.com/kubernetes-sigs/headlamp)
 - [Documentation](https://headlamp.dev/)
-- [Maintainers](https://github.com/kubernetes-sigs/headlamp/blob/main/MAINTAINERS.md)
+- [Maintainers](https://github.com/kubernetes-sigs/headlamp/blob/main/OWNERS_ALIASES)
