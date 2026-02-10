@@ -3,7 +3,7 @@
 
 Name:		ocne-catalog
 Version:	2.0.0
-Release:	31%{?dist}
+Release:	32%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ cp -ap olm/icons/* %{buildroot}/opt/icons
 /opt/icons
 
 %changelog
+* Tue Feb 10 2026 Murali Annamneni <murali.annamneni@oracle.com> - 2.0.0-32
+- Update cert-manager to 1.19.3
+
 * Fri Dec 12 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-31
 - Added HA Monitor application for managing keepalived/nginx configuration with VIP based deployments
 

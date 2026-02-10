@@ -1,6 +1,6 @@
 repo: https://charts.jetstack.io
 chart: cert-manager
-chartVersion: 1.19.1
+chartVersion: 1.19.3
 icon: cert-manager-icon.svg
 values:
   crds:
