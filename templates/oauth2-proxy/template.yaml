@@ -1,7 +1,7 @@
 repo: https://oauth2-proxy.github.io/manifests
 chart: oauth2-proxy
-chartVersion: 8.3.2
-appVersion: 7.12.0
+chartVersion: 10.1.3
+appVersion: 7.14.2
 icon: OAuth2_Proxy_horizontal.svg
 values:
   initContainers:
