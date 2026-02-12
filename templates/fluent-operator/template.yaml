@@ -1,7 +1,7 @@
 repo: https://fluent.github.io/helm-charts
 chart: fluent-operator
-chartVersion: 3.5.0
-appVersion: 3.5.0
+chartVersion: 3.6.0
+appVersion: 3.6.0
 icon: fluent-operator-icon.svg
 values:
   containerRuntime: crio
