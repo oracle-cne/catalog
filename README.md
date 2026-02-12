@@ -16,10 +16,10 @@ installing the `ocne-catalog` chart.
 | Application                                         | Chart                       | Versions                                                             |
 |-----------------------------------------------------|-----------------------------|----------------------------------------------------------------------|
 | Cert Manager                                        | cert-manager                | 1.19.1<br>1.17.2<br>1.16.3<br>1.14.5                                 |
-| Cluster API Core Controller                         | core-capi                   | 1.9.9<br>1.9.4<br>1.8.12<br>1.7.1                                    |
-| Cluster API Kubeadm Control Plane Controller        | control-plane-capi          | 1.9.9<br>1.9.4<br>1.8.12<br>1.7.1                                    |
-| Cluster API Kubeadm Bootstrap Controller            | bootstrap-capi              | 1.9.9<br>1.9.4<br>1.8.12<br>1.7.1                                    |
-| Cluster API for Oracle Cloud Infrastructure         | oci-capi                    | 0.19.0<br>0.17.0<br>0.16.0<br>0.15.0                                 |
+| Cluster API Core Controller                         | core-capi                   | 1.10.8<br>1.9.9<br>1.9.4<br>1.8.12<br>1.7.1                          |
+| Cluster API Kubeadm Control Plane Controller        | control-plane-capi          | 1.10.8<br>1.9.9<br>1.9.4<br>1.8.12<br>1.7.1                          |
+| Cluster API Kubeadm Bootstrap Controller            | bootstrap-capi              | 1.10.8<br>1.9.9<br>1.9.4<br>1.8.12<br>1.7.1                          |
+| Cluster API for Oracle Cloud Infrastructure         | oci-capi                    | 0.21.0<br>0.19.0<br>0.17.0<br>0.16.0<br>0.15.0                       |
 | Cert Manager OCI Webhook                            | cert-manager-webhook-oci    | 1.1.0                                                                |
 | CoreDNS                                             | coredns                     | 2.0.0                                                                |
 | CSI Driver for oVirt                                | ovirt-csi-driver            | 4.21.0-alpha1<br>4.20.0                                              |
@@ -58,6 +58,7 @@ installing the `ocne-catalog` chart.
 | Tigera Operator with Calico                         | tigera-operator             | 1.38.1<br>1.32.12<br>1.32.4                                          |
 | Oracle Cloud Native Environment Dashboard           | ui                          | 2.3.0<br>2.2.0<br>2.0.0                                              |
 | Kubernetes Gateway API CRDs                         | kubernetes-gateway-api-crds | 1.4.0<br>1.3.0<br>1.2.1                                              |
+| Oracle Cloud Native Environment HA Monitor          | ocne-ha-monitor             | 2.0.0                                                                |
 
 ### Supported While Upgrading From Oracle Cloud Native Environment 1.x
 
