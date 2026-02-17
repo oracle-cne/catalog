@@ -135,8 +135,8 @@ fluentbit:
     failureThreshold: 8
 
   image:
-    registry: ghcr.io
-    repository: fluent/fluent-operator/fluent-bit
+    registry: container-registry.oracle.com
+    repository: olcne/fluent-bit
     # renovate: datasource=docker depName=ghcr.io/fluent/fluent-operator/fluent-bit
     tag: "4.2.2"
 
