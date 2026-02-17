@@ -563,4 +563,3 @@ fluentd:
 nameOverride: ""
 fullnameOverride: ""
 namespaceOverride: ""
-additionalAnnotations: ""
