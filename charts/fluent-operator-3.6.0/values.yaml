@@ -12,11 +12,11 @@ Kubernetes: true
 operator:
   initcontainer:
     image:
-      registry: container-registry.oracle.com
+      registry:
       repository: os/oraclelinux
       tag: "8"
   image:
-    registry: container-registry.oracle.com
+    registry:
     repository: olcne/fluent-operator
     tag: "v3.6.0"
   # If set to false, this will disable the creation of ClusterRole, ClusterRoleBinding,
@@ -135,7 +135,7 @@ fluentbit:
     failureThreshold: 8
 
   image:
-    registry: container-registry.oracle.com
+    registry:
     repository: olcne/fluent-bit
     # renovate: datasource=docker depName=ghcr.io/fluent/fluent-operator/fluent-bit
     tag: "v4.2.2"
@@ -503,7 +503,7 @@ fluentd:
   mode: "collector"
   port: 24224
   image:
-    registry: container-registry.oracle.com
+    registry:
     repository: ""
     # renovate: datasource=docker depName=ghcr.io/fluent/fluent-operator/fluentd
     tag: ""
