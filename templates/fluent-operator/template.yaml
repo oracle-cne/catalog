@@ -1,0 +1,64 @@
+repo: https://fluent.github.io/helm-charts
+chart: fluent-operator
+chartVersion: 3.6.0
+appVersion: 3.6.0
+icon: fluent-operator-icon.svg
+values:
+  containerRuntime: crio
+  operator:
+    initcontainer:
+      image:
+        registry: container-registry.oracle.com
+        repository: os/oraclelinux
+        tag: "8"
+    image:
+      registry: container-registry.oracle.com
+      repository: olcne/fluent-operator
+    podSecurityContext:
+      runAsGroup: 1025
+      runAsNonRoot: true
+      runAsUser: 1025
+      seccompProfile:
+        type: RuntimeDefault
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      privileged: false
+    logPath:
+      crio: /var/log
+  fluentbit:
+    image:
+      registry: container-registry.oracle.com
+      repository: olcne/fluent-bit
+    podSecurityContext:
+      seccompProfile:
+        type: RuntimeDefault
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        add:
+          - DAC_OVERRIDE
+        drop:
+          - ALL
+      privileged: false
+      seLinuxOptions:
+        type: spc_t
+  fluentd:
+    image:
+      registry: container-registry.oracle.com
+      repository: ""
+      tag: ""
+
+
+latestImages:
+  - name: .operator.image.repository
+    tag: .operator.image.tag
+  - name: .fluentbit.image.repository
+    tag: .fluentbit.image.tag
+
+extraChartYqs:
+  - 'del(.dependencies[] | select(.name == "fluent-bit-crds"))'
+  - 'del(.dependencies[] | select(.name == "fluentd-crds"))'
+
