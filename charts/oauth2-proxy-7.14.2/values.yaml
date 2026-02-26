@@ -1,6 +1,6 @@
 global:
   # Global registry to pull the images from
-  imageRegistry: "container-registry.oracle.com"
+  imageRegistry: ""
   # To help compatibility with other charts which use global.imagePullSecrets.
   imagePullSecrets: []
   #   - name: pullSecret1
@@ -86,7 +86,7 @@ alphaConfig:
   existingSecret: ~
 
 image:
-  registry: "container-registry.oracle.com"
+  registry: ""
   repository: "olcne/oauth2-proxy"
   # appVersion is used by default
   tag: "v7.14.2"
