@@ -64,7 +64,7 @@ installing the `ocne-catalog` chart.
 
 | Application                  | Chart           | Versions                    |
 |------------------------------|-----------------|-----------------------------|
-| Cert Manager                 | cert-manager    | 1.9.3                       |
+| Cert Manager                 | cert-manager    | 1.19.3                      |
 | Istio CRDs                   | istio-base      | 1.19.9                      |
 | Istiod                       | istiod          | 1.19.9                      |
 | Istio Egress Gateway         | istio-egress    | 1.19.9                      |
