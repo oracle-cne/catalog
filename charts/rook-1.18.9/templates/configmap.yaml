@@ -1,4 +1,4 @@
-this is some text
+# this is some text
 ---
 # Operator settings that can be updated without an operator restart
 # Operator settings that require an operator restart are found in the operator env vars
