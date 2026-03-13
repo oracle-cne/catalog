@@ -23,7 +23,7 @@ installing the `ocne-catalog` chart.
 | Cert Manager OCI Webhook                            | cert-manager-webhook-oci    | 1.1.0                                                                |
 | CoreDNS                                             | coredns                     | 2.0.0                                                                |
 | CSI Driver for oVirt                                | ovirt-csi-driver            | 4.21.0<br>4.21.0-alpha1<br>4.20.0                                    |
-| CSI NFS Driver for Kubernetes                       | csi-driver-nfs              | 4.12.1<br>4.11.0                                                     |
+| CSI NFS Driver for Kubernetes                       | csi-driver-nfs              | 4.13.1<br>4.12.1<br>4.11.0                                           |
 | Dex                                                 | dex                         | 2.44.0<br>2.43.1<br>2.39.1                                           |
 | ExternalIP Webhook                                  | externalip-webhook          | 1.0.0                                                                |
 | Flannel                                             | flannel                     | 2.0.0<br>0.22.3                                                      |
@@ -39,7 +39,7 @@ installing the `ocne-catalog` chart.
 | Istio Ztunnel                                       | istio-ztunnel               | 1.24.6<br>1.24.1                                                     |
 | Istio CNI                                           | istio-cni                   | 1.24.6<br>1.24.1                                                     |
 | Keycloak                                            | keycloak                    | 21.1.2                                                               |
-| Kube Prometheus Stack                               | kube-prometheus-stack       | 0.85.0<br>0.63.0                                                     |
+| Kube Prometheus Stack                               | kube-prometheus-stack       | 0.89.0<br>0.85.0<br>0.63.0                                           |
 | Kube Proxy                                          | kube-proxy                  | 2.0.0                                                                |
 | Kube State Metrics                                  | kube-state-metrics          | 2.18.0<br>2.17.0<br>2.8.2                                            |
 | KubeVirt                                            | kubevirt                    | 1.5.2<br>1.4.1<br>1.3.1<br>1.2.2<br>1.1.1                            |
