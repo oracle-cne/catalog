@@ -52,3 +52,4 @@ transforms:
 
 extraChartYqs:
   - '(.dependencies[] | select(.name == "library") | .repository) = "file://./charts/library"'
+  - '(.dependencies[] | select(.name == "ceph-csi-operator") | .repository) = "file://./charts/ceph-csi-operator"'
