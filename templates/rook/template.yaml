@@ -48,7 +48,8 @@ transforms:
     - "{{ .Values.image.repository }}:{{ .Values.image.cephTag }}"
   configmap.yaml:
     prepend: |
-      this is some text
+      # this is some text
 
 extraChartYqs:
   - '(.dependencies[] | select(.name == "library") | .repository) = "file://./charts/library"'
+  - '(.dependencies[] | select(.name == "ceph-csi-operator") | .repository) = "file://./charts/ceph-csi-operator"'
