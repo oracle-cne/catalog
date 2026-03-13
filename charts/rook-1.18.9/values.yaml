@@ -441,32 +441,32 @@ csi:
   csiLeaderElectionRetryPeriod:
   cephcsi:
     # -- Ceph CSI image repository
-    repository: olcne/cephcsi
+    repository: container-registry.oracle.com/olcne/cephcsi
     # -- Ceph CSI image tag
     tag: v3.15.0
   registrar:
     # -- Kubernetes CSI registrar image repository
-    repository: olcne/csi-node-driver-registrar
+    repository: container-registry.oracle.com/olcne/csi-node-driver-registrar
     # -- Registrar image tag
     tag: v2.15.0
   provisioner:
     # -- Kubernetes CSI provisioner image repository
-    repository: olcne/csi-provisioner
+    repository: container-registry.oracle.com/olcne/csi-provisioner
     # -- Provisioner image tag
     tag: v6.0.0
   snapshotter:
     # -- Kubernetes CSI snapshotter image repository
-    repository: olcne/csi-snapshotter
+    repository: container-registry.oracle.com/olcne/csi-snapshotter
     # -- Snapshotter image tag
     tag: v8.3.0
   attacher:
     # -- Kubernetes CSI Attacher image repository
-    repository: olcne/csi-attacher
+    repository: container-registry.oracle.com/olcne/csi-attacher
     # -- Attacher image tag
     tag: v4.10.0
   resizer:
     # -- Kubernetes CSI resizer image repository
-    repository: olcne/csi-resizer
+    repository: container-registry.oracle.com/olcne/csi-resizer
     # -- Resizer image tag
     tag: v1.14.0
   # -- Image pull policy
@@ -481,7 +481,7 @@ csi:
     # -- Enable CSIAddons
     enabled: false
     # -- CSIAddons sidecar image repository
-    repository: olcne/csiaddons-k8s-sidecar
+    repository: container-registry.oracle.com/olcne/csiaddons-k8s-sidecar
     # -- CSIAddons sidecar image tag
     tag: v0.13.0
   nfs:
