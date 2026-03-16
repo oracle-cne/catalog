@@ -8,6 +8,6 @@ values:
   image:
     repository: olcne/oauth2-proxy
 
-latestImages:
+images:
   - name: .image.repository
     tag: .image.tag

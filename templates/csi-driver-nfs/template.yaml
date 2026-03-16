@@ -21,9 +21,11 @@ values:
       repository: olcne/snapshot-controller
 
 
-latestImages:
+images:
   - name: .image.nfs.repository
     tag: .image.nfs.tag
+
+latestImages:
   - name: .image.csiProvisioner.repository
     tag: .image.csiProvisioner.tag
   - name: .image.csiResizer.repository
