@@ -3,6 +3,14 @@ chart: kube-prometheus-stack
 chartVersion: 82.10.3
 icon: prometheus-logo.svg
 
+images:
+  - name: .prometheusOperator.image | (.registry) + "/" + (.repository)
+    tag: .prometheusOperator.image.tag
+  - name: .prometheusOperator.admissionWebhooks.deployment.image | (.registry) + "/" + (.repository)
+    tag: .prometheusOperator.admissionWebhooks.deployment.image.tag
+  - name: .prometheusOperator.prometheusConfigReloader.image | (.registry) + "/" + (.repository)
+    tag: .prometheusOperator.prometheusConfigReloader.image.tag
+
 latestImages:
   - name: .crds.upgradeJob.image.busybox | (.registry) + "/" + (.repository)
     tag: .crds.upgradeJob.image.busybox.tag
@@ -12,14 +20,8 @@ latestImages:
     tag: .alertmanager.alertmanagerSpec.image.tag
   - name: .prometheus.prometheusSpec.image | (.registry) + "/" + (.repository)
     tag: .prometheus.prometheusSpec.image.tag
-  - name: .prometheusOperator.image | (.registry) + "/" + (.repository)
-    tag: .prometheusOperator.image.tag
-  - name: .prometheusOperator.admissionWebhooks.deployment.image | (.registry) + "/" + (.repository)
-    tag: .prometheusOperator.admissionWebhooks.deployment.image.tag
   - name: .prometheusOperator.admissionWebhooks.patch.image | (.registry) + "/" + (.repository)
     tag: .prometheusOperator.admissionWebhooks.patch.image.tag
-  - name: .prometheusOperator.prometheusConfigReloader.image | (.registry) + "/" + (.repository)
-    tag: .prometheusOperator.prometheusConfigReloader.image.tag
   - name: .prometheusOperator.thanosImage | (.registry) + "/" + (.repository)
     tag: .prometheusOperator.thanosImage.tag
   - name: .thanosRuler.thanosRulerSpec.image | (.registry) + "/" + (.repository)
@@ -127,4 +129,3 @@ extraChartYqs:
   - '(.dependencies[] | select(.name == "grafana") | .repository) = "file://../grafana-9.2.10"'
   - '(.dependencies[] | select(.name == "grafana") | .version) = "9.2.10"'
   - 'del(.dependencies[] | select(.name == "prometheus-windows-exporter"))'
-

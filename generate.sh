@@ -60,17 +60,36 @@ yq '.values' "$TEMPLATE_FILE" > vals.tmp
 yq -i '. *= load("vals.tmp")' values.yaml
 rm vals.tmp
 
-NUM_LATEST_IMAGES=$(yq '.latestImages | length' "$TEMPLATE_FILE")
-NUM_LATEST_IMAGES=$((NUM_LATEST_IMAGES-1))
-for i in $(seq 0 $NUM_LATEST_IMAGES); do
-	REG_PATH=$(yq ".latestImages[$i].name" "$TEMPLATE_FILE")
-	REG=$(yq "$REG_PATH" values.yaml)
-	IMAGE="$REGISTRY/$REG"
-	LATEST=$(skopeo list-tags "docker://$IMAGE" | yq .Tags[] | grep -v -e '-amd64' | grep -v -e '-arm64' | sort -V | tail -1)
-	echo "latest for $IMAGE: $LATEST"
-	TAG_PATH=$(yq ".latestImages[$i].tag" "$TEMPLATE_FILE")
-	yq -i "$TAG_PATH = \"$LATEST\"" values.yaml
-done
+process_image_tags() {
+	LIST_NAME="$1"
+	TAG_MODE="$2"
+	NUM_IMAGES=$(yq ".${LIST_NAME} | length" "$TEMPLATE_FILE")
+	NUM_IMAGES=$((NUM_IMAGES-1))
+
+	for i in $(seq 0 $NUM_IMAGES); do
+		REG_PATH=$(yq ".${LIST_NAME}[$i].name" "$TEMPLATE_FILE")
+		REG=$(yq "$REG_PATH" values.yaml)
+		IMAGE="$REGISTRY/$REG"
+
+		if [ "$TAG_MODE" = "appVersion" ]; then
+			TAG_PREFIX=$(yq -r ".${LIST_NAME}[$i].prefix // \"v\"" "$TEMPLATE_FILE")
+			TAG="${TAG_PREFIX}${APP_VERSION}"
+			echo "using app version for $IMAGE: $TAG"
+		elif [ "$TAG_MODE" = "latest" ]; then
+			TAG=$(skopeo list-tags "docker://$IMAGE" | yq .Tags[] | grep -v -e '-amd64' | grep -v -e '-arm64' | sort -V | tail -1)
+			echo "latest for $IMAGE: $TAG"
+		else
+			echo "Unsupported tag mode \"$TAG_MODE\" for $IMAGE"
+			exit 1
+		fi
+
+		TAG_PATH=$(yq ".${LIST_NAME}[$i].tag" "$TEMPLATE_FILE")
+		yq -i "$TAG_PATH = \"$TAG\"" values.yaml
+	done
+}
+
+process_image_tags images appVersion
+process_image_tags latestImages latest
 
 
 popd # APP-APP_VERSION
