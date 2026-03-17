@@ -7,6 +7,7 @@ appVersion: 1.14.4
 description: Ingress controller for Kubernetes using NGINX as a reverse proxy and load balancer
 home: https://github.com/kubernetes/ingress-nginx
 icon: icons/500px-Nginx_logo.svg.png
+deprecated: true
 keywords:
   - ingress
   - nginx
