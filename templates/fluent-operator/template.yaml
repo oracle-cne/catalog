@@ -52,13 +52,14 @@ values:
       tag: ""
 
 
-latestImages:
+images:
   - name: .operator.image.repository
     tag: .operator.image.tag
+
+latestImages:
   - name: .fluentbit.image.repository
     tag: .fluentbit.image.tag
 
 extraChartYqs:
   - 'del(.dependencies[] | select(.name == "fluent-bit-crds"))'
   - 'del(.dependencies[] | select(.name == "fluentd-crds"))'
-

@@ -24,7 +24,7 @@ values:
       repository: olcne/cert-manager-startupapicheck
       tag:
 
-latestImages:
+images:
   - name: .image.repository
     tag: .image.tag
   - name: .webhook.image.repository
