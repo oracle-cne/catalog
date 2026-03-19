@@ -1,6 +1,6 @@
 repo: https://charts.jetstack.io
 chart: cert-manager
-chartVersion: 1.19.1
+chartVersion: 1.19.4
 icon: cert-manager-icon.svg
 values:
   crds:
@@ -24,7 +24,7 @@ values:
       repository: olcne/cert-manager-startupapicheck
       tag:
 
-latestImages:
+images:
   - name: .image.repository
     tag: .image.tag
   - name: .webhook.image.repository

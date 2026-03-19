@@ -24,6 +24,10 @@ spec:
         app.kubernetes.io/part-of: ovirt-csi-driver
       {{- include "mychart.selectorLabels" . | nindent 8 }}
     spec:
+    {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | nindent 8 }}
+    {{- end }}
       containers:
       - args:
         - --endpoint=$(CSI_ENDPOINT)

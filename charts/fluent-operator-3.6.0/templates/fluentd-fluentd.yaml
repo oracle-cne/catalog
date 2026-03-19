@@ -1,0 +1,54 @@
+{{- if .Values.Kubernetes }}
+{{- if .Values.fluentd.enable }}
+{{- with  .Values.fluentd }}
+apiVersion: fluentd.fluent.io/v1alpha1
+kind: Fluentd
+metadata:
+  name: {{ .name | quote }}
+  namespace: {{ $.Release.Namespace | quote }}
+  labels:
+    app.kubernetes.io/name: fluentd
+spec:
+  globalInputs:
+    - forward:
+        bind: 0.0.0.0
+        port: {{ .port }}
+  replicas: {{ .replicas }}
+  image: {{ template "fluent-operator.image" (tuple .image "") }}
+  {{- with .imagePullSecrets }}
+  imagePullSecrets:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  mode: {{ .mode }}
+  resources:
+    {{- toYaml .resources | nindent 4  }}
+  fluentdCfgSelector:
+    matchLabels:
+      config.fluentd.fluent.io/enabled: "true"
+  {{- if .envVars }}
+  envVars:
+    {{- toYaml .envVars | nindent 4 }}
+  {{- end }}
+  {{- with .securityContext }}
+  containerSecurityContext:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .podSecurityContext }}
+  securityContext:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .schedulerName }}
+  schedulerName: {{ . | quote }}
+  {{- end }}
+  {{- with .logLevel }}
+  logLevel: {{ . }}
+  {{- end }}
+  {{- with .priorityClassName }}
+  priorityClassName: {{ . }}
+  {{- end }}
+  {{- with .extras }}
+  {{ toYaml . | nindent 2 }}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
