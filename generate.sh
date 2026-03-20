@@ -42,11 +42,15 @@ yq -i ".icon = \"icons/$ICON\"" Chart.yaml
 yq -i ".kubeVersion = \"$KUBE_VERSION\"" Chart.yaml
 yq -i ".name = \"$APP\"" Chart.yaml
 
-yq -r -0 '.extraChartYqs[]' "$TEMPLATE_FILE" | xargs -0 -I{} yq -i {} Chart.yaml
+if yq -e '.extraChartYqs' "$TEMPLATE_FILE" > /dev/null 2>&1; then
+	yq -r -0 '.extraChartYqs[]' "$TEMPLATE_FILE" | xargs -0 -I{} yq -i {} Chart.yaml
+fi
 
-TRANSFORMS=$(yq -r '.transforms | keys | .[]' "$TEMPLATE_FILE")
+TRANSFORMS=$(yq -r '(.transforms // {}) | keys | .[]' "$TEMPLATE_FILE")
 for xform in $TRANSFORMS; do
-	yq -r -0 ".transforms.\"$xform\".extraImages | .[]" "$TEMPLATE_FILE" | xargs -0 -I{} sed -i "1s;^;# extra-image: {}\n;" templates/$xform
+	if yq -e ".transforms.\"$xform\".extraImages" "$TEMPLATE_FILE" > /dev/null 2>&1; then
+		yq -r -0 ".transforms.\"$xform\".extraImages | .[]" "$TEMPLATE_FILE" | xargs -0 -I{} sed -i "1s;^;# extra-image: {}\n;" templates/$xform
+	fi
 
 	TEXT=$(yq -re ".transforms.\"$xform\".prepend" "$TEMPLATE_FILE" 2>/dev/null)
 	if [ "$?" != "0" ]; then
