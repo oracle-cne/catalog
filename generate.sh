@@ -12,6 +12,49 @@ if [ -z "$REGISTRY" ]; then
 	REGISTRY=container-registry.oracle.com
 fi
 
+preserve_values_yaml_before_yq() {
+	awk '
+		/^[[:space:]]*$/ {
+			print "#__GENERATE_SH_BLANK__"
+			next
+		}
+		/^[[:space:]]*#/ {
+			print "#" $0
+			next
+		}
+		{
+			print
+		}
+	' values.yaml > values.yaml.preserved
+	mv values.yaml.preserved values.yaml
+}
+
+restore_values_yaml_after_yq() {
+	awk '
+		/^[[:space:]]*#/ {
+			line = $0
+			sub(/^[[:space:]]*#/, "", line)
+			if (line == "__GENERATE_SH_BLANK__") {
+				print ""
+			} else {
+				print line
+			}
+			next
+		}
+		{
+			print
+		}
+	' values.yaml > values.yaml.restored
+	mv values.yaml.restored values.yaml
+}
+
+update_values_yaml_with_yq() {
+	EXPR="$1"
+	preserve_values_yaml_before_yq
+	yq -i "$EXPR" values.yaml
+	restore_values_yaml_after_yq
+}
+
 set -x
 
 REPO_URL=$(yq .repo "$TEMPLATE_FILE")
@@ -42,11 +85,15 @@ yq -i ".icon = \"icons/$ICON\"" Chart.yaml
 yq -i ".kubeVersion = \"$KUBE_VERSION\"" Chart.yaml
 yq -i ".name = \"$APP\"" Chart.yaml
 
-yq -r -0 '.extraChartYqs[]' "$TEMPLATE_FILE" | xargs -0 -I{} yq -i {} Chart.yaml
+if yq -e '.extraChartYqs' "$TEMPLATE_FILE" > /dev/null 2>&1; then
+	yq -r -0 '.extraChartYqs[]' "$TEMPLATE_FILE" | xargs -0 -I{} yq -i {} Chart.yaml
+fi
 
-TRANSFORMS=$(yq -r '.transforms | keys | .[]' "$TEMPLATE_FILE")
+TRANSFORMS=$(yq -r '(.transforms // {}) | keys | .[]' "$TEMPLATE_FILE")
 for xform in $TRANSFORMS; do
-	yq -r -0 ".transforms.\"$xform\".extraImages | .[]" "$TEMPLATE_FILE" | xargs -0 -I{} sed -i "1s;^;# extra-image: {}\n;" templates/$xform
+	if yq -e ".transforms.\"$xform\".extraImages" "$TEMPLATE_FILE" > /dev/null 2>&1; then
+		yq -r -0 ".transforms.\"$xform\".extraImages | .[]" "$TEMPLATE_FILE" | xargs -0 -I{} sed -i "1s;^;# extra-image: {}\n;" templates/$xform
+	fi
 
 	TEXT=$(yq -re ".transforms.\"$xform\".prepend" "$TEMPLATE_FILE" 2>/dev/null)
 	if [ "$?" != "0" ]; then
@@ -57,7 +104,7 @@ for xform in $TRANSFORMS; do
 done
 
 yq '.values' "$TEMPLATE_FILE" > vals.tmp
-yq -i '. *= load("vals.tmp")' values.yaml
+update_values_yaml_with_yq '. *= load("vals.tmp")'
 rm vals.tmp
 
 process_image_tags() {
@@ -84,7 +131,7 @@ process_image_tags() {
 		fi
 
 		TAG_PATH=$(yq ".${LIST_NAME}[$i].tag" "$TEMPLATE_FILE")
-		yq -i "$TAG_PATH = \"$TAG\"" values.yaml
+		update_values_yaml_with_yq "$TAG_PATH = \"$TAG\""
 	done
 }
 
