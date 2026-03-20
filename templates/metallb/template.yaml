@@ -1,0 +1,31 @@
+repo: https://metallb.github.io/metallb
+chart: metallb
+icon: metallb-blue.svg
+values:
+  controller:
+    image:
+      repository: olcne/controller
+      tag:
+  speaker:
+    image:
+      repository: olcne/speaker
+      tag:
+  configmaptocrs:
+    image:
+      repository: olcne/configmaptocrs
+      tag:
+
+images:
+  - name: .controller.image.repository
+    tag: .controller.image.tag
+  - name: .speaker.image.repository
+    tag: .speaker.image.tag
+
+transforms:
+  controller.yaml:
+    prepend: |
+      {{- with .Values.configmaptocrs }}
+      {{- if .enabled }}
+      # extra-image: {{ .image.repository }}:{{ .image.tag }}
+      {{- end }}
+      {{- end -}}
