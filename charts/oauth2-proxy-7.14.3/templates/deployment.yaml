@@ -110,7 +110,13 @@ spec:
       {{- end }}
       containers:
       - name: {{ .Chart.Name }}
-        image: "{{ .Values.image.registry | default .Values.global.imageRegistry | default "quay.io" }}/{{ .Values.image.repository }}:{{ include "oauth2-proxy.version" . }}"
+        {{- $registry := coalesce .Values.image.registry .Values.global.imageRegistry -}}
+        {{- $tag := include "oauth2-proxy.version" . -}}
+        {{- if $registry }}
+        image: {{ printf "%s/%s:%s" $registry .Values.image.repository $tag | quote }}
+        {{- else }}
+        image: {{ printf "%s:%s" .Values.image.repository $tag | quote }}
+        {{- end }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         {{- if .Values.image.command }}
         command:
