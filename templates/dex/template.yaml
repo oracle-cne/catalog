@@ -8,6 +8,6 @@ values:
     repository: olcne/dex
 
 
-latestImages:
+images:
   - name: .image.repository
     tag: .image.tag

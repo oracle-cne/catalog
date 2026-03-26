@@ -1,7 +1,15 @@
 repo: https://prometheus-community.github.io/helm-charts
 chart: kube-prometheus-stack
-chartVersion: 77.6.0
+chartVersion: 82.10.3
 icon: prometheus-logo.svg
+
+images:
+  - name: .prometheusOperator.image | (.registry) + "/" + (.repository)
+    tag: .prometheusOperator.image.tag
+  - name: .prometheusOperator.admissionWebhooks.deployment.image | (.registry) + "/" + (.repository)
+    tag: .prometheusOperator.admissionWebhooks.deployment.image.tag
+  - name: .prometheusOperator.prometheusConfigReloader.image | (.registry) + "/" + (.repository)
+    tag: .prometheusOperator.prometheusConfigReloader.image.tag
 
 latestImages:
   - name: .crds.upgradeJob.image.busybox | (.registry) + "/" + (.repository)
@@ -12,14 +20,8 @@ latestImages:
     tag: .alertmanager.alertmanagerSpec.image.tag
   - name: .prometheus.prometheusSpec.image | (.registry) + "/" + (.repository)
     tag: .prometheus.prometheusSpec.image.tag
-  - name: .prometheusOperator.image | (.registry) + "/" + (.repository)
-    tag: .prometheusOperator.image.tag
-  - name: .prometheusOperator.admissionWebhooks.deployment.image | (.registry) + "/" + (.repository)
-    tag: .prometheusOperator.admissionWebhooks.deployment.image.tag
   - name: .prometheusOperator.admissionWebhooks.patch.image | (.registry) + "/" + (.repository)
     tag: .prometheusOperator.admissionWebhooks.patch.image.tag
-  - name: .prometheusOperator.prometheusConfigReloader.image | (.registry) + "/" + (.repository)
-    tag: .prometheusOperator.prometheusConfigReloader.image.tag
   - name: .prometheusOperator.thanosImage | (.registry) + "/" + (.repository)
     tag: .prometheusOperator.thanosImage.tag
   - name: .thanosRuler.thanosRulerSpec.image | (.registry) + "/" + (.repository)
@@ -120,11 +122,10 @@ transforms:
       {{- end }}
 
 extraChartYqs:
-  - '(.dependencies[] | select(.name == "kube-state-metrics") | .repository) = "file://../kube-state-metrics-2.17.0"'
-  - '(.dependencies[] | select(.name == "kube-state-metrics") | .version) = "2.17.0"'
-  - '(.dependencies[] | select(.name == "prometheus-node-exporter") | .repository) = "file://../prometheus-node-exporter-1.9.1"'
-  - '(.dependencies[] | select(.name == "prometheus-node-exporter") | .version) = "1.9.1"'
+  - '(.dependencies[] | select(.name == "kube-state-metrics") | .repository) = "file://../kube-state-metrics-2.18.0"'
+  - '(.dependencies[] | select(.name == "kube-state-metrics") | .version) = "2.18.0"'
+  - '(.dependencies[] | select(.name == "prometheus-node-exporter") | .repository) = "file://../prometheus-node-exporter-1.10.2"'
+  - '(.dependencies[] | select(.name == "prometheus-node-exporter") | .version) = "1.10.2"'
   - '(.dependencies[] | select(.name == "grafana") | .repository) = "file://../grafana-9.2.10"'
   - '(.dependencies[] | select(.name == "grafana") | .version) = "9.2.10"'
   - 'del(.dependencies[] | select(.name == "prometheus-windows-exporter"))'
-

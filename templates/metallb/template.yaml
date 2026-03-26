@@ -1,0 +1,26 @@
+repo: https://metallb.github.io/metallb
+chart: metallb
+icon: metallb-blue.svg
+values:
+  prometheus:
+    rbacProxy:
+      repository: ""
+  controller:
+    image:
+      repository: olcne/controller
+      tag:
+  speaker:
+    image:
+      repository: olcne/speaker
+      tag:
+    frr:
+      enabled: false
+      image:
+        repository: ""
+        tag:
+
+images:
+  - name: .controller.image.repository
+    tag: .controller.image.tag
+  - name: .speaker.image.repository
+    tag: .speaker.image.tag

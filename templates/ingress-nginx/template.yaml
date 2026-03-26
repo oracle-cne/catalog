@@ -1,7 +1,6 @@
 repo: https://kubernetes.github.io/ingress-nginx
 chart: ingress-nginx
 chartVersion: 4.14.0
-appVersion: 1.14.0
 icon: 500px-Nginx_logo.svg.png
 values:
   controller:
@@ -42,7 +41,7 @@ values:
       registry: olcne
 
 
-latestImages:
+images:
   - name: .controller.image.image
     tag: .controller.image.tag
   - name: .controller.admissionWebhooks.patch.image.image
