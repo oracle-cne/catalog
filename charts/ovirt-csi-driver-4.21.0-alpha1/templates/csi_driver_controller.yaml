@@ -12,16 +12,12 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: plugin
-      app.kubernetes.io/instance: ovirt-csi-driver-controller
-      app.kubernetes.io/name: ovirt-csi-driver-controller
       app.kubernetes.io/part-of: ovirt-csi-driver
     {{- include "mychart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
         app.kubernetes.io/component: plugin
-        app.kubernetes.io/instance: ovirt-csi-driver-controller
-        app.kubernetes.io/name: ovirt-csi-driver-controller
         app.kubernetes.io/part-of: ovirt-csi-driver
       {{- include "mychart.selectorLabels" . | nindent 8 }}
     spec:
