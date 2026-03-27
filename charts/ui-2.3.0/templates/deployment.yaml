@@ -261,11 +261,11 @@ spec:
             {{- with .Values.config.extraArgs }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
-            {{- with .Values.config.tlsCert }}
-            - "-tls-cert={{ . }}"
+            {{- with .Values.config.tlsCertPath }}
+            - "-tls-cert-path={{ . }}"
             {{- end }}
-            {{- with .Values.config.tlsKey }}
-            - "-tls-key={{ . }}"
+            {{- with .Values.config.tlsKeyPath }}
+            - "-tls-key-path={{ . }}"
             {{- end }}
           ports:
             - name: https
