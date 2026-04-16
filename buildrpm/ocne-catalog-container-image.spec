@@ -7,7 +7,7 @@
 
 Name:		%{_name}-container-image
 Version:	2.0.0
-Release:	31%{?dist}
+Release:	32%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
+* Thu Mar 26 2026 Prasad Shirodkar <prasad.shirodkar@oracle.com> - 2.0.0-32
+- Removed duplicate labels in the oVirt CSI Driver chart.
+
 * Fri Dec 12 2025 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-31
 - Added HA Monitor application for managing keepalived/nginx configuration with VIP based deployments
 
