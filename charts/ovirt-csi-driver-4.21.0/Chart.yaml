@@ -5,4 +5,4 @@ type: application
 version: 4.21.0
 appVersion: "4.21.0"
 icon: icons/kubernetes-logo.svg
-kubeVersion: '>= 1.30.0 < 1.36.0'
+kubeVersion: '>= 1.30.0 < 1.34.0'
