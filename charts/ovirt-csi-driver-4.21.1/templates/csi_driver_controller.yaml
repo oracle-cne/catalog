@@ -128,20 +128,11 @@ spec:
         - mountPath: /csi-socket
           name: socket-dir
       initContainers:
-      - command:
-        - /bin/sh
-        - -c
-        - |
-          #!/bin/sh
-          cat << EOF > /tmp/config/ovirt-config.yaml
-          ovirt_url: $OVIRT_URL
-          ovirt_username: $OVIRT_USERNAME
-          ovirt_password: $OVIRT_PASSWORD
-          # set a valid path only if ca bundle has content
-          ovirt_cafile: ${OVIRT_CA_BUNDLE:+$OVIRT_CAFILE}
-          ovirt_insecure: {{ .Values.ovirt.insecure }}
-          EOF
-          if [[ -n "$OVIRT_CA_BUNDLE" ]]; then echo "$OVIRT_CA_BUNDLE" > $OVIRT_CAFILE ; fi
+      - args:
+        - --prepare-ovirt-config
+        - {{ printf "--prepare-ovirt-config-file=%s" .Values.csiController.ovirtController.env.ovirtConfig | quote }}
+        - {{ printf "--prepare-ovirt-config-ca-file=%s" .Values.csiController.prepareOvirtConfig.env.ovirtCafile | quote }}
+        - --prepare-ovirt-config-insecure={{ .Values.ovirt.insecure }}
         env:
         - name: OVIRT_URL
           valueFrom:
