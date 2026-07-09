@@ -7,7 +7,7 @@
 
 Name:		%{_name}-container-image
 Version:	2.0.0
-Release:	32%{?dist}
+Release:	33%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
+* Tue Jun 30 2026 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-33
+- Update ingress-nginx to 1.15.1 and ovirt-csi-driver to 4.21.1
+
 * Thu Mar 26 2026 Prasad Shirodkar <prasad.shirodkar@oracle.com> - 2.0.0-32
 - Removed duplicate labels in the oVirt CSI Driver chart.
 
