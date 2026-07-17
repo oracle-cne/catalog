@@ -43,8 +43,8 @@ installing the `ocne-catalog` chart.
 | Kube Proxy                                          | kube-proxy                  | 2.0.0                                                                |
 | Kube State Metrics                                  | kube-state-metrics          | 2.19.1<br>2.18.0<br>2.17.0<br>2.8.2 |
 | KubeVirt                                            | kubevirt                    | 1.5.2<br>1.4.1<br>1.3.1<br>1.2.2<br>1.1.1                            |
-| MetalLB                                             | metallb                     | 0.15.3<br>0.15.2<br>0.13.10                                          |
-| Multus                                              | multus                      | 4.2.1<br>4.0.2                                                       |
+| MetalLB                                             | metallb                     | 0.16.1<br>0.15.3<br>0.15.2<br>0.13.10                                          |
+| Multus                                              | multus                      | 4.3.0<br>4.2.1<br>4.0.2                                              |
 | OAuth2 Proxy                                        | oauth2-proxy                | 7.14.3<br>7.12.0<br>7.8.0                                            |
 | OCI Cloud Controller Manager                        | oci-ccm                     | 1.30.0<br>1.28.0                                                     |
 | OLVM CAPI Controller Manager                        | olvm-capi                   | 1.0.0                                                                |
@@ -70,7 +70,7 @@ installing the `ocne-catalog` chart.
 | Istio Egress Gateway         | istio-egress    | 1.19.9                      |
 | Istio Ingress Gateway        | istio-ingress   | 1.19.9                      |
 | KubeVirt                     | kubevirt        | 1.0.1<br>0.59.0<br>0.58.0   |
-| MetalLB                      | metallb         | 0.12.1                      |
+| MetalLB                      | metallb         | 0.16.1<br>0.12.1                      |
 | OCI Cloud Controller Manager | oci-ccm         | 1.27.2                      |
 | Rook                         | rook            | 1.11.6<br>1.10.9            |
 | Tigera Operator with Calico  | tigera-operator | 1.32.12<br>1.32.4<br>1.29.3 |

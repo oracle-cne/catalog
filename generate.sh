@@ -227,6 +227,10 @@ fi
 # with catalog standards
 APP_VERSION=$(echo "${APP_VERSION}" | sed 's/^v//')
 
+# Strip the 'v' off the front of app version, if it exists, to conform
+# with catalog standards
+APP_VERSION=$(echo "${APP_VERSION}" | sed 's/^v//')
+
 pushd "charts"
 
 if [[ "$CHART_VERSION" == v* ]]; then
