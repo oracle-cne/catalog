@@ -3,10 +3,11 @@
 APP="$1"
 APP_VERSION="$2"
 KUBE_VERSION="$3"
+ROOT_DIR="$PWD"
 
 REPO_NAME="tmp-repo"
 
-TEMPLATE_FILE="$PWD/templates/$APP/template.yaml"
+TEMPLATE_FILE="$ROOT_DIR/templates/$APP/template.yaml"
 
 if [ -z "$REGISTRY" ]; then
 	REGISTRY=container-registry.oracle.com
@@ -55,6 +56,154 @@ update_values_yaml_with_yq() {
 	restore_values_yaml_after_yq
 }
 
+sanitize_chart_readme() {
+	if [ ! -f README.md ]; then
+		return
+	fi
+
+	echo "Sanitizing Helm command examples in README.md"
+	sed -i \
+		-e "s/^[[:space:]]*helm install .*/ocne application install --release [RELEASE_NAME] --name ${APP} --namespace [NAMESPACE]/I" \
+		-e "s/^[[:space:]]*helm upgrade .*/ocne application update --release [RELEASE_NAME] --namespace [NAMESPACE]/I" \
+		-e "s/^[[:space:]]*helm uninstall .*/ocne application uninstall --release [RELEASE_NAME] --namespace [NAMESPACE]/I" \
+		-e "s/^[[:space:]]*helm delete .*/ocne application uninstall --release [RELEASE_NAME] --namespace [NAMESPACE]/I" \
+		README.md
+}
+
+update_readme_version() {
+	awk -v app="$APP" -v version="$APP_VERSION" '
+		BEGIN {
+			FS = "|"
+			OFS = "|"
+		}
+		$0 ~ /^\|/ && $3 ~ "^[[:space:]]*" app "[[:space:]]*$" {
+			versions = $4
+			gsub(/^[[:space:]]+|[[:space:]]+$/, "", versions)
+			numVersions = split(versions, versionList, /<br>/)
+			updatedVersions = version
+			for (i = 1; i <= numVersions; i++) {
+				currentVersion = versionList[i]
+				gsub(/^[[:space:]]+|[[:space:]]+$/, "", currentVersion)
+				if (currentVersion != "" && currentVersion != version) {
+					updatedVersions = updatedVersions "<br>" currentVersion
+				}
+			}
+			$4 = " " updatedVersions " "
+		}
+		{
+			print
+		}
+	' README.md > README.md.updated
+	mv README.md.updated README.md
+}
+
+show_dependency_chart() {
+	DEP_NAME="$1"
+	DEP_REPO="$2"
+	DEP_CHART_VERSION="$3"
+
+	if [[ "$DEP_REPO" == oci://* ]]; then
+		helm show chart "${DEP_REPO%/}/${DEP_NAME}" --version "$DEP_CHART_VERSION"
+	elif [[ "$DEP_REPO" == @* ]]; then
+		helm show chart "${DEP_REPO#@}/${DEP_NAME}" --version "$DEP_CHART_VERSION"
+	elif [[ "$DEP_REPO" == alias:* ]]; then
+		helm show chart "${DEP_REPO#alias:}/${DEP_NAME}" --version "$DEP_CHART_VERSION"
+	else
+		helm show chart "$DEP_NAME" --repo "$DEP_REPO" --version "$DEP_CHART_VERSION"
+	fi
+}
+
+resolve_dependency_app_version() {
+	DEP_NAME="$1"
+	DEP_REPO="$2"
+	DEP_CHART_VERSION="$3"
+
+	echo "Resolving dependency chart ${DEP_NAME}@${DEP_CHART_VERSION} from ${DEP_REPO}"
+	DEP_CHART_METADATA=$(show_dependency_chart "$DEP_NAME" "$DEP_REPO" "$DEP_CHART_VERSION")
+	if [ "$?" != "0" ]; then
+		echo "Could not inspect dependency chart ${DEP_NAME}@${DEP_CHART_VERSION} from ${DEP_REPO}"
+		exit 1
+	fi
+
+	DEP_RESOLVED_CHART_VERSION=$(echo "$DEP_CHART_METADATA" | yq -r '.version // ""')
+	DEP_RESOLVED_APP_VERSION=$(echo "$DEP_CHART_METADATA" | yq -r '.appVersion // ""' | sed 's/^v//')
+	if [ -z "$DEP_RESOLVED_CHART_VERSION" ] || [ "$DEP_RESOLVED_CHART_VERSION" = "null" ]; then
+		echo "Dependency chart ${DEP_NAME}@${DEP_CHART_VERSION} did not resolve to a chart version"
+		exit 1
+	fi
+	if [ -z "$DEP_RESOLVED_APP_VERSION" ] || [ "$DEP_RESOLVED_APP_VERSION" = "null" ]; then
+		echo "Dependency chart ${DEP_NAME}@${DEP_CHART_VERSION} does not define an appVersion"
+		exit 1
+	fi
+	echo "Resolved dependency chart ${DEP_NAME}@${DEP_RESOLVED_CHART_VERSION} to app version ${DEP_RESOLVED_APP_VERSION}"
+}
+
+generate_dependency_chart() {
+	DEP_APP="$1"
+	DEP_APP_VERSION="$2"
+	DEP_CHART_VERSION="$3"
+	DEP_CHART_DIR="$ROOT_DIR/charts/${DEP_APP}-${DEP_APP_VERSION}"
+	DEP_TEMPLATE_FILE="$ROOT_DIR/templates/${DEP_APP}/template.yaml"
+
+	if [ -d "$DEP_CHART_DIR" ]; then
+		echo "Dependency chart ${DEP_APP}-${DEP_APP_VERSION} already exists; using existing catalog chart"
+		return
+	fi
+
+	if [ ! -f "$DEP_TEMPLATE_FILE" ]; then
+		echo "Cannot generate dependency ${DEP_APP}-${DEP_APP_VERSION}: missing ${DEP_TEMPLATE_FILE}"
+		exit 1
+	fi
+
+	echo "Generating dependency chart ${DEP_APP}-${DEP_APP_VERSION} from chart version ${DEP_CHART_VERSION}"
+	(
+		cd "$ROOT_DIR"
+		CHART_VERSION="$DEP_CHART_VERSION" "$ROOT_DIR/generate.sh" "$DEP_APP" "$DEP_APP_VERSION" "$KUBE_VERSION"
+	)
+	if [ "$?" != "0" ]; then
+		echo "Could not generate dependency chart ${DEP_APP}-${DEP_APP_VERSION}"
+		exit 1
+	fi
+}
+
+process_chart_dependencies() {
+	NUM_DEPENDENCIES=$(yq '.dependencies // [] | length' Chart.yaml)
+	DEP_INDEX=0
+
+	while [ "$DEP_INDEX" -lt "$NUM_DEPENDENCIES" ]; do
+		DEP_NAME=$(yq -r ".dependencies[$DEP_INDEX].name // \"\"" Chart.yaml)
+		DEP_REPO=$(yq -r ".dependencies[$DEP_INDEX].repository // \"\"" Chart.yaml)
+		DEP_CHART_VERSION=$(yq -r ".dependencies[$DEP_INDEX].version // \"\"" Chart.yaml)
+
+		if [ -z "$DEP_NAME" ]; then
+			echo "Dependency at index ${DEP_INDEX} does not define a name"
+			exit 1
+		fi
+
+		if [ -z "$DEP_REPO" ] || [[ "$DEP_REPO" == file://* ]]; then
+			echo "Skipping local dependency ${DEP_NAME} with repository '${DEP_REPO}'"
+			DEP_INDEX=$((DEP_INDEX+1))
+			continue
+		fi
+
+		if [ -z "$DEP_CHART_VERSION" ]; then
+			echo "Dependency ${DEP_NAME} does not define a chart version"
+			exit 1
+		fi
+
+		resolve_dependency_app_version "$DEP_NAME" "$DEP_REPO" "$DEP_CHART_VERSION"
+		generate_dependency_chart "$DEP_NAME" "$DEP_RESOLVED_APP_VERSION" "$DEP_RESOLVED_CHART_VERSION"
+
+		DEP_LOCAL_REPO="file://../${DEP_NAME}-${DEP_RESOLVED_APP_VERSION}"
+		echo "Rewriting dependency ${DEP_NAME} to ${DEP_LOCAL_REPO}@${DEP_RESOLVED_APP_VERSION}"
+		DEP_LOCAL_REPO="$DEP_LOCAL_REPO" \
+		DEP_RESOLVED_APP_VERSION="$DEP_RESOLVED_APP_VERSION" \
+			yq -i ".dependencies[$DEP_INDEX].repository = strenv(DEP_LOCAL_REPO) | .dependencies[$DEP_INDEX].version = strenv(DEP_RESOLVED_APP_VERSION)" Chart.yaml
+
+		DEP_INDEX=$((DEP_INDEX+1))
+	done
+}
+
 set -x
 
 REPO_URL=$(yq .repo "$TEMPLATE_FILE")
@@ -62,15 +211,16 @@ helm repo add "$REPO_NAME" "$REPO_URL"
 
 ICON=$(yq .icon "$TEMPLATE_FILE")
 CHART=$(yq .chart "$TEMPLATE_FILE")
-CHART_VERSION=$(yq -re .chartVersion "$TEMPLATE_FILE" 2>/dev/null)
-if [ "$?" != "0" ]; then
-	CHART_VERSION="$APP_VERSION"
-
+if [ -z "$CHART_VERSION" ] || [ "$CHART_VERSION" = "null" ]; then
 	# If the chart version is not specified, then search
 	# the repo by app version.
 	CHART_DESCS=$(helm search repo "$CHART" -o yaml)
-	CHART_VERSION=$(echo "$CHART_DESCS" | yq ".[] | select(.app_version == \"${APP_VERSION}\" and .name == \"${REPO_NAME}/${CHART}\") | .version")
+	CHART_VERSION=$(echo "$CHART_DESCS" | yq ".[] | select((.app_version == \"${APP_VERSION}\" or .app_version == \"v${APP_VERSION}\") and .name == \"${REPO_NAME}/${CHART}\") | .version")
 
+fi
+if [ -z "$CHART_VERSION" ] || [ "$CHART_VERSION" = "null" ]; then
+	echo "Could not resolve a chart version for ${CHART} with app version ${APP_VERSION}"
+	exit 1
 fi
 
 # Strip the 'v' off the front of app version, if it exists, to conform
@@ -79,10 +229,20 @@ APP_VERSION=$(echo "${APP_VERSION}" | sed 's/^v//')
 
 pushd "charts"
 
-helm pull --untar "$REPO_NAME/$CHART" --version "v$CHART_VERSION"
+if [[ "$CHART_VERSION" == v* ]]; then
+	V_CHART_VERSION="$CHART_VERSION"
+else
+	V_CHART_VERSION="v$CHART_VERSION"
+fi
+
+helm pull --untar "$REPO_NAME/$CHART" --version "$V_CHART_VERSION"
 if [ "$?" != "0" ]; then
-	echo "Could not pull ${CHART}@${CHART_VERSION} from ${REPO_URL}"
-	exit 1
+	echo "Could not pull ${CHART}@${V_CHART_VERSION} from ${REPO_URL}; retrying ${CHART_VERSION}"
+	helm pull --untar "$REPO_NAME/$CHART" --version "$CHART_VERSION"
+	if [ "$?" != "0" ]; then
+		echo "Could not pull ${CHART}@${CHART_VERSION} from ${REPO_URL}"
+		exit 1
+	fi
 fi
 
 helm repo remove "$REPO_NAME"
@@ -95,10 +255,13 @@ yq -i ".appVersion = \"$APP_VERSION\"" Chart.yaml
 yq -i ".icon = \"icons/$ICON\"" Chart.yaml
 yq -i ".kubeVersion = \"$KUBE_VERSION\"" Chart.yaml
 yq -i ".name = \"$APP\"" Chart.yaml
+sanitize_chart_readme
 
 if yq -e '.extraChartYqs' "$TEMPLATE_FILE" > /dev/null 2>&1; then
 	yq -r -0 '.extraChartYqs[]' "$TEMPLATE_FILE" | xargs -0 -I{} yq -i {} Chart.yaml
 fi
+
+process_chart_dependencies
 
 TRANSFORMS=$(yq -r '(.transforms // {}) | keys | .[]' "$TEMPLATE_FILE")
 for xform in $TRANSFORMS; do
@@ -160,7 +323,7 @@ popd # APP-APP_VERSION
 popd # charts
 
 # Update README.md
-sed -i "s/|\\([^|]*|[[:space:]]*\\)${APP}\\([[:space:]]*|[[:space:]]*\\)\\(.*\\)/|\\1${APP}\\2${APP_VERSION}<br>\\3/" README.md
+update_readme_version
 
 set +x
 
