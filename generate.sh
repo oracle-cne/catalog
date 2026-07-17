@@ -58,16 +58,27 @@ update_values_yaml_with_yq() {
 set -x
 
 REPO_URL=$(yq .repo "$TEMPLATE_FILE")
+helm repo add "$REPO_NAME" "$REPO_URL"
+
 ICON=$(yq .icon "$TEMPLATE_FILE")
 CHART=$(yq .chart "$TEMPLATE_FILE")
 CHART_VERSION=$(yq -re .chartVersion "$TEMPLATE_FILE" 2>/dev/null)
 if [ "$?" != "0" ]; then
 	CHART_VERSION="$APP_VERSION"
+
+	# If the chart version is not specified, then search
+	# the repo by app version.
+	CHART_DESCS=$(helm search repo "$CHART" -o yaml)
+	CHART_VERSION=$(echo "$CHART_DESCS" | yq ".[] | select(.app_version == \"${APP_VERSION}\" and .name == \"${REPO_NAME}/${CHART}\") | .version")
+
 fi
+
+# Strip the 'v' off the front of app version, if it exists, to conform
+# with catalog standards
+APP_VERSION=$(echo "${APP_VERSION}" | sed 's/^v//')
 
 pushd "charts"
 
-helm repo add "$REPO_NAME" "$REPO_URL"
 helm pull --untar "$REPO_NAME/$CHART" --version "v$CHART_VERSION"
 if [ "$?" != "0" ]; then
 	echo "Could not pull ${CHART}@${CHART_VERSION} from ${REPO_URL}"
@@ -107,6 +118,9 @@ yq '.values' "$TEMPLATE_FILE" > vals.tmp
 update_values_yaml_with_yq '. *= load("vals.tmp")'
 rm vals.tmp
 
+IMAGES=""
+LATEST_IMAGES=""
+
 process_image_tags() {
 	LIST_NAME="$1"
 	TAG_MODE="$2"
@@ -125,6 +139,7 @@ process_image_tags() {
 		elif [ "$TAG_MODE" = "latest" ]; then
 			TAG=$(skopeo list-tags "docker://$IMAGE" | yq .Tags[] | grep -v -e '-amd64' | grep -v -e '-arm64' | sort -V | tail -1)
 			echo "latest for $IMAGE: $TAG"
+			LATEST_IMAGES=$(echo "$LATEST_IMAGES"; echo "${IMAGE}:${TAG}")
 		else
 			echo "Unsupported tag mode \"$TAG_MODE\" for $IMAGE"
 			exit 1
@@ -132,6 +147,7 @@ process_image_tags() {
 
 		TAG_PATH=$(yq ".${LIST_NAME}[$i].tag" "$TEMPLATE_FILE")
 		update_values_yaml_with_yq "$TAG_PATH = \"$TAG\""
+		IMAGES=$(echo "$IMAGES"; echo "${IMAGE}:${TAG}")
 	done
 }
 
@@ -142,3 +158,17 @@ process_image_tags latestImages latest
 popd # APP-APP_VERSION
 
 popd # charts
+
+# Update README.md
+sed -i "s/|\\([^|]*|[[:space:]]*\\)${APP}\\([[:space:]]*|[[:space:]]*\\)\\(.*\\)/|\\1${APP}\\2${APP_VERSION}<br>\\3/" README.md
+
+set +x
+
+IMAGES=$(echo "${IMAGES}" | sort | uniq)
+LATEST_IMAGES=$(echo "${LATEST_IMAGES}" | sort | uniq)
+echo "Required Images"
+echo "${IMAGES}"
+echo ""
+
+echo "Latest Images"
+echo "${LATEST_IMAGES}"
