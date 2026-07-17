@@ -23,10 +23,12 @@ The installation instructions use the OCI registry. Refer to the [`helm repo`]([
 ### Install Helm Chart
 
 ```console
-ocne application install --namespace [NAMESPACE] --release [RELEASE_NAME] --name kube-prometheus-stack
+ocne application install --release [RELEASE_NAME] --name kube-prometheus-stack --namespace [NAMESPACE]
 ```
 
 _See [configuration](#configuration) below._
+
+_See [helm install](https://helm.sh/docs/helm/helm_install/) for command documentation._
 
 ### Dependencies
 
@@ -38,6 +40,7 @@ By default this chart installs additional, dependent charts:
 
 To disable dependencies during installation, see [multiple releases](#multiple-releases) below.
 
+_See [helm dependency](https://helm.sh/docs/helm/helm_dependency/) for command documentation._
 
 #### Grafana Dashboards
 
@@ -52,10 +55,12 @@ If you wish to contribute or modify dashboards, please follow the guidance in th
 ### Uninstall Helm Chart
 
 ```console
-ocne application uninstall --release [RELEASE_NAME} --namespace [NAMESPACE]
+ocne application uninstall --release [RELEASE_NAME] --namespace [NAMESPACE]
 ```
 
 This removes all the Kubernetes components associated with the chart and deletes the release.
+
+_See [helm uninstall](https://helm.sh/docs/helm/helm_uninstall/) for command documentation._
 
 CRDs created by this chart are not removed by default and should be manually cleaned up:
 
@@ -83,6 +88,8 @@ Consult also the [Helm Documentation on CRDs](https://helm.sh/docs/chart_best_pr
 
 CRDs update lead to a major version bump.
 The Chart's [appVersion](https://github.com/prometheus-community/helm-charts/blob/13ed7098db2f78c2bbcdab6c1c3c7a95b4b94574/charts/kube-prometheus-stack/Chart.yaml#L36) refers to the [`prometheus-operator`](https://github.com/prometheus-operator/prometheus-operator/tree/main)'s version with matching CRDs.
+
+_See [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) for command documentation._
 
 #### Upgrading an existing Release to a new major version
 
@@ -222,7 +229,7 @@ If the **prometheus-operator** values are compatible with the new **kube-prometh
 2. Uninstall the **prometheus-operator** release and delete the existing PersistentVolumeClaim, and verify PV become Released.
 
     ```console
-    ocne application uninstall --release prometheus-operator -n monitoring
+ocne application uninstall --release [RELEASE_NAME] --namespace [NAMESPACE]
     kubectl delete pvc/<PersistenceVolumeClaim name> -n monitoring
     ```
 

@@ -43,13 +43,13 @@ crds:
       busybox:
         registry: olcne
         repository: kubectl
-        tag: v1.33.13
+        tag: "v1.33.13"
         sha: ""
         pullPolicy: IfNotPresent
       kubectl:
         registry: olcne
         repository: kubectl
-        tag: v1.33.13 # defaults to the Kubernetes version
+        tag: "v1.33.13" # defaults to the Kubernetes version
         sha: ""
         pullPolicy: IfNotPresent
 
@@ -1016,7 +1016,7 @@ alertmanager:
     image:
       registry: olcne
       repository: alertmanager
-      tag: v0.33.0
+      tag: v0.33.1
       sha: ""
       pullPolicy: IfNotPresent
 
@@ -2542,6 +2542,35 @@ kubeScheduler:
     ## https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api-reference/api.md#servicemonitor
     targetLabels: []
 
+    resource:
+    ## Enable scraping /metrics/resource from kube-scheduler
+    ## https://kubernetes.io/docs/concepts/cluster-administration/system-metrics/#kube-scheduler-metrics
+      enabled: false
+
+      ## Scrape interval. If not set, the Prometheus default scrape interval is used.
+      ##
+      interval: ""
+
+      ## MetricRelabelConfigs to apply to samples after scraping, but before ingestion.
+      ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api-reference/api.md#relabelconfig
+      ##
+      metricRelabelings: []
+      # - action: keep
+      #   regex: 'kube_(daemonset|deployment|pod|namespace|node|statefulset).+'
+      #   sourceLabels: [__name__]
+
+      ## RelabelConfigs to apply to samples before scraping
+      ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api-reference/api.md#relabelconfig
+      ##
+      relabelings: []
+      # - sourceLabels: [__meta_kubernetes_pod_node_name]
+      #   separator: ;
+      #   regex: ^(.*)$
+      #   targetLabel: nodename
+      #   replacement: $1
+      #   action: replace
+
+
 ## Component scraping kube proxy
 ##
 kubeProxy:
@@ -2713,7 +2742,7 @@ prometheus-node-exporter:
       jobLabel: node-exporter
 
   image:
-    distroless: true
+    distroless: false
 
   prometheus:
     monitor:
@@ -3540,7 +3569,7 @@ prometheusOperator:
   thanosImage:
     registry: olcne
     repository: thanos
-    tag: v0.42.0
+    tag: v0.92.1
     sha: ""
 
   ## Set a Label Selector to filter watched prometheus and prometheusAgent
@@ -4313,7 +4342,7 @@ prometheus:
     image:
       registry: olcne
       repository: prometheus
-      tag: v3.13.1
+      tag: v0.92.1
       sha: ""
       pullPolicy: IfNotPresent
 
@@ -5507,7 +5536,7 @@ thanosRuler:
     image:
       registry: olcne
       repository: thanos
-      tag: v0.42.0
+      tag: v0.92.1
       sha: ""
 
     ## Namespaces to be selected for PrometheusRules discovery.
