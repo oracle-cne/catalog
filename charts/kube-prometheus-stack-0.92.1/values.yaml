@@ -4342,7 +4342,7 @@ prometheus:
     image:
       registry: olcne
       repository: prometheus
-      tag: v0.92.1
+      tag: v3.13.1
       sha: ""
       pullPolicy: IfNotPresent
 
