@@ -5536,7 +5536,7 @@ thanosRuler:
     image:
       registry: olcne
       repository: thanos
-      tag: v0.92.1
+      tag: v0.42.0
       sha: ""
 
     ## Namespaces to be selected for PrometheusRules discovery.
