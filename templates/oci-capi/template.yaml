@@ -1,0 +1,17 @@
+repo: git://github.com/oracle-cne/cluster-api:charts
+chart: oci-capi
+icon: capi.svg
+values:
+  fullnameOverride: capoci
+  legacyControlPlaneAnnotation: false
+  controllerManager:
+    manager:
+      image:
+        repository: ghcr.io/oracle/cluster-api-oci-controller
+  proxy:
+    httpsProxy:
+    httpProxy:
+    noProxy:
+
+images: []
+latestImages: []

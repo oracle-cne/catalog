@@ -16,10 +16,10 @@ installing the `ocne-catalog` chart.
 | Application                                         | Chart                       | Versions                                                             |
 |-----------------------------------------------------|-----------------------------|----------------------------------------------------------------------|
 | Cert Manager                                        | cert-manager                | 1.19.4<br>1.19.1<br>1.17.2<br>1.16.3<br>1.14.5<br>1.9.1              |
-| Cluster API Core Controller                         | core-capi                   | 1.10.8<br>1.9.9<br>1.9.4<br>1.8.12<br>1.7.1                          |
-| Cluster API Kubeadm Control Plane Controller        | control-plane-capi          | 1.10.8<br>1.9.9<br>1.9.4<br>1.8.12<br>1.7.1                          |
-| Cluster API Kubeadm Bootstrap Controller            | bootstrap-capi              | 1.10.8<br>1.9.9<br>1.9.4<br>1.8.12<br>1.7.1                          |
-| Cluster API for Oracle Cloud Infrastructure         | oci-capi                    | 0.21.0<br>0.19.0<br>0.17.0<br>0.16.0<br>0.15.0                       |
+| Cluster API Core Controller                         | core-capi                   | 1.13.4<br>1.10.8<br>1.9.9<br>1.9.4<br>1.8.12<br>1.7.1 |
+| Cluster API Kubeadm Control Plane Controller        | control-plane-capi          | 1.13.4<br>1.10.8<br>1.9.9<br>1.9.4<br>1.8.12<br>1.7.1 |
+| Cluster API Kubeadm Bootstrap Controller            | bootstrap-capi              | 1.13.4<br>1.10.8<br>1.9.9<br>1.9.4<br>1.8.12<br>1.7.1 |
+| Cluster API for Oracle Cloud Infrastructure         | oci-capi                    | 0.24.1<br>0.21.0<br>0.19.0<br>0.17.0<br>0.16.0<br>0.15.0 |
 | Cert Manager OCI Webhook                            | cert-manager-webhook-oci    | 1.1.0                                                                |
 | CoreDNS                                             | coredns                     | 2.0.0                                                                |
 | CSI Driver for oVirt                                | ovirt-csi-driver            | 4.21.1<br>4.21.0<br>4.20.0                                           |
@@ -93,6 +93,30 @@ named for the chart and chart version.  For example, the chart `mycoolapp` at
 version `2.3.4` would be put inside `./charts/mycoolapp-2.3.4`.  All charts
 must be created such that the chart version and application version are
 identical and are not prefixed with a 'v'.
+
+Template-driven chart generation can fetch source charts from a Helm repository
+or from unpacked charts in a Git repository.  For Git-hosted unpacked charts,
+set `repo` in the template to `git://<git url>:<path to charts>`.  For example:
+
+```
+repo: git://github.com/oracle-cne/cluster-api:charts
+chart: cluster-api
+```
+
+When the Git URL does not include a scheme or an scp-style user/host prefix, the
+generator clones it with `https://`.  If `CHART_VERSION` is not set, Git chart
+selection uses the template `chartVersion` when present, otherwise it selects
+the chart whose `appVersion` matches the requested application version.
+
+For GitHub repositories, the generator first searches the GitHub code search API
+for `appVersion: <app version>` in `Chart.yaml` files under the template's chart
+path.  A search result is used only when the fetched `Chart.yaml` also has a
+`name` matching the template `chart` value.  GitHub code search considers the
+repository default branch, so when no default-branch match exists the generator
+uses the GitHub branches and trees APIs to find the branch containing the
+matching `Chart.yaml`.  Set `GITHUB_TOKEN` or `GH_TOKEN` for GitHub API access
+to private repositories or when higher API rate limits are required; configure
+Git credentials separately when the clone itself requires authentication.
 
 ## Contributing
 
