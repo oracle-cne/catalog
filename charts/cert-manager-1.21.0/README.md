@@ -38,8 +38,6 @@ For information on how to configure cert-manager to automatically provision
 Certificates for Ingress resources, take a look at the
 [Securing Ingresses documentation](https://cert-manager.io/docs/usage/ingress/).
 
-> **Tip**: List all releases using `helm list`
-
 ## Upgrading the Chart
 
 Special considerations may be required when upgrading the Helm chart, and these
@@ -2333,17 +2331,6 @@ capabilities:
   drop:
   - ALL
 ```
-
-### Assigning Values
-
-Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
-
-Alternatively, a YAML file that specifies the values for the above parameters can be provided while installing the chart. For example,
-
-```console
-$ helm install my-release -f values.yaml .
-```
-> **Tip**: You can use the default [values.yaml](https://github.com/cert-manager/cert-manager/blob/master/deploy/charts/cert-manager/values.yaml)
 
 ## Contributing
 

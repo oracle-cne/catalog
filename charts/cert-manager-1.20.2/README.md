@@ -18,9 +18,6 @@ functionality in cert-manager can be found in the [installation docs](https://ce
 To install the chart with the release name `cert-manager`:
 
 ```console
-# Add the Jetstack Helm repository
-helm repo add jetstack https://charts.jetstack.io --force-update
-
 # Install the cert-manager helm chart
 ocne application install --release [RELEASE_NAME] --name cert-manager --namespace [NAMESPACE]
   cert-manager jetstack/cert-manager \
@@ -39,8 +36,6 @@ can be found in [our documentation](https://cert-manager.io/docs/configuration/)
 For information on how to configure cert-manager to automatically provision
 Certificates for Ingress resources, take a look at the
 [Securing Ingresses documentation](https://cert-manager.io/docs/usage/ingress/).
-
-> **Tip**: List all releases using `helm list`
 
 ## Upgrading the Chart
 
@@ -2264,17 +2259,6 @@ capabilities:
   drop:
   - ALL
 ```
-
-### Assigning Values
-
-Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
-
-Alternatively, a YAML file that specifies the values for the above parameters can be provided while installing the chart. For example,
-
-```console
-$ helm install my-release -f values.yaml .
-```
-> **Tip**: You can use the default [values.yaml](https://github.com/cert-manager/cert-manager/blob/master/deploy/charts/cert-manager/values.yaml)
 
 ## Contributing
 
