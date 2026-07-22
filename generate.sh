@@ -692,10 +692,16 @@ process_chart_dependencies() {
 
 set -x
 
-REPO_URL=$(yq -r .repo "$TEMPLATE_FILE")
-ICON=$(yq -r .icon "$TEMPLATE_FILE")
-CHART=$(yq -r .chart "$TEMPLATE_FILE")
-TEMPLATE_CHART_VERSION=$(yq -r '.chartVersion // ""' "$TEMPLATE_FILE")
+REPO_URL=$(yq .repo "$TEMPLATE_FILE")
+helm repo add "$REPO_NAME" "$REPO_URL" --force-update
+
+ICON=$(yq .icon "$TEMPLATE_FILE")
+CHART=$(yq .chart "$TEMPLATE_FILE")
+if [ -z "$CHART_VERSION" ] || [ "$CHART_VERSION" = "null" ]; then
+	# If the chart version is not specified, then search
+	# the repo by app version.
+	CHART_DESCS=$(helm search repo "${REPO_NAME}/${CHART}" --versions -o yaml)
+	CHART_VERSION=$(echo "$CHART_DESCS" | yq ".[] | select((.app_version == \"${APP_VERSION}\" or .app_version == \"v${APP_VERSION}\") and .name == \"${REPO_NAME}/${CHART}\") | .version")
 
 if is_git_chart_repo "$REPO_URL"; then
 	echo "Using unpacked Git chart source ${REPO_URL}"

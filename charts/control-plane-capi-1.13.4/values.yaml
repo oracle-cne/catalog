@@ -4,7 +4,7 @@ controllerManager:
       - --leader-elect
       - --diagnostics-address=:8443
       - --insecure-diagnostics=false
-      - --feature-gates=MachinePool=true,ClusterTopology=false,KubeadmBootstrapFormatIgnition=false,PriorityQueue=true,ReconcilerRateLimiting=true,InPlaceUpdates=false,MachineTaintPropagation=false
+      - --feature-gates=MachinePool=true,ClusterTopology=false,KubeadmBootstrapFormatIgnition=true,PriorityQueue=true,ReconcilerRateLimiting=true,InPlaceUpdates=false,MachineTaintPropagation=false
     containerSecurityContext:
       allowPrivilegeEscalation: false
       capabilities:

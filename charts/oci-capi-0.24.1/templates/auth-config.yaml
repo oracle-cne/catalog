@@ -16,16 +16,10 @@ data:
     | b64enc | quote }}
   region: {{ required "authConfig.region is required" .Values.authConfig.region |
     b64enc | quote }}
-  sessionPrivateKey: {{ required "authConfig.sessionPrivateKey is required" .Values.authConfig.sessionPrivateKey
-    | b64enc | quote }}
-  sessionToken: {{ required "authConfig.sessionToken is required" .Values.authConfig.sessionToken
-    | b64enc | quote }}
   tenancy: {{ required "authConfig.tenancy is required" .Values.authConfig.tenancy
     | b64enc | quote }}
   useInstancePrincipal: {{ required "authConfig.useInstancePrincipal is required"
     .Values.authConfig.useInstancePrincipal | b64enc | quote }}
-  useSessionToken: {{ required "authConfig.useSessionToken is required" .Values.authConfig.useSessionToken
-    | b64enc | quote }}
   user: {{ required "authConfig.user is required" .Values.authConfig.user | b64enc
     | quote }}
 type: Opaque
