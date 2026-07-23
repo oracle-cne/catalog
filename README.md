@@ -46,7 +46,7 @@ installing the `ocne-catalog` chart.
 | MetalLB                                             | metallb                     | 0.16.1<br>0.15.3<br>0.15.2<br>0.13.10                                          |
 | Multus                                              | multus                      | 4.3.0<br>4.2.1<br>4.0.2                                              |
 | OAuth2 Proxy                                        | oauth2-proxy                | 7.14.3<br>7.12.0<br>7.8.0                                            |
-| OCI Cloud Controller Manager                        | oci-ccm                     | 1.30.0<br>1.28.0                                                     |
+| OCI Cloud Controller Manager                        | oci-ccm                     | 1.35.0<br>1.30.0<br>1.28.0                                           |
 | OLVM CAPI Controller Manager                        | olvm-capi                   | 1.0.0                                                                |
 | OpenSearch                                          | opensearch                  | 2.15.0                                                               |
 | OpenSearch Dashboards                               | opensearch-dashboards       | 2.15.0                                                               |
