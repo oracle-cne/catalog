@@ -207,14 +207,14 @@ process_chart_dependencies() {
 set -x
 
 REPO_URL=$(yq .repo "$TEMPLATE_FILE")
-helm repo add "$REPO_NAME" "$REPO_URL"
+helm repo add "$REPO_NAME" "$REPO_URL" --force-update
 
 ICON=$(yq .icon "$TEMPLATE_FILE")
 CHART=$(yq .chart "$TEMPLATE_FILE")
 if [ -z "$CHART_VERSION" ] || [ "$CHART_VERSION" = "null" ]; then
 	# If the chart version is not specified, then search
 	# the repo by app version.
-	CHART_DESCS=$(helm search repo "$CHART" -o yaml)
+	CHART_DESCS=$(helm search repo "${REPO_NAME}/${CHART}" --versions -o yaml)
 	CHART_VERSION=$(echo "$CHART_DESCS" | yq ".[] | select((.app_version == \"${APP_VERSION}\" or .app_version == \"v${APP_VERSION}\") and .name == \"${REPO_NAME}/${CHART}\") | .version")
 
 fi
@@ -222,6 +222,10 @@ if [ -z "$CHART_VERSION" ] || [ "$CHART_VERSION" = "null" ]; then
 	echo "Could not resolve a chart version for ${CHART} with app version ${APP_VERSION}"
 	exit 1
 fi
+
+# Strip the 'v' off the front of app version, if it exists, to conform
+# with catalog standards
+APP_VERSION=$(echo "${APP_VERSION}" | sed 's/^v//')
 
 # Strip the 'v' off the front of app version, if it exists, to conform
 # with catalog standards
