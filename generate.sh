@@ -97,6 +97,225 @@ update_readme_version() {
 	mv README.md.updated README.md
 }
 
+normalize_app_version() {
+	APP_VERSION=$(echo "${APP_VERSION}" | sed 's/^v//')
+}
+
+normalize_github_repo_url() {
+	RAW_GITHUB_REPO_URL="$1"
+
+	if [[ "$RAW_GITHUB_REPO_URL" == git@github.com:* ]]; then
+		RAW_GITHUB_REPO_URL="https://github.com/${RAW_GITHUB_REPO_URL#git@github.com:}"
+	fi
+
+	RAW_GITHUB_REPO_URL="${RAW_GITHUB_REPO_URL%.git}"
+	RAW_GITHUB_REPO_URL="${RAW_GITHUB_REPO_URL%/}"
+
+	if [[ "$RAW_GITHUB_REPO_URL" != https://github.com/*/* ]]; then
+		echo "GitHub release templates require a GitHub repository URL, got '${RAW_GITHUB_REPO_URL}'"
+		exit 1
+	fi
+
+	echo "$RAW_GITHUB_REPO_URL"
+}
+
+copy_optional_chart_metadata() {
+	METADATA_FIELD="$1"
+
+	if yq -e ".${METADATA_FIELD}" "$TEMPLATE_FILE" > /dev/null 2>&1; then
+		echo "Copying optional chart metadata field ${METADATA_FIELD}"
+		METADATA_FIELD="$METADATA_FIELD" TEMPLATE_FILE="$TEMPLATE_FILE" \
+			yq -i '.[strenv(METADATA_FIELD)] = load(strenv(TEMPLATE_FILE))[strenv(METADATA_FIELD)]' Chart.yaml
+	fi
+}
+
+cleanup_github_release_work_dir() {
+	if [ -n "$GITHUB_RELEASE_WORK_DIR" ] && [ -d "$GITHUB_RELEASE_WORK_DIR" ]; then
+		echo "Cleaning up temporary GitHub release workspace ${GITHUB_RELEASE_WORK_DIR}"
+		rm -rf "$GITHUB_RELEASE_WORK_DIR"
+	fi
+}
+
+fail_github_release_chart() {
+	echo "$1"
+	cleanup_github_release_work_dir
+	exit 1
+}
+
+generate_github_release_crd_chart() {
+	SOURCE_TYPE=$(yq -r '.sourceType // ""' "$TEMPLATE_FILE")
+	if [ "$SOURCE_TYPE" != "gitHubRelease" ]; then
+		return 1
+	fi
+
+	echo "Detected GitHub release template for ${APP}"
+	normalize_app_version
+	GITHUB_RELEASE_WORK_DIR=""
+
+	if ! command -v helmify > /dev/null 2>&1; then
+		fail_github_release_chart "GitHub release templates require helmify"
+	fi
+
+	GITHUB_REPO_URL=$(yq -r '.repo // ""' "$TEMPLATE_FILE")
+	if [ -z "$GITHUB_REPO_URL" ] || [ "$GITHUB_REPO_URL" = "null" ]; then
+		fail_github_release_chart "GitHub release template for ${APP} does not define repo"
+	fi
+	GITHUB_REPO_URL=$(normalize_github_repo_url "$GITHUB_REPO_URL")
+	echo "Using GitHub repository ${GITHUB_REPO_URL}"
+
+	RELEASE_TAG=$(yq -r '.releaseTag // ""' "$TEMPLATE_FILE")
+	if [ -z "$RELEASE_TAG" ] || [ "$RELEASE_TAG" = "null" ]; then
+		RELEASE_TAG_PREFIX=$(yq -r '.releaseTagPrefix // "v"' "$TEMPLATE_FILE")
+		RELEASE_TAG="${RELEASE_TAG_PREFIX}${APP_VERSION}"
+	fi
+	echo "Using GitHub release tag ${RELEASE_TAG}"
+
+	NUM_CRD_FILES=$(yq '.files // [] | length' "$TEMPLATE_FILE")
+	if [ "$NUM_CRD_FILES" -lt 1 ]; then
+		fail_github_release_chart "GitHub release template for ${APP} must define at least one file in files"
+	fi
+	echo "Template lists ${NUM_CRD_FILES} GitHub release file(s)"
+
+	ICON=$(yq -r '.icon // ""' "$TEMPLATE_FILE")
+	if [ -z "$ICON" ] || [ "$ICON" = "null" ]; then
+		fail_github_release_chart "GitHub release template for ${APP} does not define icon"
+	fi
+
+	CHART_DESCRIPTION=$(yq -r '.description // ""' "$TEMPLATE_FILE")
+	if [ -z "$CHART_DESCRIPTION" ] || [ "$CHART_DESCRIPTION" = "null" ]; then
+		CHART_DESCRIPTION="$APP"
+	fi
+
+	CRD_DIR=$(yq -r '.crdDir // "crds"' "$TEMPLATE_FILE")
+	if [ -z "$CRD_DIR" ] || [[ "$CRD_DIR" = /* ]] || [[ "$CRD_DIR" == *..* ]]; then
+		fail_github_release_chart "Invalid CRD directory '${CRD_DIR}' for ${APP}"
+	fi
+	if [ "$CRD_DIR" != "crds" ]; then
+		fail_github_release_chart "Unsupported CRD directory '${CRD_DIR}' for ${APP}; helmify -crd-dir writes CRDs to crds"
+	fi
+
+	CHART_DIR="$ROOT_DIR/charts/${APP}-${APP_VERSION}"
+	if [ -e "$CHART_DIR" ]; then
+		fail_github_release_chart "Chart directory ${CHART_DIR} already exists"
+	fi
+
+	GITHUB_RELEASE_WORK_DIR=$(mktemp -d "${TMPDIR:-/tmp}/github-release-chart.XXXXXX")
+	if [ "$?" != "0" ] || [ ! -d "$GITHUB_RELEASE_WORK_DIR" ]; then
+		fail_github_release_chart "Could not create temporary GitHub release workspace"
+	fi
+	HELMIFY_INPUT_FILE="${GITHUB_RELEASE_WORK_DIR}/release-resources.yaml"
+	HELMIFY_CHART_DIR="${GITHUB_RELEASE_WORK_DIR}/${APP}"
+	printf "" > "$HELMIFY_INPUT_FILE"
+
+	TOTAL_RESOURCE_COUNT=0
+	TOTAL_CRD_KIND_COUNT=0
+	echo "Preparing helmify input in ${HELMIFY_INPUT_FILE}"
+
+	CRD_FILE_INDEX=0
+	while [ "$CRD_FILE_INDEX" -lt "$NUM_CRD_FILES" ]; do
+		CRD_FILE=$(yq -r ".files[$CRD_FILE_INDEX]" "$TEMPLATE_FILE")
+		if [ -z "$CRD_FILE" ] || [ "$CRD_FILE" = "null" ] || [[ "$CRD_FILE" = /* ]] || [[ "$CRD_FILE" == *..* ]]; then
+			fail_github_release_chart "Invalid GitHub release file entry '${CRD_FILE}' for ${APP}"
+		fi
+
+		CRD_FILE_NAME=$(basename "$CRD_FILE")
+		DOWNLOAD_PATH="${GITHUB_RELEASE_WORK_DIR}/${CRD_FILE_INDEX}-${CRD_FILE_NAME}"
+		DOWNLOAD_URL="${GITHUB_REPO_URL}/releases/download/${RELEASE_TAG}/${CRD_FILE}"
+		echo "Downloading ${DOWNLOAD_URL} to ${DOWNLOAD_PATH}"
+		curl -L --fail -sS -o "$DOWNLOAD_PATH" "$DOWNLOAD_URL"
+		if [ "$?" != "0" ]; then
+			fail_github_release_chart "Could not download ${DOWNLOAD_URL}"
+		fi
+
+		RESOURCE_COUNT=$(yq eval-all '[select(.kind != null and .apiVersion != null)] | length' "$DOWNLOAD_PATH")
+		if [ "$?" != "0" ]; then
+			fail_github_release_chart "Downloaded file ${CRD_FILE_NAME} is not valid YAML"
+		fi
+		if [ "$RESOURCE_COUNT" -lt 1 ]; then
+			fail_github_release_chart "Downloaded file ${CRD_FILE_NAME} does not contain any Kubernetes resource documents"
+		fi
+
+		INVALID_RESOURCE_DOC_COUNT=$(yq eval-all '[select(. != null and (.kind == null or .apiVersion == null))] | length' "$DOWNLOAD_PATH")
+		if [ "$?" != "0" ]; then
+			fail_github_release_chart "Could not validate Kubernetes resource documents in ${CRD_FILE_NAME}"
+		fi
+		if [ "$INVALID_RESOURCE_DOC_COUNT" -gt 0 ]; then
+			fail_github_release_chart "Downloaded file ${CRD_FILE_NAME} contains non-Kubernetes YAML documents"
+		fi
+
+		CRD_KIND_COUNT=$(yq eval-all '[select(.kind == "CustomResourceDefinition")] | length' "$DOWNLOAD_PATH")
+		if [ "$?" != "0" ]; then
+			fail_github_release_chart "Could not count CRDs in ${CRD_FILE_NAME}"
+		fi
+		NON_CRD_KINDS=$(yq eval-all 'select(.kind != "CustomResourceDefinition" and .kind != null) | .kind' "$DOWNLOAD_PATH")
+		if [ -n "$NON_CRD_KINDS" ]; then
+			echo "Detected non-CRD Kubernetes resource kind(s) in ${CRD_FILE_NAME}; helmify will render them under templates"
+			echo "$NON_CRD_KINDS"
+		fi
+
+		if [ "$TOTAL_RESOURCE_COUNT" -gt 0 ]; then
+			printf -- "---\n" >> "$HELMIFY_INPUT_FILE"
+		fi
+		yq eval-all 'select(.kind != null and .apiVersion != null) | ... comments = ""' "$DOWNLOAD_PATH" >> "$HELMIFY_INPUT_FILE"
+		if [ "$?" != "0" ]; then
+			fail_github_release_chart "Could not append sanitized Kubernetes resources from ${CRD_FILE_NAME}"
+		fi
+
+		TOTAL_RESOURCE_COUNT=$((TOTAL_RESOURCE_COUNT+RESOURCE_COUNT))
+		TOTAL_CRD_KIND_COUNT=$((TOTAL_CRD_KIND_COUNT+CRD_KIND_COUNT))
+		echo "Validated ${RESOURCE_COUNT} Kubernetes resource document(s), including ${CRD_KIND_COUNT} CRD document(s), in ${CRD_FILE_NAME}"
+
+		CRD_FILE_INDEX=$((CRD_FILE_INDEX+1))
+	done
+
+	if [ "$TOTAL_CRD_KIND_COUNT" -lt 1 ]; then
+		fail_github_release_chart "Downloaded GitHub release resources for ${APP} do not contain any CustomResourceDefinition documents"
+	fi
+
+	echo "Generating chart resources with helmify into ${HELMIFY_CHART_DIR}"
+	helmify -crd-dir -original-name "$HELMIFY_CHART_DIR" < "$HELMIFY_INPUT_FILE"
+	if [ "$?" != "0" ]; then
+		fail_github_release_chart "helmify could not generate chart resources for ${APP}"
+	fi
+	if [ ! -d "${HELMIFY_CHART_DIR}/crds" ]; then
+		fail_github_release_chart "helmify did not create the crds directory for ${APP}"
+	fi
+
+	GENERATED_CRD_FILE_COUNT=$(find "${HELMIFY_CHART_DIR}/crds" -type f | wc -l)
+	if [ "$GENERATED_CRD_FILE_COUNT" -lt 1 ]; then
+		fail_github_release_chart "helmify did not write any CRD files to ${HELMIFY_CHART_DIR}/crds"
+	fi
+	echo "helmify wrote ${GENERATED_CRD_FILE_COUNT} CRD file(s) to ${HELMIFY_CHART_DIR}/crds"
+
+	echo "Moving generated chart to ${CHART_DIR}"
+	mv "$HELMIFY_CHART_DIR" "$CHART_DIR"
+	if [ "$?" != "0" ]; then
+		fail_github_release_chart "Could not move generated chart to ${CHART_DIR}"
+	fi
+
+	pushd "$CHART_DIR"
+
+	echo "Updating Chart.yaml catalog metadata"
+	APP="$APP" \
+	APP_VERSION="$APP_VERSION" \
+	CHART_DESCRIPTION="$CHART_DESCRIPTION" \
+	ICON="$ICON" \
+	KUBE_VERSION="$KUBE_VERSION" \
+		yq -i '.name = strenv(APP) | .version = strenv(APP_VERSION) | .appVersion = strenv(APP_VERSION) | .description = strenv(CHART_DESCRIPTION) | .icon = "icons/" + strenv(ICON) | .kubeVersion = strenv(KUBE_VERSION)' Chart.yaml
+	copy_optional_chart_metadata keywords
+	copy_optional_chart_metadata sources
+	if ! yq -e '.sources' Chart.yaml > /dev/null 2>&1; then
+		GITHUB_REPO_URL="$GITHUB_REPO_URL" yq -i '.sources = [strenv(GITHUB_REPO_URL)]' Chart.yaml
+	fi
+
+	popd
+	cleanup_github_release_work_dir
+	GITHUB_RELEASE_WORK_DIR=""
+
+	echo "Finished generating GitHub release chart ${APP}-${APP_VERSION}"
+	return 0
+}
+
 show_dependency_chart() {
 	DEP_NAME="$1"
 	DEP_REPO="$2"
@@ -206,6 +425,20 @@ process_chart_dependencies() {
 
 set -x
 
+if generate_github_release_crd_chart; then
+	update_readme_version
+
+	set +x
+
+	echo "Required Images"
+	echo ""
+	echo ""
+
+	echo "Latest Images"
+	echo ""
+	exit 0
+fi
+
 REPO_URL=$(yq .repo "$TEMPLATE_FILE")
 helm repo add "$REPO_NAME" "$REPO_URL" --force-update
 
@@ -225,11 +458,7 @@ fi
 
 # Strip the 'v' off the front of app version, if it exists, to conform
 # with catalog standards
-APP_VERSION=$(echo "${APP_VERSION}" | sed 's/^v//')
-
-# Strip the 'v' off the front of app version, if it exists, to conform
-# with catalog standards
-APP_VERSION=$(echo "${APP_VERSION}" | sed 's/^v//')
+normalize_app_version
 
 pushd "charts"
 
