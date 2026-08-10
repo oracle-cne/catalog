@@ -18,14 +18,6 @@ To uninstall/delete the `istio-ingressgateway` deployment:
 ocne application uninstall --release istio-ingressgateway
 ```
 
-## Configuration
-
-To view support configuration options and documentation, run:
-
-```console
-helm show values istio/gateway
-```
-
 ### Profiles
 
 Istio Helm charts have a concept of a `profile`, which is a bundled collection of value presets.
@@ -123,7 +115,7 @@ labels:
 
 #### Migrating an existing Helm release
 
-An existing helm release can be `helm upgrade`d to this chart by using the same release name. For example, if a previous
+An existing release can be `ocne application update`d to this chart by using the same release name. For example, if a previous
 installation was done like:
 
 ```console
