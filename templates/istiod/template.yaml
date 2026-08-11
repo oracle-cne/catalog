@@ -1,0 +1,41 @@
+repo: https://istio-release.storage.googleapis.com/charts
+chart: istiod
+icon: android-192x192.png
+kubeVersion:
+  minimum:
+    url: https://raw.githubusercontent.com/istio/istio.io/refs/heads/master/data/compatibility/supportStatus.yml
+    command: |
+      yq -r '.[] | select(.version == (strenv(APP_VERSION) | split(".") | .[0:2] | join("."))) | .k8sVersions[0] + ".0"'
+  maximum:
+    url: https://raw.githubusercontent.com/istio/istio.io/refs/heads/master/data/compatibility/supportStatus.yml
+    command: |
+      yq -r '.[] | select(.version == (strenv(APP_VERSION) | split(".") | .[0:2] | join("."))) | (.k8sVersions[-1] | split(".") | .[0] + "." + ((.[1] | tonumber) + 1 | tostring) + ".0")'
+values: {}
+
+extraValuesYqs:
+  - |
+    with(select(has("global")); .global.hub = "olcne")
+  - |
+    with(select(has("defaults")); .defaults.global.hub = "olcne")
+  - |
+    with(select(has("_internal_defaults_do_not_set")); ._internal_defaults_do_not_set.global.hub = "olcne")
+
+extraFileYqs:
+  - file: files/profile-ambient.yaml
+    yq: '.global.variant = ""'
+
+patches:
+  - patch: |
+      --- files/grpc-simple.yaml
+      +++ files/grpc-simple.yaml
+      @@ -3,9 +3,9 @@
+           sidecar.istio.io/rewriteAppHTTPProbers: "false"
+       spec:
+         initContainers:
+           - name: grpc-bootstrap-init
+      -      image: busybox:1.28
+      +      image: os/oraclelinux:8-slim
+             volumeMounts:
+               - mountPath: /var/lib/grpc/data/
+                 name: grpc-io-proxyless-bootstrap
+             env:

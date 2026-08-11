@@ -31,13 +31,13 @@ installing the `ocne-catalog` chart.
 | Fluentd                                             | fluentd                     | 1.14.5                                                               |
 | Grafana                                             | grafana                     | 10.2.6<br>9.2.10<br>7.5.17                                           |
 | Ingress Nginx                                       | ingress-nginx               | 1.15.1<br>1.14.4<br>1.14.0<br>1.13.1<br>1.12.5<br>1.12.1<br>1.9.6    |
-| Istio CRDs                                          | istio-base                  | 1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5             |
-| Istiod                                              | istiod                      | 1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5             |
-| Istio Egress Gateway                                | istio-egress                | 1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5             |
-| Istio Ingress Gateway                               | istio-ingress               | 1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5             |
-| Istio Gateway                                       | istio-gateway               | 1.24.6<br>1.24.1<br>1.22.8<br>1.22.6                                 |
-| Istio Ztunnel                                       | istio-ztunnel               | 1.24.6<br>1.24.1                                                     |
-| Istio CNI                                           | istio-cni                   | 1.24.6<br>1.24.1                                                     |
+| Istio CRDs                                          | istio-base                  | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
+| Istiod                                              | istiod                      | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
+| Istio Egress Gateway                                | istio-egress                | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
+| Istio Ingress Gateway                               | istio-ingress               | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
+| Istio Gateway                                       | istio-gateway               | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6 |
+| Istio Ztunnel                                       | istio-ztunnel               | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1 |
+| Istio CNI                                           | istio-cni                   | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1 |
 | Keycloak                                            | keycloak                    | 21.1.2                                                               |
 | Kube Prometheus Stack                               | kube-prometheus-stack       | 0.92.1<br>0.89.0<br>0.85.0<br>0.63.0 |
 | Kube Proxy                                          | kube-proxy                  | 2.0.0                                                                |
@@ -65,10 +65,10 @@ installing the `ocne-catalog` chart.
 | Application                  | Chart           | Versions                    |
 |------------------------------|-----------------|-----------------------------|
 | Cert Manager                 | cert-manager    | 1.9.1                       |
-| Istio CRDs                   | istio-base      | 1.19.9                      |
-| Istiod                       | istiod          | 1.19.9                      |
-| Istio Egress Gateway         | istio-egress    | 1.19.9                      |
-| Istio Ingress Gateway        | istio-ingress   | 1.19.9                      |
+| Istio CRDs                   | istio-base      | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.19.9 |
+| Istiod                       | istiod          | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.19.9 |
+| Istio Egress Gateway         | istio-egress    | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.19.9 |
+| Istio Ingress Gateway        | istio-ingress   | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.19.9 |
 | KubeVirt                     | kubevirt        | 1.0.1<br>0.59.0<br>0.58.0   |
 | MetalLB                      | metallb         | 0.16.1<br>0.12.1                      |
 | OCI Cloud Controller Manager | oci-ccm         | 1.27.2                      |
