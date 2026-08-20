@@ -23,7 +23,7 @@ installing the `ocne-catalog` chart.
 | Cert Manager OCI Webhook                            | cert-manager-webhook-oci    | 1.1.0                                                                |
 | CoreDNS                                             | coredns                     | 2.0.0                                                                |
 | CSI Driver for oVirt                                | ovirt-csi-driver            | 4.21.1<br>4.21.0<br>4.20.0                                           |
-| CSI NFS Driver for Kubernetes                       | csi-driver-nfs              | 4.13.1<br>4.12.1<br>4.11.0                                           |
+| CSI NFS Driver for Kubernetes                       | csi-driver-nfs              | 4.13.4<br>4.13.1<br>4.12.1<br>4.11.0 |
 | Dex                                                 | dex                         | 2.45.1<br>2.44.0<br>2.43.1<br>2.39.1                                           |
 | ExternalIP Webhook                                  | externalip-webhook          | 1.0.0                                                                |
 | Flannel                                             | flannel                     | 2.0.0<br>0.22.3                                                      |
@@ -31,18 +31,18 @@ installing the `ocne-catalog` chart.
 | Fluentd                                             | fluentd                     | 1.14.5                                                               |
 | Grafana                                             | grafana                     | 10.2.6<br>9.2.10<br>7.5.17                                           |
 | Ingress Nginx                                       | ingress-nginx               | 1.15.1<br>1.14.4<br>1.14.0<br>1.13.1<br>1.12.5<br>1.12.1<br>1.9.6    |
-| Istio CRDs                                          | istio-base                  | 1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5             |
-| Istiod                                              | istiod                      | 1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5             |
-| Istio Egress Gateway                                | istio-egress                | 1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5             |
-| Istio Ingress Gateway                               | istio-ingress               | 1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5             |
-| Istio Gateway                                       | istio-gateway               | 1.24.6<br>1.24.1<br>1.22.8<br>1.22.6                                 |
-| Istio Ztunnel                                       | istio-ztunnel               | 1.24.6<br>1.24.1                                                     |
-| Istio CNI                                           | istio-cni                   | 1.24.6<br>1.24.1                                                     |
+| Istio CRDs                                          | istio-base                  | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
+| Istiod                                              | istiod                      | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
+| Istio Egress Gateway                                | istio-egress                | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
+| Istio Ingress Gateway                               | istio-ingress               | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
+| Istio Gateway                                       | istio-gateway               | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6 |
+| Istio Ztunnel                                       | istio-ztunnel               | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1 |
+| Istio CNI                                           | istio-cni                   | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1 |
 | Keycloak                                            | keycloak                    | 21.1.2                                                               |
 | Kube Prometheus Stack                               | kube-prometheus-stack       | 0.92.1<br>0.89.0<br>0.85.0<br>0.63.0 |
 | Kube Proxy                                          | kube-proxy                  | 2.0.0                                                                |
 | Kube State Metrics                                  | kube-state-metrics          | 2.19.1<br>2.18.0<br>2.17.0<br>2.8.2 |
-| KubeVirt                                            | kubevirt                    | 1.5.2<br>1.4.1<br>1.3.1<br>1.2.2<br>1.1.1                            |
+| KubeVirt                                            | kubevirt                    | 1.8.4<br>1.7.4<br>1.6.6<br>1.5.2<br>1.4.1<br>1.3.1<br>1.2.2<br>1.1.1  |
 | MetalLB                                             | metallb                     | 0.16.1<br>0.15.3<br>0.15.2<br>0.13.10                                          |
 | Multus                                              | multus                      | 4.3.0<br>4.2.1<br>4.0.2                                              |
 | OAuth2 Proxy                                        | oauth2-proxy                | 7.14.3<br>7.12.0<br>7.8.0                                            |
@@ -57,7 +57,7 @@ installing the `ocne-catalog` chart.
 | Rook                                                | rook                        | 1.18.0<br>1.17.7<br>1.16.6<br>1.15.9<br>1.14.12<br>1.13.10<br>1.12.3 |
 | Tigera Operator with Calico                         | tigera-operator             | 1.38.1<br>1.32.12<br>1.32.4                                          |
 | Oracle Cloud Native Environment Dashboard           | ui                          | 2.3.0<br>2.2.0<br>2.0.0                                              |
-| Kubernetes Gateway API CRDs                         | kubernetes-gateway-api-crds | 1.4.0<br>1.3.0<br>1.2.1                                              |
+| Kubernetes Gateway API CRDs                         | kubernetes-gateway-api-crds | 1.6.1<br>1.5.1<br>1.4.0<br>1.3.0<br>1.2.1 |
 | Oracle Cloud Native Environment HA Monitor          | ocne-ha-monitor             | 2.0.0                                                                |
 
 ### Supported While Upgrading From Oracle Cloud Native Environment 1.x
@@ -65,10 +65,10 @@ installing the `ocne-catalog` chart.
 | Application                  | Chart           | Versions                    |
 |------------------------------|-----------------|-----------------------------|
 | Cert Manager                 | cert-manager    | 1.9.1                       |
-| Istio CRDs                   | istio-base      | 1.19.9                      |
-| Istiod                       | istiod          | 1.19.9                      |
-| Istio Egress Gateway         | istio-egress    | 1.19.9                      |
-| Istio Ingress Gateway        | istio-ingress   | 1.19.9                      |
+| Istio CRDs                   | istio-base      | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.19.9 |
+| Istiod                       | istiod          | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.19.9 |
+| Istio Egress Gateway         | istio-egress    | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.19.9 |
+| Istio Ingress Gateway        | istio-ingress   | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.19.9 |
 | KubeVirt                     | kubevirt        | 1.0.1<br>0.59.0<br>0.58.0   |
 | MetalLB                      | metallb         | 0.16.1<br>0.12.1                      |
 | OCI Cloud Controller Manager | oci-ccm         | 1.27.2                      |
