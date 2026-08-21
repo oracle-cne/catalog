@@ -12,7 +12,7 @@ metadata:
   name: tigera-operator
   namespace: {{.Release.Namespace}}
   labels:
-    k8s-app: tigera-operator
+    {{- include "tigera-operator.labels" (dict "context" .) | nindent 4 }}
 spec:
   replicas: 1
   selector:
@@ -35,23 +35,41 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: tigera-operator
+{{- if .Values.priorityClassName }}
+      priorityClassName: {{.Values.priorityClassName}}
+{{- end }}
       # Set the termination grace period to match how long the operator will wait for
       # resources to terminate when being uninstalled.
       terminationGracePeriodSeconds: 60
       hostNetwork: true
+      {{- if .Values.dnsPolicy }}
+      dnsPolicy: {{ .Values.dnsPolicy }}
+      {{- else }}
       # This must be set when hostNetwork is true or else the cluster services won't resolve
       dnsPolicy: ClusterFirstWithHostNet
+      {{- end }}
+      {{- if .Values.dnsConfig }}
+      dnsConfig:
+        {{- toYaml .Values.dnsConfig | nindent 8 }}
+      {{- end }}
       containers:
         - name: tigera-operator
           image: {{ template "tigera-operator.image" .Values.tigeraOperator}}
           imagePullPolicy: IfNotPresent
           command:
             - operator
+          args:
+            # Configure tigera-operator to manage installation of the necessary CRDs.
+            - -manage-crds={{ .Values.manageCRDs }}
           volumeMounts:
             - name: var-lib-calico
               readOnly: true
@@ -71,6 +89,9 @@ spec:
               value: "tigera-operator"
             - name: TIGERA_OPERATOR_INIT_IMAGE_VERSION
               value: {{.Values.tigeraOperator.version}}
+          {{- with .Values.tigeraOperator.env }}
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
           envFrom:
             - configMapRef:
                 name: kubernetes-services-endpoint
@@ -79,7 +100,7 @@ spec:
         - name: var-lib-calico
           hostPath:
             path: /var/lib/calico
-{{- if eq .Values.installation.kubernetesProvider "openshift" }}
+{{- if eq (lower .Values.installation.kubernetesProvider) "openshift" }}
         - name: calico-resources
           configMap:
             defaultMode: 0400
@@ -89,6 +110,18 @@ spec:
             defaultMode: 0777
             name: install-resources-script
       initContainers:
+        # Install CRDs first, so that APIs exist for calicoctl to use.
+        - name: bootstrap-crds
+          image: {{ template "tigera-operator.image" .Values.tigeraOperator}}
+          command:
+            - operator
+          args:
+            - -bootstrap-crds
+          envFrom:
+            - configMapRef:
+                name: kubernetes-services-endpoint
+                optional: true
+        # Install any v3 API resources provided in the calico-resources ConfigMap.
         - name: create-initial-resources
           image: {{.Values.calicoctl.image}}:{{.Values.calicoctl.tag}}
           env:

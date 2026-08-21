@@ -1,0 +1,39 @@
+repo: https://docs.tigera.io/calico/charts
+chart: tigera-operator
+icon: calico-logo.png
+catalogVersionFromValues:
+  yq: '.tigeraOperator.version | sub("^v"; "") | sub("-.*$"; "")'
+crdCharts:
+  - chart: crd.projectcalico.org.v1
+    sourceDir: templates
+    destDir: crds
+values:
+  installation:
+    registry: container-registry.oracle.com/
+    imagePath: olcne
+    flexVolumePath: /var/lib/kubelet/volumeplugins/
+  tigeraOperator:
+    image: tigera-operator
+    registry: olcne
+  calicoctl:
+    image: olcne/ctl
+  goldmane:
+    enabled: false
+  whisker:
+    enabled: false
+
+latestImages:
+  - name: .tigeraOperator.registry + "/" + .tigeraOperator.image
+    tag: .tigeraOperator.version
+
+transforms:
+  tigera-operator/02-tigera-operator.yaml:
+    extraImages:
+      - "{{ .Values.tigeraOperator.registry }}/apiserver:{{ .Values.calicoctl.tag }}"
+      - "{{ .Values.tigeraOperator.registry }}/kube-controllers:{{ .Values.calicoctl.tag }}"
+      - "{{ .Values.tigeraOperator.registry }}/pod2daemon-flexvol:{{ .Values.calicoctl.tag }}"
+      - "{{ .Values.tigeraOperator.registry }}/cni:{{ .Values.calicoctl.tag }}"
+      - "{{ .Values.tigeraOperator.registry }}/node:{{ .Values.calicoctl.tag }}"
+      - "{{ .Values.tigeraOperator.registry }}/typha:{{ .Values.calicoctl.tag }}"
+      - "{{ .Values.tigeraOperator.registry }}/csi:{{ .Values.calicoctl.tag }}"
+      - "{{ .Values.tigeraOperator.registry }}/node-driver-registrar:{{ .Values.calicoctl.tag }}"
