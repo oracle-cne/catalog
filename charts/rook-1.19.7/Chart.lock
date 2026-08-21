@@ -1,0 +1,9 @@
+dependencies:
+- name: library
+  repository: file://./charts/library
+  version: 0.0.1
+- name: ceph-csi-operator
+  repository: file://../ceph-csi-operator-0.6.0
+  version: 0.6.0
+digest: sha256:05962e5c4ba4e87d2bc29bb09994ebc32303311f024826bbdf086de0ef51ecbe
+generated: "2026-08-18T17:13:25.345873117Z"
