@@ -25,3 +25,15 @@ values:
 latestImages:
   - name: .tigeraOperator.registry + "/" + .tigeraOperator.image
     tag: .tigeraOperator.version
+
+transforms:
+  tigera-operator/02-tigera-operator.yaml:
+    extraImages:
+      - "{{ .Values.tigeraOperator.registry }}/apiserver:{{ .Values.calicoctl.tag }}"
+      - "{{ .Values.tigeraOperator.registry }}/kube-controllers:{{ .Values.calicoctl.tag }}"
+      - "{{ .Values.tigeraOperator.registry }}/pod2daemon-flexvol:{{ .Values.calicoctl.tag }}"
+      - "{{ .Values.tigeraOperator.registry }}/cni:{{ .Values.calicoctl.tag }}"
+      - "{{ .Values.tigeraOperator.registry }}/node:{{ .Values.calicoctl.tag }}"
+      - "{{ .Values.tigeraOperator.registry }}/typha:{{ .Values.calicoctl.tag }}"
+      - "{{ .Values.tigeraOperator.registry }}/csi:{{ .Values.calicoctl.tag }}"
+      - "{{ .Values.tigeraOperator.registry }}/node-driver-registrar:{{ .Values.calicoctl.tag }}"
