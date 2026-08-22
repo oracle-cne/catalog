@@ -1,0 +1,91 @@
+global:
+  registry: 'quay.io'
+
+extraEnv:
+  - name: TEST_ENV_VAR_2
+    value: '{{ $.Release.Name }}'
+ingress:
+  enabled: true
+  hosts:
+    - "{{ $.Release.Name }}.local"
+  tls:
+    - hosts:
+        - "{{ $.Release.Name }}.local"
+  annotations:
+    test-annotations/test: "{{ $.Release.Name }}"
+  labels:
+    test-annotations/test: "{{ $.Release.Name }}"
+  extraPaths:
+    - path: /ping
+      pathType: Prefix
+      backend:
+        service:
+          name: '{{ include "oauth2-proxy.fullname" $ }}'
+          port:
+            name: '{{ $.Values.httpScheme }}'
+oauth2-proxy:
+  checkDeprecation: false
+  config:
+    clientSecret: '{{ $.Release.Name }}'
+    configFile: |
+      oidc_issuer_url = "https://{{ $.Release.Name }}/dex"
+
+pass_authorization_header: "true"
+
+extraArgs:
+  pass-authorization-header: "{{ $.Values.pass_authorization_header }}"
+
+extraVolumes:
+  - name: "{{ $.Release.Name }}-secret"
+    secret:
+      secretName: "{{ .Release.Name }}-secret"
+      items:
+        - key: secret
+          path: secret
+
+image:
+  registry: '{{ .Values.global.registry }}'
+imagePullSecrets:
+  - name: '{{ .Release.Name }}'
+
+authenticatedEmailsFile:
+  annotations:
+    test-annotations/test: "{{ $.Release.Name }}"
+
+config:
+  annotations:
+    test-annotations/test: "{{ $.Release.Name }}"
+  cookieName: '{{ $.Release.Name }}'
+
+deploymentLabels:
+  test-deployment-label/test: "{{ $.Release.Name }}"
+
+deploymentAnnotations:
+  test-annotations/test: "{{ $.Release.Name }}"
+
+autoscaling:
+  annotations:
+    test-annotations/test: "{{ $.Release.Name }}"
+
+alphaConfig:
+  annotations:
+    test-annotations/test: "{{ $.Release.Name }}"
+
+service:
+  annotations:
+    test-annotations/test: "{{ $.Release.Name }}"
+
+serviceAccount:
+  annotations:
+    test-annotations/test: "{{ $.Release.Name }}"
+
+serviceMonitor:
+  annotations:
+    test-annotations/test: "{{ $.Release.Name }}"
+
+customLabels:
+  test-labels/test: "{{ $.Release.Name }}"
+
+nodeOS: linux
+nodeSelector:
+  kubernetes.io/os: "{{ .Values.nodeOS }}"

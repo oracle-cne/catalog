@@ -46,7 +46,7 @@ installing the `ocne-catalog` chart.
 | KubeVirt                                            | kubevirt                    | 1.8.4<br>1.7.4<br>1.6.6<br>1.5.2<br>1.4.1<br>1.3.1<br>1.2.2<br>1.1.1  |
 | MetalLB                                             | metallb                     | 0.16.1<br>0.15.3<br>0.15.2<br>0.13.10                                          |
 | Multus                                              | multus                      | 4.3.0<br>4.2.1<br>4.0.2                                              |
-| OAuth2 Proxy                                        | oauth2-proxy                | 7.14.3<br>7.12.0<br>7.8.0                                            |
+| OAuth2 Proxy                                        | oauth2-proxy                | 7.15.4<br>7.14.3<br>7.12.0<br>7.8.0 |
 | OCI Cloud Controller Manager                        | oci-ccm                     | 1.30.0<br>1.28.0                                                     |
 | OLVM CAPI Controller Manager                        | olvm-capi                   | 1.0.0                                                                |
 | OpenSearch                                          | opensearch                  | 2.15.0                                                               |
