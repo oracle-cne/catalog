@@ -18,6 +18,8 @@ values:
       image:
         repository: ""
         tag:
+  frrk8s:
+    enabled: false
 
 images:
   - name: .controller.image.repository
