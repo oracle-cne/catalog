@@ -1,0 +1,43 @@
+annotations:
+  artifacthub.io/changes: |
+    - kind: added
+      description: Add alpha-config.source and alpha-config.name helpers for centralized alpha config resolution
+      links:
+        - name: GitHub PR
+          url: https://github.com/oauth2-proxy/manifests/pull/405
+    - kind: added
+      description: Add deprecation guards for invalid alphaConfig combinations
+      links:
+        - name: GitHub PR
+          url: https://github.com/oauth2-proxy/manifests/pull/405
+apiVersion: v2
+appVersion: 7.15.4
+dependencies:
+  - condition: redis-ha.enabled
+    name: redis-ha
+    repository: https://dandydeveloper.github.io/charts
+    version: 4.35.10
+description: A reverse proxy that provides authentication with Google, Github or other providers
+home: https://oauth2-proxy.github.io/oauth2-proxy/
+keywords:
+  - kubernetes
+  - oauth
+  - oauth2
+  - authentication
+  - google
+  - github
+  - redis
+kubeVersion: '>= 1.30.0 < 1.36.0'
+maintainers:
+  - email: pierluigi.lenoci@gmail.com
+    name: pierluigilenoci
+  - email: jan@larwig.com
+    name: tuunit
+  - email: joel.speed@hotmail.co.uk
+    name: JoelSpeed
+name: oauth2-proxy
+sources:
+  - https://github.com/oauth2-proxy/oauth2-proxy
+  - https://github.com/oauth2-proxy/manifests
+version: 7.15.4
+icon: icons/OAuth2_Proxy_horizontal.svg
