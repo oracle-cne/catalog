@@ -24,10 +24,11 @@ installing the `ocne-catalog` chart.
 | CoreDNS                                             | coredns                     | 2.0.0                                                                |
 | CSI Driver for oVirt                                | ovirt-csi-driver            | 4.21.1<br>4.21.0<br>4.20.0                                           |
 | CSI NFS Driver for Kubernetes                       | csi-driver-nfs              | 4.13.4<br>4.13.1<br>4.12.1<br>4.11.0 |
+| Ceph CSI Operator                                   | ceph-csi-operator           | 0.6.0 |
 | Dex                                                 | dex                         | 2.45.1<br>2.44.0<br>2.43.1<br>2.39.1                                           |
 | ExternalIP Webhook                                  | externalip-webhook          | 1.0.0                                                                |
 | Flannel                                             | flannel                     | 2.0.0<br>0.22.3                                                      |
-| Fluent Operator                                     | fluent-operator             | 3.6.0<br>3.4.0<br>3.2.0                                              |
+| Fluent Operator                                     | fluent-operator             | 3.10.0<br>3.6.0<br>3.4.0<br>3.2.0 |
 | Fluentd                                             | fluentd                     | 1.14.5                                                               |
 | Grafana                                             | grafana                     | 10.2.6<br>9.2.10<br>7.5.17                                           |
 | Ingress Nginx                                       | ingress-nginx               | 1.15.1<br>1.14.4<br>1.14.0<br>1.13.1<br>1.12.5<br>1.12.1<br>1.9.6    |
@@ -46,7 +47,7 @@ installing the `ocne-catalog` chart.
 | MetalLB                                             | metallb                     | 0.16.1<br>0.15.3<br>0.15.2<br>0.13.10                                          |
 | Multus                                              | multus                      | 4.3.0<br>4.2.1<br>4.0.2                                              |
 | OAuth2 Proxy                                        | oauth2-proxy                | 7.14.3<br>7.12.0<br>7.8.0                                            |
-| OCI Cloud Controller Manager                        | oci-ccm                     | 1.35.0<br>1.30.0<br>1.28.0                                           |
+| OCI Cloud Controller Manager                        | oci-ccm                     | 1.30.0<br>1.28.0                                                     |
 | OLVM CAPI Controller Manager                        | olvm-capi                   | 1.0.0                                                                |
 | OpenSearch                                          | opensearch                  | 2.15.0                                                               |
 | OpenSearch Dashboards                               | opensearch-dashboards       | 2.15.0                                                               |
@@ -54,8 +55,8 @@ installing the `ocne-catalog` chart.
 | Prometheus                                          | prometheus                  | 2.31.1                                                               |
 | Prometheus Adapter                                  | prometheus-adapter          | 0.12.0<br>0.10.0                                                     |
 | Prometheus Node Exporter                            | prometheus-node-exporter    | 1.12.1<br>1.10.2<br>1.9.1<br>1.6.1 |
-| Rook                                                | rook                        | 1.18.0<br>1.17.7<br>1.16.6<br>1.15.9<br>1.14.12<br>1.13.10<br>1.12.3 |
-| Tigera Operator with Calico                         | tigera-operator             | 1.38.1<br>1.32.12<br>1.32.4                                          |
+| Rook                                                | rook                        | 1.19.7<br>1.18.0<br>1.17.7<br>1.16.6<br>1.15.9<br>1.14.12<br>1.13.10<br>1.12.3 |
+| Tigera Operator with Calico                         | tigera-operator             | 1.42.3<br>3.32.1<br>1.38.1<br>1.32.12<br>1.32.4 |
 | Oracle Cloud Native Environment Dashboard           | ui                          | 2.3.0<br>2.2.0<br>2.0.0                                              |
 | Kubernetes Gateway API CRDs                         | kubernetes-gateway-api-crds | 1.6.1<br>1.5.1<br>1.4.0<br>1.3.0<br>1.2.1 |
 | Oracle Cloud Native Environment HA Monitor          | ocne-ha-monitor             | 2.0.0                                                                |

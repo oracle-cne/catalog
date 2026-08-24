@@ -6,6 +6,9 @@ APP_VERSION="$2"
 KUBE_VERSION="$3"
 ROOT_DIR="$PWD"
 
+# Set SKIP_DEPENDENCIES=true or false to override the template setting for one generation.
+SKIP_DEPENDENCIES_OVERRIDE="${SKIP_DEPENDENCIES:-}"
+
 REPO_NAME="tmp-repo"
 TEMP_DIRS=""
 
@@ -679,6 +682,87 @@ pull_chart_to_temp_dir() {
 	echo "Pulled ${CHART} into ${PULL_DIR}/${CHART}"
 }
 
+validate_relative_dir() {
+	DIR_PATH="$1"
+	FIELD_NAME="$2"
+
+	if [ -z "$DIR_PATH" ] || [[ "$DIR_PATH" = /* ]] || [[ "$DIR_PATH" == *..* ]]; then
+		echo "Invalid ${FIELD_NAME} directory '${DIR_PATH}' for ${APP}"
+		exit 1
+	fi
+}
+
+merge_crd_charts() {
+	if ! yq -e '.crdCharts' "$TEMPLATE_FILE" > /dev/null 2>&1; then
+		echo "No CRD charts defined for ${APP}"
+		return
+	fi
+
+	NUM_CRD_CHARTS=$(yq '.crdCharts | length' "$TEMPLATE_FILE")
+	NUM_CRD_CHARTS=$((NUM_CRD_CHARTS-1))
+	for i in $(seq 0 $NUM_CRD_CHARTS); do
+		CRD_CHART=$(yq -r ".crdCharts[$i].chart // \"\"" "$TEMPLATE_FILE")
+		if [ -z "$CRD_CHART" ]; then
+			echo "CRD chart entry ${i} for ${APP} does not define chart"
+			exit 1
+		fi
+
+		CRD_REPO=$(yq -r ".crdCharts[$i].repo // .repo // \"\"" "$TEMPLATE_FILE")
+		if [ -z "$CRD_REPO" ]; then
+			echo "CRD chart entry ${i} for ${APP} does not define repo"
+			exit 1
+		fi
+
+		CRD_CHART_VERSION=$(yq -r ".crdCharts[$i].version // \"\"" "$TEMPLATE_FILE")
+		if [ -z "$CRD_CHART_VERSION" ]; then
+			CRD_CHART_VERSION="$V_CHART_VERSION"
+		fi
+
+		CRD_SOURCE_DIR=$(yq -r ".crdCharts[$i].sourceDir // \"templates\"" "$TEMPLATE_FILE")
+		CRD_DEST_DIR=$(yq -r ".crdCharts[$i].destDir // \"crds\"" "$TEMPLATE_FILE")
+		validate_relative_dir "$CRD_SOURCE_DIR" "source"
+		validate_relative_dir "$CRD_DEST_DIR" "destination"
+
+		CRD_PULL_DIR=$(mktemp -d "$ROOT_DIR/charts/.pull-${APP}-${APP_VERSION}-crds.XXXXXX")
+		echo "Pulling CRD chart ${CRD_CHART}@${CRD_CHART_VERSION} from ${CRD_REPO} into ${CRD_PULL_DIR}"
+		helm pull --untar --destination "$CRD_PULL_DIR" --repo "$CRD_REPO" "$CRD_CHART" --version "$CRD_CHART_VERSION"
+		if [ "$?" != "0" ]; then
+			echo "Could not pull CRD chart ${CRD_CHART}@${CRD_CHART_VERSION} from ${CRD_REPO}"
+			cleanup_pull_dir "$CRD_PULL_DIR"
+			exit 1
+		fi
+
+		if [ ! -d "$CRD_PULL_DIR/$CRD_CHART/$CRD_SOURCE_DIR" ]; then
+			echo "CRD chart ${CRD_CHART}@${CRD_CHART_VERSION} does not contain ${CRD_SOURCE_DIR}"
+			cleanup_pull_dir "$CRD_PULL_DIR"
+			exit 1
+		fi
+
+		CRD_FILE_COUNT=$(find "$CRD_PULL_DIR/$CRD_CHART/$CRD_SOURCE_DIR" -type f | wc -l)
+		if [ "$CRD_FILE_COUNT" -lt 1 ]; then
+			echo "CRD chart ${CRD_CHART}@${CRD_CHART_VERSION} does not contain any files in ${CRD_SOURCE_DIR}"
+			cleanup_pull_dir "$CRD_PULL_DIR"
+			exit 1
+		fi
+
+		if grep -R -n -F '{{' "$CRD_PULL_DIR/$CRD_CHART/$CRD_SOURCE_DIR"; then
+			echo "CRD chart ${CRD_CHART}@${CRD_CHART_VERSION} contains templated files that cannot be copied into ${CRD_DEST_DIR}"
+			cleanup_pull_dir "$CRD_PULL_DIR"
+			exit 1
+		fi
+
+		echo "Merging ${CRD_FILE_COUNT} file(s) from CRD chart ${CRD_CHART}@${CRD_CHART_VERSION} ${CRD_SOURCE_DIR} into ${CRD_DEST_DIR}"
+		mkdir -p "$CRD_DEST_DIR"
+		cp -R "$CRD_PULL_DIR/$CRD_CHART/$CRD_SOURCE_DIR"/. "$CRD_DEST_DIR"/
+		if [ "$?" != "0" ]; then
+			echo "Could not copy CRDs from ${CRD_CHART}@${CRD_CHART_VERSION}"
+			cleanup_pull_dir "$CRD_PULL_DIR"
+			exit 1
+		fi
+		cleanup_pull_dir "$CRD_PULL_DIR"
+	done
+}
+
 sanitize_chart_readme() {
 	if [ ! -f README.md ]; then
 		return
@@ -823,6 +907,121 @@ set_chart_kube_version() {
 
 normalize_app_version() {
 	APP_VERSION=$(echo "${APP_VERSION}" | sed 's/^v//')
+}
+
+normalize_catalog_version() {
+	printf "%s" "$1" | tr -d '\r' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e 's/^v//'
+}
+
+get_catalog_version_values_yq() {
+	if ! yq -e '.catalogVersionFromValues' "$TEMPLATE_FILE" > /dev/null 2>&1; then
+		echo ""
+		return
+	fi
+
+	CATALOG_VERSION_CONFIG_TAG=$(yq -r '.catalogVersionFromValues | tag' "$TEMPLATE_FILE")
+	if [ "$CATALOG_VERSION_CONFIG_TAG" = "!!map" ]; then
+		yq -r '.catalogVersionFromValues.yq // .catalogVersionFromValues.field // ""' "$TEMPLATE_FILE"
+	else
+		yq -r '.catalogVersionFromValues // ""' "$TEMPLATE_FILE"
+	fi
+}
+
+catalog_version_from_values_enabled() {
+	CATALOG_VERSION_VALUES_YQ=$(get_catalog_version_values_yq)
+	[ -n "$CATALOG_VERSION_VALUES_YQ" ] && [ "$CATALOG_VERSION_VALUES_YQ" != "null" ]
+}
+
+read_catalog_version_from_values_file() {
+	VALUES_FILE="$1"
+	CATALOG_VERSION_VALUES_YQ=$(get_catalog_version_values_yq)
+	if [ -z "$CATALOG_VERSION_VALUES_YQ" ] || [ "$CATALOG_VERSION_VALUES_YQ" = "null" ]; then
+		return 1
+	fi
+
+	RAW_CATALOG_VERSION=$(yq -r "(${CATALOG_VERSION_VALUES_YQ}) // \"\"" "$VALUES_FILE")
+	STATUS="$?"
+	if [ "$STATUS" != "0" ]; then
+		echo "Could not read catalog version from ${VALUES_FILE} using yq expression: ${CATALOG_VERSION_VALUES_YQ}"
+		exit "$STATUS"
+	fi
+
+	RAW_CATALOG_VERSION=$(printf "%s" "$RAW_CATALOG_VERSION" | tr -d '\r' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+	if [ -z "$RAW_CATALOG_VERSION" ] || [ "$RAW_CATALOG_VERSION" = "null" ]; then
+		echo "Catalog version expression produced no value for ${APP}: ${CATALOG_VERSION_VALUES_YQ}"
+		exit 1
+	fi
+	if printf "%s" "$RAW_CATALOG_VERSION" | grep -q '[[:space:]]'; then
+		echo "Catalog version expression must produce exactly one scalar version for ${APP}: ${RAW_CATALOG_VERSION}"
+		exit 1
+	fi
+
+	normalize_catalog_version "$RAW_CATALOG_VERSION"
+}
+
+resolve_chart_version_from_values() {
+	if ! catalog_version_from_values_enabled; then
+		return 1
+	fi
+	if [ -z "$APP_VERSION" ]; then
+		echo "Cannot resolve ${CHART} by catalogVersionFromValues without an app version argument"
+		return 1
+	fi
+
+	REQUESTED_CATALOG_VERSION=$(normalize_catalog_version "$APP_VERSION")
+	CHART_NAME="${REPO_NAME}/${CHART}"
+	CHART_VERSIONS=$(printf "%s" "$CHART_DESCS" | CHART_NAME="$CHART_NAME" yq -r '.[] | select(.name == strenv(CHART_NAME)) | .version')
+	if [ -z "$CHART_VERSIONS" ]; then
+		echo "No chart versions found for ${CHART_NAME}"
+		return 1
+	fi
+
+	echo "Searching ${CHART_NAME} chart values for catalog version ${REQUESTED_CATALOG_VERSION}"
+	while IFS= read -r CANDIDATE_CHART_VERSION; do
+		if [ -z "$CANDIDATE_CHART_VERSION" ] || [ "$CANDIDATE_CHART_VERSION" = "null" ]; then
+			continue
+		fi
+
+		CANDIDATE_VALUES_FILE=$(mktemp)
+		echo "Inspecting ${CHART_NAME}@${CANDIDATE_CHART_VERSION} values.yaml"
+		helm show values "$CHART_NAME" --version "$CANDIDATE_CHART_VERSION" > "$CANDIDATE_VALUES_FILE"
+		STATUS="$?"
+		if [ "$STATUS" != "0" ]; then
+			rm -f "$CANDIDATE_VALUES_FILE"
+			echo "Could not inspect values.yaml for ${CHART_NAME}@${CANDIDATE_CHART_VERSION}"
+			exit "$STATUS"
+		fi
+
+		CANDIDATE_CATALOG_VERSION=$(read_catalog_version_from_values_file "$CANDIDATE_VALUES_FILE")
+		rm -f "$CANDIDATE_VALUES_FILE"
+		echo "${CHART_NAME}@${CANDIDATE_CHART_VERSION} declares catalog version ${CANDIDATE_CATALOG_VERSION}"
+		if [ "$CANDIDATE_CATALOG_VERSION" = "$REQUESTED_CATALOG_VERSION" ]; then
+			CHART_VERSION="$CANDIDATE_CHART_VERSION"
+			echo "Resolved ${CHART_NAME}@${CHART_VERSION} from catalog version ${REQUESTED_CATALOG_VERSION}"
+			return 0
+		fi
+	done <<EOF
+$CHART_VERSIONS
+EOF
+
+	return 1
+}
+
+set_app_version_from_pulled_chart_values() {
+	if ! catalog_version_from_values_enabled; then
+		return
+	fi
+
+	PULLED_VALUES_FILE="$PULL_DIR/$CHART/values.yaml"
+	if [ ! -f "$PULLED_VALUES_FILE" ]; then
+		echo "Cannot derive catalog version for ${APP}: missing ${PULLED_VALUES_FILE}"
+		exit 1
+	fi
+
+	RESOLVED_APP_VERSION=$(read_catalog_version_from_values_file "$PULLED_VALUES_FILE")
+	echo "Setting catalog app version, chart version, and output directory version for ${APP} from pulled values.yaml: ${RESOLVED_APP_VERSION}"
+	APP_VERSION="$RESOLVED_APP_VERSION"
+	normalize_app_version
 }
 
 normalize_github_repo_url() {
@@ -1109,8 +1308,76 @@ generate_dependency_chart() {
 	fi
 }
 
+dependency_is_configured_to_skip() {
+	DEPENDENCY_NAME="$1"
+	while IFS= read -r SKIPPED_DEPENDENCY_NAME; do
+		if [ "$DEPENDENCY_NAME" = "$SKIPPED_DEPENDENCY_NAME" ]; then
+			return 0
+		fi
+	done <<EOF
+$SKIPPED_DEPENDENCIES
+EOF
+	return 1
+}
+
 process_chart_dependencies() {
+	TEMPLATE_SKIP_DEPENDENCIES_TYPE=$(yq -r '.skipDependencies | type' "$TEMPLATE_FILE")
+	SKIP_ALL_DEPENDENCIES=false
+	SKIPPED_DEPENDENCIES=""
+	case "$TEMPLATE_SKIP_DEPENDENCIES_TYPE" in
+		!!null)
+			echo "Template dependency processing setting for ${APP}: skipDependencies=false"
+			;;
+		!!bool)
+			SKIP_ALL_DEPENDENCIES=$(yq -r '.skipDependencies' "$TEMPLATE_FILE")
+			echo "Template dependency processing setting for ${APP}: skipDependencies=${SKIP_ALL_DEPENDENCIES}"
+			;;
+		!!seq)
+			if ! yq -e '([.skipDependencies[] | select(tag == "!!str" and length > 0)] | length) == (.skipDependencies | length)' "$TEMPLATE_FILE" > /dev/null; then
+				echo "Template skipDependencies for ${APP} must contain only non-empty dependency names"
+				exit 1
+			fi
+			SKIPPED_DEPENDENCIES=$(yq -r '.skipDependencies[]' "$TEMPLATE_FILE")
+			echo "Template dependency processing setting for ${APP}: skipping named dependencies: ${SKIPPED_DEPENDENCIES}"
+			;;
+		*)
+			echo "Template skipDependencies for ${APP} must be a boolean or a list of dependency names"
+			exit 1
+			;;
+	esac
+
+	if [ -n "$SKIP_DEPENDENCIES_OVERRIDE" ]; then
+		case "$SKIP_DEPENDENCIES_OVERRIDE" in
+			true|false)
+				echo "Environment dependency processing override for ${APP}: SKIP_DEPENDENCIES=${SKIP_DEPENDENCIES_OVERRIDE}"
+				SKIP_ALL_DEPENDENCIES="$SKIP_DEPENDENCIES_OVERRIDE"
+				SKIPPED_DEPENDENCIES=""
+				;;
+			*)
+				echo "SKIP_DEPENDENCIES for ${APP} must be true or false, got '${SKIP_DEPENDENCIES_OVERRIDE}'"
+				exit 1
+				;;
+		esac
+	fi
+
+	if [ "$SKIP_ALL_DEPENDENCIES" = "true" ]; then
+		echo "Skipping dependency resolution, generation, and Chart.yaml rewriting for ${APP}; retaining source chart dependencies"
+		return
+	fi
+
+	echo "Processing chart dependencies for ${APP}"
 	NUM_DEPENDENCIES=$(yq '.dependencies // [] | length' Chart.yaml)
+	echo "Found ${NUM_DEPENDENCIES} chart dependencies for ${APP}"
+	if [ -n "$SKIPPED_DEPENDENCIES" ]; then
+		while IFS= read -r SKIPPED_DEPENDENCY_NAME; do
+			if ! SKIPPED_DEPENDENCY_NAME="$SKIPPED_DEPENDENCY_NAME" yq -e '([.dependencies[] | select(.name == strenv(SKIPPED_DEPENDENCY_NAME))] | length) > 0' Chart.yaml > /dev/null; then
+				echo "Template skipDependencies for ${APP} names dependency '${SKIPPED_DEPENDENCY_NAME}', but Chart.yaml does not define it"
+				exit 1
+			fi
+		done <<EOF
+$SKIPPED_DEPENDENCIES
+EOF
+	fi
 	DEP_INDEX=0
 
 	while [ "$DEP_INDEX" -lt "$NUM_DEPENDENCIES" ]; do
@@ -1125,6 +1392,12 @@ process_chart_dependencies() {
 
 		if [ -z "$DEP_REPO" ] || [[ "$DEP_REPO" == file://* ]]; then
 			echo "Skipping local dependency ${DEP_NAME} with repository '${DEP_REPO}'"
+			DEP_INDEX=$((DEP_INDEX+1))
+			continue
+		fi
+
+		if dependency_is_configured_to_skip "$DEP_NAME"; then
+			echo "Skipping configured dependency ${DEP_NAME}; retaining repository '${DEP_REPO}' and version '${DEP_CHART_VERSION}'"
 			DEP_INDEX=$((DEP_INDEX+1))
 			continue
 		fi
@@ -1248,8 +1521,12 @@ else
 	if [ -z "$CHART_VERSION" ] || [ "$CHART_VERSION" = "null" ]; then
 		# If the chart version is not specified, then search
 		# the repo by app version.
-		CHART_DESCS=$(helm search repo "$CHART" -o yaml)
-		CHART_VERSION=$(echo "$CHART_DESCS" | yq ".[] | select((.app_version == \"${APP_VERSION}\" or .app_version == \"v${APP_VERSION}\") and .name == \"${REPO_NAME}/${CHART}\") | .version")
+		CHART_DESCS=$(helm search repo "${REPO_NAME}/${CHART}" --versions -o yaml)
+		CHART_NAME="${REPO_NAME}/${CHART}"
+		CHART_VERSION=$(printf "%s" "$CHART_DESCS" | APP_VERSION="$APP_VERSION" CHART_NAME="$CHART_NAME" yq -r '.[] | select((.app_version == strenv(APP_VERSION) or .app_version == ("v" + strenv(APP_VERSION))) and .name == strenv(CHART_NAME)) | .version' | head -n 1)
+		if [ -z "$CHART_VERSION" ] || [ "$CHART_VERSION" = "null" ]; then
+			resolve_chart_version_from_values
+		fi
 	fi
 fi
 if [ -z "$CHART_VERSION" ] || [ "$CHART_VERSION" = "null" ]; then
@@ -1277,7 +1554,9 @@ if is_git_chart_repo "$REPO_URL"; then
 	mv "$CHART" "$OUTPUT_DIR"
 else
 	pull_chart_to_temp_dir
+	set_app_version_from_pulled_chart_values
 	helm repo remove "$REPO_NAME"
+	OUTPUT_DIR="${APP}-${APP_VERSION}"
 	backup_existing_output_dir "$OUTPUT_DIR"
 	echo "Moving pulled chart ${PULL_DIR}/${CHART} to ${OUTPUT_DIR}"
 	mv "$PULL_DIR/$CHART" "$OUTPUT_DIR"
@@ -1291,6 +1570,7 @@ yq -i ".icon = \"icons/$ICON\"" Chart.yaml
 set_chart_kube_version
 yq -i ".name = \"$APP\"" Chart.yaml
 sanitize_chart_readme
+merge_crd_charts
 
 if yq -e '.extraChartYqs' "$TEMPLATE_FILE" > /dev/null 2>&1; then
 	yq -r -0 '.extraChartYqs[]' "$TEMPLATE_FILE" | xargs -0 -I{} yq -i {} Chart.yaml
