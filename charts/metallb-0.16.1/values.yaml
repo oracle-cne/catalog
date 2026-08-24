@@ -369,7 +369,7 @@ crds:
 # applied by MetalLB.
 frrk8s:
   # -- If set, enables frrk8s as a backend. This is mutually exclusive to frr mode.
-  enabled: true
+  enabled: false
   # -- If true, uses an external frr-k8s installation instead of the bundled subchart.
   external: false
   # -- Namespace where external frr-k8s is installed (only used when external=true).

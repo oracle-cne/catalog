@@ -6,6 +6,9 @@ APP_VERSION="$2"
 KUBE_VERSION="$3"
 ROOT_DIR="$PWD"
 
+# Set SKIP_DEPENDENCIES=true or false to override the template setting for one generation.
+SKIP_DEPENDENCIES_OVERRIDE="${SKIP_DEPENDENCIES:-}"
+
 REPO_NAME="tmp-repo"
 
 TEMPLATE_FILE=""
@@ -819,8 +822,76 @@ generate_dependency_chart() {
 	fi
 }
 
+dependency_is_configured_to_skip() {
+	DEPENDENCY_NAME="$1"
+	while IFS= read -r SKIPPED_DEPENDENCY_NAME; do
+		if [ "$DEPENDENCY_NAME" = "$SKIPPED_DEPENDENCY_NAME" ]; then
+			return 0
+		fi
+	done <<EOF
+$SKIPPED_DEPENDENCIES
+EOF
+	return 1
+}
+
 process_chart_dependencies() {
+	TEMPLATE_SKIP_DEPENDENCIES_TYPE=$(yq -r '.skipDependencies | type' "$TEMPLATE_FILE")
+	SKIP_ALL_DEPENDENCIES=false
+	SKIPPED_DEPENDENCIES=""
+	case "$TEMPLATE_SKIP_DEPENDENCIES_TYPE" in
+		!!null)
+			echo "Template dependency processing setting for ${APP}: skipDependencies=false"
+			;;
+		!!bool)
+			SKIP_ALL_DEPENDENCIES=$(yq -r '.skipDependencies' "$TEMPLATE_FILE")
+			echo "Template dependency processing setting for ${APP}: skipDependencies=${SKIP_ALL_DEPENDENCIES}"
+			;;
+		!!seq)
+			if ! yq -e '([.skipDependencies[] | select(tag == "!!str" and length > 0)] | length) == (.skipDependencies | length)' "$TEMPLATE_FILE" > /dev/null; then
+				echo "Template skipDependencies for ${APP} must contain only non-empty dependency names"
+				exit 1
+			fi
+			SKIPPED_DEPENDENCIES=$(yq -r '.skipDependencies[]' "$TEMPLATE_FILE")
+			echo "Template dependency processing setting for ${APP}: skipping named dependencies: ${SKIPPED_DEPENDENCIES}"
+			;;
+		*)
+			echo "Template skipDependencies for ${APP} must be a boolean or a list of dependency names"
+			exit 1
+			;;
+	esac
+
+	if [ -n "$SKIP_DEPENDENCIES_OVERRIDE" ]; then
+		case "$SKIP_DEPENDENCIES_OVERRIDE" in
+			true|false)
+				echo "Environment dependency processing override for ${APP}: SKIP_DEPENDENCIES=${SKIP_DEPENDENCIES_OVERRIDE}"
+				SKIP_ALL_DEPENDENCIES="$SKIP_DEPENDENCIES_OVERRIDE"
+				SKIPPED_DEPENDENCIES=""
+				;;
+			*)
+				echo "SKIP_DEPENDENCIES for ${APP} must be true or false, got '${SKIP_DEPENDENCIES_OVERRIDE}'"
+				exit 1
+				;;
+		esac
+	fi
+
+	if [ "$SKIP_ALL_DEPENDENCIES" = "true" ]; then
+		echo "Skipping dependency resolution, generation, and Chart.yaml rewriting for ${APP}; retaining source chart dependencies"
+		return
+	fi
+
+	echo "Processing chart dependencies for ${APP}"
 	NUM_DEPENDENCIES=$(yq '.dependencies // [] | length' Chart.yaml)
+	echo "Found ${NUM_DEPENDENCIES} chart dependencies for ${APP}"
+	if [ -n "$SKIPPED_DEPENDENCIES" ]; then
+		while IFS= read -r SKIPPED_DEPENDENCY_NAME; do
+			if ! SKIPPED_DEPENDENCY_NAME="$SKIPPED_DEPENDENCY_NAME" yq -e '([.dependencies[] | select(.name == strenv(SKIPPED_DEPENDENCY_NAME))] | length) > 0' Chart.yaml > /dev/null; then
+				echo "Template skipDependencies for ${APP} names dependency '${SKIPPED_DEPENDENCY_NAME}', but Chart.yaml does not define it"
+				exit 1
+			fi
+		done <<EOF
+$SKIPPED_DEPENDENCIES
+EOF
+	fi
 	DEP_INDEX=0
 
 	while [ "$DEP_INDEX" -lt "$NUM_DEPENDENCIES" ]; do
@@ -835,6 +906,12 @@ process_chart_dependencies() {
 
 		if [ -z "$DEP_REPO" ] || [[ "$DEP_REPO" == file://* ]]; then
 			echo "Skipping local dependency ${DEP_NAME} with repository '${DEP_REPO}'"
+			DEP_INDEX=$((DEP_INDEX+1))
+			continue
+		fi
+
+		if dependency_is_configured_to_skip "$DEP_NAME"; then
+			echo "Skipping configured dependency ${DEP_NAME}; retaining repository '${DEP_REPO}' and version '${DEP_CHART_VERSION}'"
 			DEP_INDEX=$((DEP_INDEX+1))
 			continue
 		fi
