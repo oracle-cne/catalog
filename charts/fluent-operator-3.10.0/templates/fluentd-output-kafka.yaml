@@ -1,0 +1,25 @@
+{{- if .Values.Kubernetes }}
+{{- if .Values.fluentd.enable }}
+{{- if .Values.fluentd.output.kafka.enable }}
+{{- with .Values.fluentd.output.kafka }}
+apiVersion: fluentd.fluent.io/v1alpha1
+kind: ClusterOutput
+metadata:
+  name: fluentd-output-kafka
+  labels:
+    output.fluentd.fluent.io/enabled: "true"
+spec:
+  outputs:
+    - kafka:
+        brokers: {{ .brokers | quote }}
+        useEventTime: true
+        topicKey: {{ .topicKey | quote }}
+      {{- with .buffer }}
+      buffer:
+        type: {{ .type | quote }}
+        path: {{ .path | quote }}
+      {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

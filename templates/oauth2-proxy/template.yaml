@@ -1,13 +1,32 @@
 repo: https://oauth2-proxy.github.io/manifests
 chart: oauth2-proxy
-chartVersion: 10.1.4
-appVersion: 7.14.3
 icon: OAuth2_Proxy_horizontal.svg
+# The upstream chart's optional redis-ha dependency is retained and resolved by Helm.
+skipDependencies:
+  - redis-ha
 values:
   initContainers:
   image:
     repository: olcne/oauth2-proxy
+    tag: v7.15.4
 
 images:
   - name: .image.repository
     tag: .image.tag
+
+patches:
+  - patch: |
+      --- templates/deployment.yaml
+      +++ templates/deployment.yaml
+      @@ -115,7 +115,13 @@
+             containers:
+             - name: {{ .Chart.Name }}
+      -        image: "{{ tpl .Values.image.registry $ | default (tpl .Values.global.imageRegistry $) | default "quay.io" }}/{{ .Values.image.repository }}:{{ include "oauth2-proxy.version" . }}"
+      +        {{- $registry := coalesce (tpl .Values.image.registry $) (tpl .Values.global.imageRegistry $) -}}
+      +        {{- $tag := include "oauth2-proxy.version" . -}}
+      +        {{- if $registry }}
+      +        image: {{ printf "%s/%s:%s" $registry .Values.image.repository $tag | quote }}
+      +        {{- else }}
+      +        image: {{ printf "%s:%s" .Values.image.repository $tag | quote }}
+      +        {{- end }}
+               imagePullPolicy: {{ .Values.image.pullPolicy }}

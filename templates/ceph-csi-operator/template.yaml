@@ -1,0 +1,12 @@
+repo: https://ceph.github.io/ceph-csi-operator
+chart: ceph-csi-operator
+icon: rook-logo.svg
+values:
+  controllerManager:
+    manager:
+      image:
+        repository: olcne/ceph-csi-operator
+
+images:
+  - name: .controllerManager.manager.image.repository
+    tag: .controllerManager.manager.image.tag

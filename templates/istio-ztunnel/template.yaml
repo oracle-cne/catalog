@@ -1,0 +1,25 @@
+repo: https://istio-release.storage.googleapis.com/charts
+chart: ztunnel
+icon: android-192x192.png
+kubeVersion:
+  minimum:
+    url: https://raw.githubusercontent.com/istio/istio.io/refs/heads/master/data/compatibility/supportStatus.yml
+    command: |
+      yq -r '.[] | select(.version == (strenv(APP_VERSION) | split(".") | .[0:2] | join("."))) | .k8sVersions[0] + ".0"'
+  maximum:
+    url: https://raw.githubusercontent.com/istio/istio.io/refs/heads/master/data/compatibility/supportStatus.yml
+    command: |
+      yq -r '.[] | select(.version == (strenv(APP_VERSION) | split(".") | .[0:2] | join("."))) | (.k8sVersions[-1] | split(".") | .[0] + "." + ((.[1] | tonumber) + 1 | tostring) + ".0")'
+values: {}
+
+extraValuesYqs:
+  - |
+    with(select(has("hub")); .hub = "olcne")
+  - |
+    with(select(has("defaults")); .defaults.hub = "olcne")
+  - |
+    with(select(has("_internal_defaults_do_not_set")); ._internal_defaults_do_not_set.hub = "olcne")
+
+extraFileYqs:
+  - file: files/profile-ambient.yaml
+    yq: '.global.variant = ""'
