@@ -17,12 +17,6 @@ flannel:
   args:
   - "--ip-masq"
   - "--kube-subnet-mgr"
-  # Additional environment variables for the kube-flannel DaemonSet container.
-  # Each item is a Kubernetes EnvVar object and may use either value or valueFrom.
-  # extraEnv:
-  # - name: EXAMPLE_OPTION
-  #   value: "example"
-  extraEnv: []
   # Backend for kube-flannel. Backend should not be changed
   # at runtime. (vxlan, host-gw, wireguard, udp)
   # Documentation at https://github.com/flannel-io/flannel/blob/master/Documentation/backends.md

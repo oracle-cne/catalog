@@ -72,9 +72,6 @@ spec:
               fieldPath: metadata.namespace
         - name: EVENT_QUEUE_DEPTH
           value: "5000"
-        {{- with .Values.flannel.extraEnv }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
         volumeMounts:
         - name: run
           mountPath: /run/flannel
