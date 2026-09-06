@@ -1,0 +1,39 @@
+repo: https://istio-release.storage.googleapis.com/charts
+chart: cni
+icon: android-192x192.png
+kubeVersion:
+  minimum:
+    url: https://raw.githubusercontent.com/istio/istio.io/refs/heads/master/data/compatibility/supportStatus.yml
+    command: |
+      yq -r '.[] | select(.version == (strenv(APP_VERSION) | split(".") | .[0:2] | join("."))) | .k8sVersions[0] + ".0"'
+  maximum:
+    url: https://raw.githubusercontent.com/istio/istio.io/refs/heads/master/data/compatibility/supportStatus.yml
+    command: |
+      yq -r '.[] | select(.version == (strenv(APP_VERSION) | split(".") | .[0:2] | join("."))) | (.k8sVersions[-1] | split(".") | .[0] + "." + ((.[1] | tonumber) + 1 | tostring) + ".0")'
+values: {}
+
+extraValuesYqs:
+  - |
+    with(select(has("global")); .global.hub = "olcne")
+  - |
+    with(select(has("defaults")); .defaults.global.hub = "olcne")
+  - |
+    with(select(has("_internal_defaults_do_not_set")); ._internal_defaults_do_not_set.global.hub = "olcne")
+
+extraFileYqs:
+  - file: files/profile-ambient.yaml
+    yq: '.global.variant = ""'
+
+patches:
+  - patch: |
+      --- templates/daemonset.yaml
+      +++ templates/daemonset.yaml
+      @@ -115,7 +115,7 @@
+                   appArmorProfile:
+                     type: Unconfined
+                   {{- end }}
+      -            privileged: false
+      +            privileged: true
+                   runAsGroup: 0
+                   runAsUser: 0
+                   runAsNonRoot: false

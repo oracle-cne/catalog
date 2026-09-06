@@ -46,9 +46,6 @@ transforms:
     - "{{ .Values.csi.attacher.repository }}:{{ .Values.csi.attacher.tag }}"
     - "{{ .Values.csi.resizer.repository }}:{{ .Values.csi.resizer.tag }}"
     - "{{ .Values.image.repository }}:{{ .Values.image.cephTag }}"
-  configmap.yaml:
-    prepend: |
-      this is some text
 
 extraChartYqs:
   - '(.dependencies[] | select(.name == "library") | .repository) = "file://./charts/library"'

@@ -1,0 +1,21 @@
+repo: git://github.com/oracle-cne/cluster-api:charts
+chart: control-plane-capi
+icon: capi.svg
+values:
+  controllerManager:
+    manager:
+      image:
+        repository: olcne/kubeadm-control-plane-controller
+  legacyControlPlaneAnnotation: false
+  proxy:
+    httpsProxy:
+    httpProxy:
+    noProxy:
+  kubeadmControlPlane:
+    name: ocne-control-plane-name
+
+images:
+  - name: .controllerManager.manager.image.repository
+    tag: .controllerManager.manager.image.tag
+
+latestImages: []

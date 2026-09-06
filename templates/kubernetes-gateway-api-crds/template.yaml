@@ -1,0 +1,11 @@
+sourceType: gitHubRelease
+repo: https://github.com/kubernetes-sigs/gateway-api
+releaseTagPrefix: v
+files:
+  - standard-install.yaml
+icon: android-192x192.png
+description: Kubernetes Gateway API
+keywords:
+  - Kubernetes Gateway API
+sources:
+  - https://github.com/kubernetes-sigs/gateway-api
