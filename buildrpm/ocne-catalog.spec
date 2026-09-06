@@ -37,33 +37,8 @@ cp -ap olm/icons/* %{buildroot}/opt/icons
 /opt/icons
 
 %changelog
-* Mon Aug 24 2026 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-33
-- Added cert-manager 1.19.6
-- Added cert-manager 1.20.2
-- Added cert-manager 1.21.0
-- Added Dex 2.45.1
-- Added Fluent Operator 3.10.0
-- Added ingress-nginx 1.15.1
-- Added Istio 1.25.5
-- Added Istio 1.26.8
-- Added Istio 1.27.9
-- Added Istio 1.28.10
-- Added Istio 1.29.6
-- Added Istio 1.30.3
-- Added kube-prometheus-stack 0.92.1
-- Added Kubernetes Gateway API 1.5.1
-- Added Kubernetes Gateway API 1.6.1
-- Added kube-state-metrics 2.19.1
-- Added KubeVirt 1.6.6
-- Added KubeVirt 1.7.4
-- Added KubeVirt 1.8.4
-- Added MetalLB 0.16.1
-- Added Multus CNI 4.3.0
-- Added NFS CSI Driver 4.13.4
-- Added OAuth2 Proxy 7.15.4
-- Added Prometheus Node Exporter 1.12.1
-- Added Rook 1.19.7
-- Added Tigera Operator 1.42.3
+* Tue Jun 30 2026 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-33
+- Update ingress-nginx to 1.15.1 and ovirt-csi-driver to 4.21.1
 
 * Thu Mar 26 2026 Prasad Shirodkar <prasad.shirodkar@oracle.com> - 2.0.0-32
 - Removed duplicate labels in the oVirt CSI Driver chart.
