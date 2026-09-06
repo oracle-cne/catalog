@@ -1,0 +1,12 @@
+repo: https://prometheus-community.github.io/helm-charts
+chart: prometheus-node-exporter
+icon: prometheus-logo.svg
+
+values:
+  image:
+    registry: olcne
+    repository: node-exporter
+
+images:
+  - name: .image | (.registry) + "/" + (.repository)
+    tag: .image.tag

@@ -1,3 +1,11 @@
+# extra-image: {{ .Values.tigeraOperator.registry }}/apiserver:{{ .Values.calicoctl.tag}}
+# extra-image: {{ .Values.tigeraOperator.registry }}/kube-controllers:{{ .Values.calicoctl.tag}}
+# extra-image: {{ .Values.tigeraOperator.registry }}/pod2daemon-flexvol:{{ .Values.calicoctl.tag}}
+# extra-image: {{ .Values.tigeraOperator.registry }}/cni:{{ .Values.calicoctl.tag}}
+# extra-image: {{ .Values.tigeraOperator.registry }}/node:{{ .Values.calicoctl.tag}}
+# extra-image: {{ .Values.tigeraOperator.registry }}/typha:{{ .Values.calicoctl.tag}}
+# extra-image: {{ .Values.tigeraOperator.registry }}/csi:{{ .Values.calicoctl.tag}}
+# extra-image: {{ .Values.tigeraOperator.registry }}/node-driver-registrar:{{ .Values.calicoctl.tag}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:

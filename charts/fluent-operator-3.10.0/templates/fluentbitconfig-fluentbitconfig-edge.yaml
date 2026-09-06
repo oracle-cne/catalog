@@ -1,0 +1,29 @@
+{{- if .Values.fluentbit.kubeedge.enable }}
+apiVersion: fluentbit.fluent.io/v1alpha2
+kind: ClusterFluentBitConfig
+metadata:
+  name: fluent-bit-config-edge
+  labels:
+    app.kubernetes.io/name: fluent-bit
+spec:
+  configFileFormat: {{ .Values.fluentbit.configFileFormat | default "classic" | quote }}
+  service:
+    {{- $defaults := dict "parsersFile" "parsers.conf" }}
+    {{- include "fluent-operator.fluentbitService" (dict "defaults" $defaults "root" $) | nindent 4 }}
+  inputSelector:
+    matchLabels:
+      fluentbit.fluent.io/enabled: "true"
+      node-role.kubernetes.io/edge: "true"
+  filterSelector:
+    matchLabels:
+      fluentbit.fluent.io/enabled: "true"
+      node-role.kubernetes.io/edge: "true"
+  parserSelector:
+    matchLabels:
+      fluentbit.fluent.io/enabled: "true"
+      node-role.kubernetes.io/edge: "true"
+  outputSelector:
+    matchLabels:
+      fluentbit.fluent.io/enabled: "true"
+      node-role.kubernetes.io/edge: "true"
+{{- end }}

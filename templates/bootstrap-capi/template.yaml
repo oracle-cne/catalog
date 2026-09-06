@@ -1,0 +1,19 @@
+repo: git://github.com/oracle-cne/cluster-api:charts
+chart: bootstrap-capi
+icon: capi.svg
+values:
+  controllerManager:
+    manager:
+      image:
+        repository: olcne/kubeadm-bootstrap-controller
+  legacyControlPlaneAnnotation: false
+  proxy:
+    httpsProxy:
+    httpProxy:
+    noProxy:
+
+images:
+  - name: .controllerManager.manager.image.repository
+    tag: .controllerManager.manager.image.tag
+
+latestImages: []

@@ -1,0 +1,107 @@
+repo: https://istio-release.storage.googleapis.com/charts
+chart: gateway
+icon: android-192x192.png
+kubeVersion:
+  minimum:
+    url: https://raw.githubusercontent.com/istio/istio.io/refs/heads/master/data/compatibility/supportStatus.yml
+    command: |
+      yq -r '.[] | select(.version == (strenv(APP_VERSION) | split(".") | .[0:2] | join("."))) | .k8sVersions[0] + ".0"'
+  maximum:
+    url: https://raw.githubusercontent.com/istio/istio.io/refs/heads/master/data/compatibility/supportStatus.yml
+    command: |
+      yq -r '.[] | select(.version == (strenv(APP_VERSION) | split(".") | .[0:2] | join("."))) | (.k8sVersions[-1] | split(".") | .[0] + "." + ((.[1] | tonumber) + 1 | tostring) + ".0")'
+values: {}
+
+extraValuesYqs:
+  - |
+    with(select(has("name")); .hub = "olcne" | .image = "proxyv2" | .tag = strenv(APP_VERSION))
+  - |
+    with(select(has("defaults")); .defaults.hub = "olcne" | .defaults.image = "proxyv2" | .defaults.tag = strenv(APP_VERSION))
+  - |
+    with(select(has("_internal_defaults_do_not_set")); ._internal_defaults_do_not_set.hub = "olcne" | ._internal_defaults_do_not_set.image = "proxyv2" | ._internal_defaults_do_not_set.tag = strenv(APP_VERSION))
+
+extraFileYqs:
+  - file: files/profile-ambient.yaml
+    yq: '.global.variant = ""'
+
+patches:
+  - patch: |
+      --- templates/deployment.yaml
+      +++ templates/deployment.yaml
+      @@ -49,8 +49,7 @@
+             {{- end }}
+             containers:
+               - name: istio-proxy
+      -          # "auto" will be populated at runtime by the mutating webhook. See https://istio.io/latest/docs/setup/additional-setup/sidecar-injection/#customizing-injection
+      -          image: auto
+      +          image: "{{ .Values.hub }}/{{ .Values.image | default "proxyv2" }}:{{ .Values.tag }}"
+                {{- with .Values.imagePullPolicy }}
+                imagePullPolicy: {{ . }}
+                {{- end }}
+  - patch: |
+      --- README.md
+      +++ README.md
+      @@ -2,15 +2,6 @@
+       
+       This chart installs an Istio gateway deployment.
+       
+      -## Setup Repo Info
+      -
+      -```console
+      -helm repo add istio https://istio-release.storage.googleapis.com/charts
+      -helm repo update
+      -```
+      -
+      -_See [helm repo](https://helm.sh/docs/helm/helm_repo/) for command documentation._
+      -
+       ## Installing the Chart
+       
+       To install the chart with the release name `istio-ingressgateway`:
+      @@ -27,14 +18,5 @@
+       ocne application uninstall --release [RELEASE_NAME] --namespace [NAMESPACE]
+       ```
+      -
+      -## Configuration
+      -
+      -To view supported configuration options and documentation, run:
+      -
+      -```console
+      -helm show values istio/gateway
+      -```
+      -
+       ### Profiles
+       
+       Istio Helm charts have a concept of a `profile`, which is a bundled collection of value presets.
+      @@ -106,31 +89,9 @@
+       * Published to official Istio Helm repository.
+       * Single chart for all gateways (Ingress, Egress, East West).
+       
+      -#### General concerns
+      -
+      -For a smooth migration, the resource names and `Deployment.spec.selector` labels must match.
+      -
+      -If you install with `helm install istio-gateway istio/gateway`, resources will be named `istio-gateway` and the `selector` labels set to:
+      -
+      -```yaml
+      -app: istio-gateway
+      -istio: gateway # the release name with leading istio- prefix stripped
+      -```
+      -
+      -If your existing installation doesn't follow these names, you can override them. For example, if you have resources named `my-custom-gateway` with `selector` labels
+      -`foo=bar,istio=ingressgateway`:
+      -
+      -```yaml
+      -name: my-custom-gateway # Override the name to match existing resources
+      -labels:
+      -  app: "" # Unset default app selector label
+      -  istio: ingressgateway # override default istio selector label
+      -  foo: bar # Add the existing custom selector label
+      -```
+      -
+       #### Migrating an existing Helm release
+       
+      -An existing helm release can be `helm upgrade`d to this chart by using the same release name. For example, if a previous
+      +An existing release can be `ocne application update`d to this chart by using the same release name. For example, if a previous
+       installation was done like:
+       
+       ```console
