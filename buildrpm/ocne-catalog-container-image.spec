@@ -7,7 +7,7 @@
 
 Name:		%{_name}-container-image
 Version:	2.0.0
-Release:	33%{?dist}
+Release:	34%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
+* Mon Oct 12 2026 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-34
+- Respin with latest base image
+
 * Mon Aug 24 2026 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-33
 - Added cert-manager 1.19.6
 - Added cert-manager 1.20.2
