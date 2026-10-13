@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "capv.fullname" . }}
+  labels:
+    {{- include "capv.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.controllerManager.replicas }}
+  selector:
+    matchLabels:
+      {{- include "capv.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "capv.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "capv.fullname" . }}
+      securityContext:
+        {{- toYaml .Values.controllerManager.podSecurityContext | nindent 8 }}
+      containers:
+      - name: manager
+        image: "{{ .Values.controllerManager.manager.image.repository }}:{{ .Values.controllerManager.manager.image.tag }}"
+        imagePullPolicy: {{ .Values.controllerManager.manager.imagePullPolicy }}
+        args:
+        {{- range .Values.controllerManager.manager.args }}
+        - {{ . | quote }}
+        {{- end }}
+        env:
+        {{- range $k, $v := .Values.controllerManager.manager.env }}
+        - name: {{ $k }}
+          value: {{ $v | quote }}
+        {{- end }}
+        ports:
+        - name: metrics
+          containerPort: 8080
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: metrics
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: metrics
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        securityContext:
+          {{- toYaml .Values.controllerManager.manager.containerSecurityContext | nindent 10 }}
+      terminationGracePeriodSeconds: 10

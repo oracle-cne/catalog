@@ -1,0 +1,8 @@
+apiVersion: v2
+name: capv
+description: Helm chart for Cluster API Provider vSphere
+type: application
+version: 1.15.2
+appVersion: "1.15.2"
+icon: icons/capi.svg
+kubeVersion: '>= 1.30.0 < 1.34.0'
