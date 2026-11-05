@@ -1,0 +1,12 @@
+# OCNE configuration for the application test; provision outside test.sh.
+provider: libvirt
+controlPlaneNodes: 1
+workerNodes: 3
+kubernetesVersion: "1.33"
+cni: none
+headless: true
+autoStartUI: false
+catalog: false
+podSubnet: 10.244.0.0/16
+serviceSubnet: 10.96.0.0/12
+kubeProxyMode: iptables

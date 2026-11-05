@@ -5,6 +5,7 @@ APP=""
 APP_VERSION="$2"
 KUBE_VERSION="$3"
 ROOT_DIR="$PWD"
+source "$ROOT_DIR/application-dependencies.sh" || exit 1
 
 # Set SKIP_DEPENDENCIES=true or false to override the template setting for one generation.
 SKIP_DEPENDENCIES_OVERRIDE="${SKIP_DEPENDENCIES:-}"
@@ -649,17 +650,15 @@ cleanup_pull_dir() {
 	esac
 }
 
-backup_existing_output_dir() {
+remove_existing_output_dir() {
 	OUTPUT_DIR="$1"
 	if [ ! -e "$OUTPUT_DIR" ]; then
 		echo "Output directory ${OUTPUT_DIR} does not exist; fresh generation will create it"
 		return
 	fi
 
-	BACKUP_PARENT=$(mktemp -d "$ROOT_DIR/charts/.${OUTPUT_DIR}.previous.XXXXXX")
-	BACKUP_DIR="${BACKUP_PARENT}/${OUTPUT_DIR}"
-	echo "Output directory ${OUTPUT_DIR} already exists; preserving it at ${BACKUP_DIR}"
-	mv "$OUTPUT_DIR" "$BACKUP_DIR"
+	echo "Removing existing output directory ${OUTPUT_DIR} before regeneration"
+	rm -rf -- "$OUTPUT_DIR" || exit 1
 }
 
 pull_chart_to_temp_dir() {
@@ -1281,13 +1280,18 @@ resolve_dependency_app_version() {
 }
 
 generate_dependency_chart() {
-	DEP_APP="$1"
-	DEP_APP_VERSION="$2"
-	DEP_CHART_VERSION="$3"
-	DEP_CHART_DIR="$ROOT_DIR/charts/${DEP_APP}-${DEP_APP_VERSION}"
-	DEP_TEMPLATE_FILE="$ROOT_DIR/templates/${DEP_APP}/template.yaml"
+	local DEP_APP="$1" DEP_APP_VERSION="$2" DEP_CHART_VERSION="$3"
+	local DEP_CHART_DIR="$ROOT_DIR/charts/${DEP_APP}-${DEP_APP_VERSION}"
+	local DEP_TEMPLATE_FILE="$ROOT_DIR/templates/${DEP_APP}/template.yaml"
 
 	if [ -d "$DEP_CHART_DIR" ]; then
+		if ! CATALOG_DEPENDENCY_NAME="$DEP_APP" CATALOG_DEPENDENCY_VERSION="$DEP_APP_VERSION" yq -e '
+			.name == strenv(CATALOG_DEPENDENCY_NAME) and
+			.version == strenv(CATALOG_DEPENDENCY_VERSION) and
+			.appVersion == strenv(CATALOG_DEPENDENCY_VERSION)' "$DEP_CHART_DIR/Chart.yaml" >/dev/null; then
+			echo "Invalid existing dependency chart ${DEP_APP}-${DEP_APP_VERSION}"
+			exit 1
+		fi
 		echo "Dependency chart ${DEP_APP}-${DEP_APP_VERSION} already exists; using existing catalog chart"
 		return
 	fi
@@ -1305,6 +1309,48 @@ generate_dependency_chart() {
 	if [ "$?" != "0" ]; then
 		echo "Could not generate dependency chart ${DEP_APP}-${DEP_APP_VERSION}"
 		exit 1
+	fi
+	if ! CATALOG_DEPENDENCY_NAME="$DEP_APP" CATALOG_DEPENDENCY_VERSION="$DEP_APP_VERSION" yq -e '
+		.name == strenv(CATALOG_DEPENDENCY_NAME) and
+		.version == strenv(CATALOG_DEPENDENCY_VERSION) and
+		.appVersion == strenv(CATALOG_DEPENDENCY_VERSION)' "$DEP_CHART_DIR/Chart.yaml" >/dev/null; then
+		echo "Generated dependency does not provide ${DEP_APP}-${DEP_APP_VERSION}"
+		exit 1
+	fi
+}
+
+# Walk even existing applications so a missing transitive dependency is repaired.
+# Keep these as separate releases; do not add them to Helm's .dependencies.
+ensure_application_dependencies() {
+	local app="$1" version="$2" chain="${3:-}"
+	local identity="$app@$version" template="$ROOT_DIR/templates/$app/template.yaml"
+	local dependencies rows name required
+	case "|$chain|" in
+		*"|$identity|"*) echo "Application dependency cycle: $chain|$identity"; return 1 ;;
+	esac
+	chain="${chain:+$chain|}$identity"
+	if [ ! -f "$template" ]; then
+		[ -f "$ROOT_DIR/charts/$app-$version/Chart.yaml" ] && return 0
+		echo "Cannot resolve application dependency $identity: missing $template"
+		return 1
+	fi
+	dependencies=$(catalog_resolve_application_dependencies "$template" "$version") || return 1
+	rows=$(printf '%s\n' "$dependencies" | yq -r '.[] | [.name, .version] | @tsv') || return 1
+	while IFS=$'\t' read -r name required; do
+		[ -n "$name" ] || continue
+		echo "Application $identity requires $name@$required"
+		ensure_application_dependencies "$name" "$required" "$chain" || return 1
+		# Resolve the child's source chart version from its own template/repository.
+		# A parent CHART_VERSION override belongs only to the requested application.
+		generate_dependency_chart "$name" "$required" "" || return 1
+	done <<< "$rows"
+}
+
+record_application_dependencies() {
+	if [ "$APPLICATION_DEPENDENCIES" != '[]' ]; then
+		echo "Recording separate application dependencies for $APP: $APPLICATION_DEPENDENCIES"
+		APPLICATION_DEPENDENCIES="$APPLICATION_DEPENDENCIES" yq -i \
+			'.annotations."catalog.oracle.com/application-dependencies" = strenv(APPLICATION_DEPENDENCIES)' "$1" || return 1
 	fi
 }
 
@@ -1483,9 +1529,13 @@ EOF
 
 resolve_app_pattern
 
+APPLICATION_DEPENDENCIES=$(catalog_resolve_application_dependencies "$TEMPLATE_FILE" "${APP_VERSION#v}") || exit 1
+ensure_application_dependencies "$APP" "${APP_VERSION#v}" || exit 1
+
 set -x
 
 if generate_github_release_crd_chart; then
+	record_application_dependencies "$ROOT_DIR/charts/$APP-$APP_VERSION/Chart.yaml" || exit 1
 	update_readme_version
 
 	set +x
@@ -1549,7 +1599,7 @@ fi
 OUTPUT_DIR="${APP}-${APP_VERSION}"
 if is_git_chart_repo "$REPO_URL"; then
 	copy_git_chart
-	backup_existing_output_dir "$OUTPUT_DIR"
+	remove_existing_output_dir "$OUTPUT_DIR"
 	echo "Moving copied Git chart ${CHART} to ${OUTPUT_DIR}"
 	mv "$CHART" "$OUTPUT_DIR"
 else
@@ -1557,7 +1607,7 @@ else
 	set_app_version_from_pulled_chart_values
 	helm repo remove "$REPO_NAME"
 	OUTPUT_DIR="${APP}-${APP_VERSION}"
-	backup_existing_output_dir "$OUTPUT_DIR"
+	remove_existing_output_dir "$OUTPUT_DIR"
 	echo "Moving pulled chart ${PULL_DIR}/${CHART} to ${OUTPUT_DIR}"
 	mv "$PULL_DIR/$CHART" "$OUTPUT_DIR"
 	cleanup_pull_dir "$PULL_DIR"
@@ -1602,6 +1652,7 @@ fi
 apply_extra_values_yqs
 apply_extra_file_yqs
 apply_template_patches
+record_application_dependencies Chart.yaml || exit 1
 
 IMAGES=""
 LATEST_IMAGES=""
