@@ -1,0 +1,16 @@
+# application	suite	version option	extra option	extra value
+csi-driver-nfs	csi-driver-nfs	--nfs-csi-version	-	-
+fluent-operator	fluent-operator	--fluent-operator-version	-	-
+rook	rook	--rook-version	-	-
+prometheus	prometheus	--prometheus-version	-	-
+tigera-operator	tigera-operator	--tigera-operator-version	-	-
+oauth2-proxy	oauth2-proxy	--oauth2-proxy-version	-	-
+dex	oauth2-proxy	--dex-version	-	-
+ingress-nginx	oauth2-proxy	--ingress-nginx-version	-	-
+metallb	oauth2-proxy	--metallb-version	-	-
+istio-base	istio	--istio-version	--mode	ambient
+istiod	istio	--istio-version	--mode	ambient
+istio-cni	istio	--istio-version	--mode	ambient
+istio-ztunnel	istio	--istio-version	--mode	ambient
+istio-gateway	istio	--istio-version	--mode	ambient
+kubernetes-gateway-api-crds	istio	--gateway-api-crds-version	--route-api	gateway-api

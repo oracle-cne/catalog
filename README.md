@@ -119,6 +119,42 @@ matching `Chart.yaml`.  Set `GITHUB_TOKEN` or `GH_TOKEN` for GitHub API access
 to private repositories or when higher API rate limits are required; configure
 Git credentials separately when the clone itself requires authentication.
 
+### Application dependency generation
+
+Templates can declare other catalog applications that must exist as separate
+releases. These are distinct from Helm subchart dependencies:
+
+```yaml
+# templates/istiod/template.yaml
+applicationDependencies:
+  - name: istio-base
+```
+
+An omitted dependency `version` means the requested application version. An
+explicit quoted version, such as `version: "1.30.3"`, pins that dependency.
+For example, from the catalog directory:
+
+```sh
+./generate.sh istio-gateway 1.30.3
+```
+
+The gateway template requires `istiod`, which requires `istio-base`. Generation
+walks the chain in dependency order, generates missing charts using their own
+templates, and reuses matching existing charts without overwriting them. The
+walk also checks dependencies of existing applications, so an existing Istiod
+does not hide a missing base chart. Cycles, invalid existing chart identities,
+missing templates for absent charts, and failed child generation stop the run.
+Each dependency resolves its own upstream chart version; a caller's
+`CHART_VERSION` override applies to the requested application only.
+
+Generated charts record resolved application dependencies in the
+`catalog.oracle.com/application-dependencies` annotation as JSON. Diff-selected
+tests validate this chain against the selected Git commit before provisioning.
+Older charts without the annotation use the template at that same commit.
+Component suites still own installation order and functional validation; the
+Istio suite installs the matching stack together. `SKIP_DEPENDENCIES` controls
+Helm subchart processing and does not disable required application dependencies.
+
 ## Contributing
 
 
