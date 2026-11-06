@@ -33,7 +33,7 @@ installing the `ocne-catalog` chart.
 | Grafana                                             | grafana                     | 10.2.6<br>9.2.10<br>7.5.17                                           |
 | Ingress Nginx                                       | ingress-nginx               | 1.15.1<br>1.14.4<br>1.14.0<br>1.13.1<br>1.12.5<br>1.12.1<br>1.9.6    |
 | Istio CRDs                                          | istio-base                  | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
-| Istiod                                              | istiod                      | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
+| Istiod                                              | istiod                      | 1.30.7<br>1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
 | Istio Egress Gateway                                | istio-egress                | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
 | Istio Ingress Gateway                               | istio-ingress               | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
 | Istio Gateway                                       | istio-gateway               | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6 |
@@ -67,7 +67,7 @@ installing the `ocne-catalog` chart.
 |------------------------------|-----------------|-----------------------------|
 | Cert Manager                 | cert-manager    | 1.9.1                       |
 | Istio CRDs                   | istio-base      | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.19.9 |
-| Istiod                       | istiod          | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.19.9 |
+| Istiod                       | istiod          | 1.30.7<br>1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.19.9 |
 | Istio Egress Gateway         | istio-egress    | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.19.9 |
 | Istio Ingress Gateway        | istio-ingress   | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.19.9 |
 | KubeVirt                     | kubevirt        | 1.0.1<br>0.59.0<br>0.58.0   |
