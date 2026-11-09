@@ -35,9 +35,9 @@ patches:
       -          # "auto" will be populated at runtime by the mutating webhook. See https://istio.io/latest/docs/setup/additional-setup/sidecar-injection/#customizing-injection
       -          image: auto
       +          image: "{{ .Values.hub }}/{{ .Values.image | default "proxyv2" }}:{{ .Values.tag }}"
-                {{- with .Values.imagePullPolicy }}
-                imagePullPolicy: {{ . }}
-                {{- end }}
+                 {{- with .Values.imagePullPolicy }}
+                 imagePullPolicy: {{ . }}
+                 {{- end }}
   - patch: |
       --- README.md
       +++ README.md
