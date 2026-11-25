@@ -7,7 +7,7 @@
 
 Name:		%{_name}-container-image
 Version:	2.0.0
-Release:	34%{?dist}
+Release:	35%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,9 @@ docker save -o %{_name}.tar %{docker_tag}
 %clean
 
 %changelog
+* Fri Nov 20 2026 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-35
+- Update Grafana 10.2.6 container image
+
 * Mon Oct 12 2026 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-34
 - Respin with latest base image
 
