@@ -1,5 +1,7 @@
 repo: https://istio-release.storage.googleapis.com/charts
 chart: gateway
+applicationDependencies:
+  - name: istiod
 icon: android-192x192.png
 kubeVersion:
   minimum:

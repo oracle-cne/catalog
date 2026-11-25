@@ -1,0 +1,26 @@
+# OCNE configuration for the application test; provision outside test.sh.
+provider: libvirt
+controlPlaneNodes: 1
+workerNodes: 3
+kubernetesVersion: "1.33"
+cni: flannel
+headless: true
+autoStartUI: false
+catalog: false
+providers:
+  libvirt:
+    controlPlaneNode:
+      storage: 256Gi
+    workerNode:
+      storage: 256Gi
+extraIgnitionInline: |
+  variant: fcos
+  version: 1.5.0
+  storage:
+    disks:
+    - device: /dev/sda
+      wipe_table: false
+      partitions:
+      - label: var
+        number: 4
+        start_mib: 30720

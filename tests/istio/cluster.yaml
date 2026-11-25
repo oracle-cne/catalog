@@ -1,0 +1,9 @@
+# OCNE configuration for the application test; provision outside test.sh.
+provider: libvirt
+controlPlaneNodes: 1
+workerNodes: 3
+kubernetesVersion: "1.33"
+cni: flannel
+headless: true
+autoStartUI: false
+catalog: false
