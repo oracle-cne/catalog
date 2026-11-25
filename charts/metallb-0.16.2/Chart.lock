@@ -1,0 +1,9 @@
+dependencies:
+- name: crds
+  repository: ""
+  version: 0.16.2
+- name: frr-k8s
+  repository: ""
+  version: 0.0.27
+digest: sha256:cf4e502d47ce844cdbc0f7b03f966992fbbdfe712e1b521219eb478f173d391c
+generated: "2026-11-25T21:28:59.541586535Z"
