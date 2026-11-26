@@ -1,0 +1,12 @@
+# Adapt the private subchart using the layout bundled with MetalLB 0.16.1.
+# Preserve upstream FRR image versions; the MetalLB template controls enablement.
+chart: frr-k8s
+icon: metallb-blue.svg
+values:
+  frrk8s:
+    image:
+      repository: quay.io/metallb/frr-k8s
+      tag:
+extraValuesYqs:
+  # The upstream image tag includes v; Chart.appVersion is normalized by generation.
+  - '.frrk8s.image.tag = "v" + strenv(APP_VERSION)'

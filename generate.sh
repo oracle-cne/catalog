@@ -1320,6 +1320,97 @@ EOF
 	return 1
 }
 
+dependency_has_catalog_app() {
+	local dependency_name="$1"
+	local chart_file
+	if [ -f "$ROOT_DIR/templates/${dependency_name}/template.yaml" ]; then
+		return 0
+	fi
+
+	for chart_file in "$ROOT_DIR/charts/${dependency_name}-"*/Chart.yaml; do
+		if [ -f "$chart_file" ] && [ "$(yq -r '.name' "$chart_file")" = "$dependency_name" ]; then
+			return 0
+		fi
+	done
+	return 1
+}
+
+generate_embedded_dependency() (
+	# Isolate the shared generator's variables and working directory from its parent.
+	local dependency_name="$1"
+	local dependency_repo="$2"
+	local dependency_version="$3"
+	local work_dir source_dir
+	work_dir=$(mktemp -d) || exit 1
+	TEMP_DIRS="$work_dir"
+	trap cleanup_temp_dirs EXIT
+	TEMPLATE_FILE="$ROOT_DIR/templates/embedded/${dependency_name}/template.yaml"
+	APP="$dependency_name"
+
+	echo "Preparing embedded dependency ${APP}@${dependency_version} from ${dependency_repo}"
+	if [ -z "$dependency_repo" ]; then
+		if [ -d "charts/$APP" ]; then
+			cp -R "charts/$APP" "$work_dir/$APP" || exit 1
+		elif [ -f "charts/${APP}-${dependency_version}.tgz" ]; then
+			echo "Unpacking embedded dependency charts/${APP}-${dependency_version}.tgz"
+			tar -xzf "charts/${APP}-${dependency_version}.tgz" -C "$work_dir" || exit 1
+		else
+			echo "Could not find embedded dependency ${APP}@${dependency_version}"
+			exit 1
+		fi
+	elif [[ "$dependency_repo" == file://* ]]; then
+		cp -R "${dependency_repo#file://}" "$work_dir/$APP" || exit 1
+	else
+		case "$dependency_repo" in
+			oci://*) source_dir="${dependency_repo%/}/$APP" ;;
+			@*) source_dir="${dependency_repo#@}/$APP" ;;
+			alias:*) source_dir="${dependency_repo#alias:}/$APP" ;;
+			*) source_dir="$APP" ;;
+		esac
+		local pull_args=("$source_dir" --version "$dependency_version" --untar --untardir "$work_dir")
+		if [[ "$dependency_repo" != oci://* && "$dependency_repo" != @* && "$dependency_repo" != alias:* ]]; then
+			pull_args+=(--repo "$dependency_repo")
+		fi
+		helm pull "${pull_args[@]}" || exit 1
+	fi
+
+	(
+		cd "$work_dir/$APP" || exit 1
+		APP_VERSION=$(yq -r '.appVersion // .version' Chart.yaml) || exit 1
+		normalize_app_version
+		ICON=$(yq -r '.icon // ""' "$TEMPLATE_FILE") || exit 1
+		echo "Applying embedded template ${TEMPLATE_FILE} to ${APP}-${APP_VERSION}"
+		apply_chart_template || exit 1
+		echo "Bundling nested dependencies for embedded chart ${APP}"
+		helm dependency update . || exit 1
+		if yq -e '[.dependencies[]? | select(.repository | test("^file://"))] | length > 0' Chart.yaml > /dev/null; then
+			echo "Retaining bundled local dependencies inside embedded chart ${APP}"
+			local nested_name nested_version
+			while IFS=$'\t' read -r nested_name nested_version; do
+				echo "Unpacking bundled local dependency ${nested_name}@${nested_version}"
+				rm -rf "charts/$nested_name" || exit 1
+				tar -xzf "charts/${nested_name}-${nested_version}.tgz" -C charts || exit 1
+				rm -f "charts/${nested_name}-${nested_version}.tgz" || exit 1
+			done < <(yq -r '.dependencies[] | select(.repository | test("^file://")) | [.name, .version] | @tsv' Chart.yaml)
+			yq -i '(.dependencies[] | select(.repository | test("^file://"))).repository = ""' Chart.yaml || exit 1
+			helm dependency update . || exit 1
+		fi
+	) || exit 1
+
+	# Remove upstream copies so Helm cannot load both adapted and unadapted charts.
+	mkdir -p charts || exit 1
+	rm -rf "charts/$APP" || exit 1
+	local archive
+	for archive in "charts/${APP}-"*.tgz; do
+		if [ -f "$archive" ] && [ "$(helm show chart "$archive" | yq -r '.name')" = "$APP" ]; then
+			echo "Removing upstream embedded archive ${archive}"
+			rm -f "$archive" || exit 1
+		fi
+	done
+	mv "$work_dir/$APP" "charts/$APP" || exit 1
+	echo "Embedded dependency ${APP} prepared in ${PWD}/charts/${APP}"
+)
+
 process_chart_dependencies() {
 	TEMPLATE_SKIP_DEPENDENCIES_TYPE=$(yq -r '.skipDependencies | type' "$TEMPLATE_FILE")
 	SKIP_ALL_DEPENDENCIES=false
@@ -1390,6 +1481,19 @@ EOF
 			exit 1
 		fi
 
+		if ! dependency_is_configured_to_skip "$DEP_NAME" && [ -f "$ROOT_DIR/templates/embedded/$DEP_NAME/template.yaml" ]; then
+			if [ -z "$DEP_CHART_VERSION" ]; then
+				echo "Embedded dependency ${DEP_NAME} does not define a chart version"
+				exit 1
+			fi
+			generate_embedded_dependency "$DEP_NAME" "$DEP_REPO" "$DEP_CHART_VERSION" || exit 1
+			DEP_EMBEDDED_VERSION=$(yq -r '.version' "charts/$DEP_NAME/Chart.yaml") || exit 1
+			echo "Retaining adapted ${DEP_NAME}@${DEP_EMBEDDED_VERSION} inside ${APP}; disabling upstream replacement during packaging"
+			DEP_EMBEDDED_VERSION="$DEP_EMBEDDED_VERSION" yq -i ".dependencies[$DEP_INDEX].repository = \"\" | .dependencies[$DEP_INDEX].version = strenv(DEP_EMBEDDED_VERSION)" Chart.yaml || exit 1
+			DEP_INDEX=$((DEP_INDEX+1))
+			continue
+		fi
+
 		if [ -z "$DEP_REPO" ] || [[ "$DEP_REPO" == file://* ]]; then
 			echo "Skipping local dependency ${DEP_NAME} with repository '${DEP_REPO}'"
 			DEP_INDEX=$((DEP_INDEX+1))
@@ -1407,10 +1511,16 @@ EOF
 			exit 1
 		fi
 
+		if ! dependency_has_catalog_app "$DEP_NAME"; then
+			echo "Dependency ${DEP_NAME} has no catalog application; retaining ${DEP_REPO}@${DEP_CHART_VERSION} for helm package --dependency-update to bundle"
+			DEP_INDEX=$((DEP_INDEX+1))
+			continue
+		fi
+
 		resolve_dependency_app_version "$DEP_NAME" "$DEP_REPO" "$DEP_CHART_VERSION"
 		generate_dependency_chart "$DEP_NAME" "$DEP_RESOLVED_APP_VERSION" "$DEP_RESOLVED_CHART_VERSION"
 
-		DEP_LOCAL_REPO="file://../${DEP_NAME}-${DEP_RESOLVED_APP_VERSION}"
+		DEP_LOCAL_REPO="file://$(realpath --relative-to="$PWD" "$ROOT_DIR/charts/${DEP_NAME}-${DEP_RESOLVED_APP_VERSION}")"
 		echo "Rewriting dependency ${DEP_NAME} to ${DEP_LOCAL_REPO}@${DEP_RESOLVED_APP_VERSION}"
 		DEP_LOCAL_REPO="$DEP_LOCAL_REPO" \
 		DEP_RESOLVED_APP_VERSION="$DEP_RESOLVED_APP_VERSION" \
@@ -1427,6 +1537,10 @@ list_template_apps() {
 }
 
 resolve_app_pattern() {
+	if [[ "$APP_PATTERN" == embedded/* ]]; then
+		echo "Embedded dependency templates are generated through their parent application"
+		exit 1
+	fi
 	if [ -z "$APP_PATTERN" ]; then
 		echo "Usage: $0 APPLICATION_OR_PATTERN APP_VERSION [KUBE_VERSION]"
 		exit 1
@@ -1479,6 +1593,85 @@ $MATCHED_APPS
 EOF
 
 	exit 0
+}
+
+apply_chart_template() {
+	yq -i ".version = \"$APP_VERSION\"" Chart.yaml || return 1
+	yq -i ".appVersion = \"$APP_VERSION\"" Chart.yaml || return 1
+	if [ -n "$ICON" ] && [ "$ICON" != "null" ]; then
+		yq -i ".icon = \"icons/$ICON\"" Chart.yaml || return 1
+	fi
+	set_chart_kube_version || return 1
+	yq -i ".name = \"$APP\"" Chart.yaml || return 1
+	sanitize_chart_readme || return 1
+	merge_crd_charts || return 1
+
+	if yq -e '.extraChartYqs' "$TEMPLATE_FILE" > /dev/null 2>&1; then
+		yq -r -0 '.extraChartYqs[]' "$TEMPLATE_FILE" | xargs -0 -I{} yq -i {} Chart.yaml || return 1
+	fi
+
+	process_chart_dependencies || return 1
+
+	TRANSFORMS=$(yq -r '(.transforms // {}) | keys | .[]' "$TEMPLATE_FILE")
+	for xform in $TRANSFORMS; do
+		if yq -e ".transforms.\"$xform\".extraImages" "$TEMPLATE_FILE" > /dev/null 2>&1; then
+			yq -r -0 ".transforms.\"$xform\".extraImages | .[]" "$TEMPLATE_FILE" | xargs -0 -I{} sed -i "1s;^;# extra-image: {}\n;" templates/$xform
+		fi
+
+		TEXT=$(yq -re ".transforms.\"$xform\".prepend" "$TEMPLATE_FILE" 2>/dev/null)
+		if [ "$?" != "0" ]; then
+			continue
+		fi
+		FILE=$(cat templates/$xform)
+		printf "%s\n%s" "$TEXT" "$FILE" > templates/$xform
+	done
+
+	if yq -e '((.values // {}) | length) > 0' "$TEMPLATE_FILE" > /dev/null 2>&1; then
+		yq '.values' "$TEMPLATE_FILE" > vals.tmp
+		update_values_yaml_with_yq '. *= load("vals.tmp")'
+		rm vals.tmp
+	else
+		echo "No values.yaml merge defined for ${APP}"
+	fi
+	apply_extra_values_yqs || return 1
+	apply_extra_file_yqs || return 1
+	apply_template_patches || return 1
+
+	IMAGES=""
+	LATEST_IMAGES=""
+
+	process_image_tags() {
+		LIST_NAME="$1"
+		TAG_MODE="$2"
+		NUM_IMAGES=$(yq ".${LIST_NAME} | length" "$TEMPLATE_FILE")
+		NUM_IMAGES=$((NUM_IMAGES-1))
+
+		for i in $(seq 0 $NUM_IMAGES); do
+			REG_PATH=$(yq ".${LIST_NAME}[$i].name" "$TEMPLATE_FILE")
+			REG=$(yq "$REG_PATH" values.yaml)
+			IMAGE="$REGISTRY/$REG"
+
+			if [ "$TAG_MODE" = "appVersion" ]; then
+				TAG_PREFIX=$(yq -r ".${LIST_NAME}[$i].prefix // \"v\"" "$TEMPLATE_FILE")
+				TAG="${TAG_PREFIX}${APP_VERSION}"
+				echo "using app version for $IMAGE: $TAG"
+			elif [ "$TAG_MODE" = "latest" ]; then
+				TAG=$(skopeo list-tags "docker://$IMAGE" | yq .Tags[] | grep -v -e '-amd64' | grep -v -e '-arm64' | sort -V | tail -1)
+				echo "latest for $IMAGE: $TAG"
+				LATEST_IMAGES=$(echo "$LATEST_IMAGES"; echo "${IMAGE}:${TAG}")
+			else
+				echo "Unsupported tag mode \"$TAG_MODE\" for $IMAGE"
+				exit 1
+			fi
+
+			TAG_PATH=$(yq ".${LIST_NAME}[$i].tag" "$TEMPLATE_FILE")
+			update_values_yaml_with_yq "$TAG_PATH = \"$TAG\""
+			IMAGES=$(echo "$IMAGES"; echo "${IMAGE}:${TAG}")
+		done
+	}
+
+	process_image_tags images appVersion
+	process_image_tags latestImages latest
 }
 
 resolve_app_pattern
@@ -1564,80 +1757,7 @@ else
 fi
 pushd "${APP}-${APP_VERSION}"
 
-yq -i ".version = \"$APP_VERSION\"" Chart.yaml
-yq -i ".appVersion = \"$APP_VERSION\"" Chart.yaml
-yq -i ".icon = \"icons/$ICON\"" Chart.yaml
-set_chart_kube_version
-yq -i ".name = \"$APP\"" Chart.yaml
-sanitize_chart_readme
-merge_crd_charts
-
-if yq -e '.extraChartYqs' "$TEMPLATE_FILE" > /dev/null 2>&1; then
-	yq -r -0 '.extraChartYqs[]' "$TEMPLATE_FILE" | xargs -0 -I{} yq -i {} Chart.yaml
-fi
-
-process_chart_dependencies
-
-TRANSFORMS=$(yq -r '(.transforms // {}) | keys | .[]' "$TEMPLATE_FILE")
-for xform in $TRANSFORMS; do
-	if yq -e ".transforms.\"$xform\".extraImages" "$TEMPLATE_FILE" > /dev/null 2>&1; then
-		yq -r -0 ".transforms.\"$xform\".extraImages | .[]" "$TEMPLATE_FILE" | xargs -0 -I{} sed -i "1s;^;# extra-image: {}\n;" templates/$xform
-	fi
-
-	TEXT=$(yq -re ".transforms.\"$xform\".prepend" "$TEMPLATE_FILE" 2>/dev/null)
-	if [ "$?" != "0" ]; then
-		continue
-	fi
-	FILE=$(cat templates/$xform)
-	printf "%s\n%s" "$TEXT" "$FILE" > templates/$xform
-done
-
-if yq -e '((.values // {}) | length) > 0' "$TEMPLATE_FILE" > /dev/null 2>&1; then
-	yq '.values' "$TEMPLATE_FILE" > vals.tmp
-	update_values_yaml_with_yq '. *= load("vals.tmp")'
-	rm vals.tmp
-else
-	echo "No values.yaml merge defined for ${APP}"
-fi
-apply_extra_values_yqs
-apply_extra_file_yqs
-apply_template_patches
-
-IMAGES=""
-LATEST_IMAGES=""
-
-process_image_tags() {
-	LIST_NAME="$1"
-	TAG_MODE="$2"
-	NUM_IMAGES=$(yq ".${LIST_NAME} | length" "$TEMPLATE_FILE")
-	NUM_IMAGES=$((NUM_IMAGES-1))
-
-	for i in $(seq 0 $NUM_IMAGES); do
-		REG_PATH=$(yq ".${LIST_NAME}[$i].name" "$TEMPLATE_FILE")
-		REG=$(yq "$REG_PATH" values.yaml)
-		IMAGE="$REGISTRY/$REG"
-
-		if [ "$TAG_MODE" = "appVersion" ]; then
-			TAG_PREFIX=$(yq -r ".${LIST_NAME}[$i].prefix // \"v\"" "$TEMPLATE_FILE")
-			TAG="${TAG_PREFIX}${APP_VERSION}"
-			echo "using app version for $IMAGE: $TAG"
-		elif [ "$TAG_MODE" = "latest" ]; then
-			TAG=$(skopeo list-tags "docker://$IMAGE" | yq .Tags[] | grep -v -e '-amd64' | grep -v -e '-arm64' | sort -V | tail -1)
-			echo "latest for $IMAGE: $TAG"
-			LATEST_IMAGES=$(echo "$LATEST_IMAGES"; echo "${IMAGE}:${TAG}")
-		else
-			echo "Unsupported tag mode \"$TAG_MODE\" for $IMAGE"
-			exit 1
-		fi
-
-		TAG_PATH=$(yq ".${LIST_NAME}[$i].tag" "$TEMPLATE_FILE")
-		update_values_yaml_with_yq "$TAG_PATH = \"$TAG\""
-		IMAGES=$(echo "$IMAGES"; echo "${IMAGE}:${TAG}")
-	done
-}
-
-process_image_tags images appVersion
-process_image_tags latestImages latest
+apply_chart_template || exit 1
 
 
 popd # APP-APP_VERSION
