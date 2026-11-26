@@ -3,7 +3,7 @@
 
 Name:		ocne-catalog
 Version:	2.0.0
-Release:	35%{?dist}
+Release:	36%{?dist}
 Summary:	An on-disk Helm chart repository
 
 Group:		Development/Tools
@@ -37,6 +37,10 @@ cp -ap olm/icons/* %{buildroot}/opt/icons
 /opt/icons
 
 %changelog
+* Thu Nov 26 2026 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-36
+- Update ingress-nginx container image
+- Add Istio 1.30.7
+
 * Fri Nov 20 2026 Daniel Krasinski <daniel.krasinski@oracle.com> - 2.0.0-35
 - Update Grafana 10.2.6 container image
 
