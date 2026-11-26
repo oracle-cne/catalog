@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "capv.fullname" . }}-webhook-service
+  labels:
+    {{- include "capv.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.webhookService.type }}
+  ports:
+    {{- range .Values.webhookService.ports }}
+    - port: {{ .port }}
+      targetPort: {{ .targetPort }}
+    {{- end }}
+  selector:
+    {{- include "capv.selectorLabels" . | nindent 4 }}

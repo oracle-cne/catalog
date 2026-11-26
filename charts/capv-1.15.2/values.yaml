@@ -1,0 +1,49 @@
+controllerManager:
+  manager:
+    args:
+    - --leader-elect
+    - --metrics-bind-address=127.0.0.1:8080
+    - --logging-format=text
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      privileged: false
+      runAsGroup: 65532
+      runAsUser: 65532
+    env:
+      # placeholder for any required env; extend as needed
+    image:
+      repository: ghcr.io/oracle/cluster-api-vsphere-controller
+      tag: v1.15.2
+    imagePullPolicy: IfNotPresent
+  podSecurityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  replicas: 1
+  serviceAccount:
+    annotations: {}
+
+metricsService:
+  ports:
+  - name: https
+    port: 8443
+    targetPort: https
+  type: ClusterIP
+
+webhookService:
+  ports:
+  - port: 443
+    targetPort: webhook-server
+  type: ClusterIP
+
+proxy:
+  httpsProxy:
+  httpProxy:
+  noProxy:
+
+fullnameOverride: capv
+
+kubernetesClusterDomain: cluster.local
