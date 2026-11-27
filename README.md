@@ -32,19 +32,19 @@ installing the `ocne-catalog` chart.
 | Fluentd                                             | fluentd                     | 1.14.5                                                               |
 | Grafana                                             | grafana                     | 10.2.6<br>9.2.10<br>7.5.17                                           |
 | Ingress Nginx                                       | ingress-nginx               | 1.15.1<br>1.14.4<br>1.14.0<br>1.13.1<br>1.12.5<br>1.12.1<br>1.9.6    |
-| Istio CRDs                                          | istio-base                  | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
-| Istiod                                              | istiod                      | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
-| Istio Egress Gateway                                | istio-egress                | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
-| Istio Ingress Gateway                               | istio-ingress               | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
-| Istio Gateway                                       | istio-gateway               | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6 |
-| Istio Ztunnel                                       | istio-ztunnel               | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1 |
-| Istio CNI                                           | istio-cni                   | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1 |
+| Istio CRDs                                          | istio-base                  | 1.30.7<br>1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
+| Istiod                                              | istiod                      | 1.30.7<br>1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
+| Istio Egress Gateway                                | istio-egress                | 1.30.7<br>1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
+| Istio Ingress Gateway                               | istio-ingress               | 1.30.7<br>1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6<br>1.20.8<br>1.20.5 |
+| Istio Gateway                                       | istio-gateway               | 1.30.7<br>1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1<br>1.22.8<br>1.22.6 |
+| Istio Ztunnel                                       | istio-ztunnel               | 1.30.7<br>1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1 |
+| Istio CNI                                           | istio-cni                   | 1.30.7<br>1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.24.6<br>1.24.1 |
 | Keycloak                                            | keycloak                    | 21.1.2                                                               |
 | Kube Prometheus Stack                               | kube-prometheus-stack       | 0.92.1<br>0.89.0<br>0.85.0<br>0.63.0 |
 | Kube Proxy                                          | kube-proxy                  | 2.0.0                                                                |
 | Kube State Metrics                                  | kube-state-metrics          | 2.19.1<br>2.18.0<br>2.17.0<br>2.8.2 |
 | KubeVirt                                            | kubevirt                    | 1.8.4<br>1.7.4<br>1.6.6<br>1.5.2<br>1.4.1<br>1.3.1<br>1.2.2<br>1.1.1  |
-| MetalLB                                             | metallb                     | 0.16.1<br>0.15.3<br>0.15.2<br>0.13.10                                          |
+| MetalLB                                             | metallb                     | 0.16.2<br>0.16.1<br>0.15.3<br>0.15.2<br>0.13.10 |
 | Multus                                              | multus                      | 4.3.0<br>4.2.1<br>4.0.2                                              |
 | OAuth2 Proxy                                        | oauth2-proxy                | 7.15.4<br>7.14.3<br>7.12.0<br>7.8.0                                            |
 | OCI Cloud Controller Manager                        | oci-ccm                     | 1.35.0<br>1.30.0<br>1.28.0                                                     |
@@ -66,12 +66,12 @@ installing the `ocne-catalog` chart.
 | Application                  | Chart           | Versions                    |
 |------------------------------|-----------------|-----------------------------|
 | Cert Manager                 | cert-manager    | 1.9.1                       |
-| Istio CRDs                   | istio-base      | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.19.9 |
-| Istiod                       | istiod          | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.19.9 |
-| Istio Egress Gateway         | istio-egress    | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.19.9 |
-| Istio Ingress Gateway        | istio-ingress   | 1.30.3<br>1.29.6<br>1.28.10<br>1.27.9<br>1.26.8<br>1.25.5<br>1.19.9 |
+| Istio CRDs                   | istio-base      | 1.19.9                      |
+| Istiod                       | istiod          | 1.19.9                      |
+| Istio Egress Gateway         | istio-egress    | 1.19.9                      |
+| Istio Ingress Gateway        | istio-ingress   | 1.19.9                      |
 | KubeVirt                     | kubevirt        | 1.0.1<br>0.59.0<br>0.58.0   |
-| MetalLB                      | metallb         | 0.16.1<br>0.12.1                      |
+| MetalLB                      | metallb         | 0.12.1                      |
 | OCI Cloud Controller Manager | oci-ccm         | 1.27.2                      |
 | Rook                         | rook            | 1.11.6<br>1.10.9            |
 | Tigera Operator with Calico  | tigera-operator | 1.32.12<br>1.32.4<br>1.29.3 |
@@ -94,6 +94,27 @@ named for the chart and chart version.  For example, the chart `mycoolapp` at
 version `2.3.4` would be put inside `./charts/mycoolapp-2.3.4`.  All charts
 must be created such that the chart version and application version are
 identical and are not prefixed with a 'v'.
+
+During generation, remote dependencies with a catalog template or an existing
+catalog chart are resolved to catalog application versions and linked to sibling
+charts. Dependencies without a catalog application retain their upstream
+repository and chart version. The build bundles these dependencies inside the
+parent chart using `helm package --dependency-update`; they are not published as
+separate catalog applications. Existing dependency skip settings still apply.
+
+To adapt a dependency without publishing it as an application, add
+`templates/embedded/<dependency-name>/template.yaml`. For example,
+`templates/embedded/frr-k8s/template.yaml` adapts the FRR subchart used by
+MetalLB. Embedded templates use the same values, image tags, patches, and chart
+transformations as application templates. The source repository and version come
+from the parent's dependency declaration. The adapted chart is stored under the
+parent's `charts/` directory, and its dependency repository is cleared so Helm
+preserves the adapted copy when packaging. Its version is normalized to its
+application version, falling back to the chart version when no application
+version is provided. Embedded templates take precedence over application
+templates for the same dependency name and are excluded from application pattern
+selection. Generate the parent application to apply them; skip settings also
+skip embedded adaptation.
 
 Template-driven chart generation can fetch source charts from a Helm repository
 or from unpacked charts in a Git repository.  For Git-hosted unpacked charts,
